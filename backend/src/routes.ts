@@ -1,6 +1,8 @@
 import { getUserById, updatePassword } from "./controller/userController";
 import { registerUser, login } from "./controller/authController";
+import * as dotenv from 'dotenv';
 
+dotenv.config();
 const apiVersion = process.env.API_VERSION;
 /**
  * All application routes.
