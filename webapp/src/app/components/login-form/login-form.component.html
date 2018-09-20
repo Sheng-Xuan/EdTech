@@ -1,0 +1,34 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+  <nz-form-item>
+    <nz-form-control>
+      <nz-input-group nzPrefixIcon="anticon anticon-user">
+        <input type="text" nz-input formControlName="email" placeholder="Email">
+      </nz-input-group>
+      <nz-form-explain *ngIf="email.dirty && email.errors">Please input your email!
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control>
+      <nz-input-group nzPrefixIcon="anticon anticon-lock">
+        <input type="password" nz-input formControlName="password" placeholder="Password">
+      </nz-input-group>
+      <nz-form-explain *ngIf="password.dirty && password.errors">Please input your Password!
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control>
+      <label nz-checkbox formControlName="remember">
+        <span>Remember me</span>
+      </label>
+      <!-- <a class="login-form-forgot" class="login-form-forgot">Forgot password</a> -->
+      <button nz-button class="login-form-button" [nzType]="'primary'">Log in</button>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-explain style="color: red" *ngIf="loginError">
+      {{loginError}}
+    </nz-form-explain>
+  </nz-form-item>
+</form>

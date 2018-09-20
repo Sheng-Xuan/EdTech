@@ -1,38 +1,42 @@
 <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">E-mail</nz-form-label>
+    <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired>E-mail</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
       <input nz-input formControlName="email" id="email">
-      <nz-form-explain *ngIf="validateForm.get('email').dirty && validateForm.get('email').errors">The input is not valid
-        E-mail!
+      <nz-form-explain *ngIf="email.dirty && email.invalid">The input is not valid E-mail!
       </nz-form-explain>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired>Password</nz-form-label>
+    <nz-form-label [nzSm]="8" [nzXs]="24" nzFor="password" nzRequired>Password</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
-      <input nz-input type="password" id="password" formControlName="password" (ngModelChange)="updateConfirmValidator()">
-      <nz-form-explain *ngIf="validateForm.get('password').dirty && validateForm.get('password').errors">Please input your
-        password!
+      <input nz-input type="password" id="password" formControlName="password">
+      <nz-form-explain *ngIf="password.dirty && password.errors">
+        <ng-container *ngIf="password.errors.required">
+          Please input your password!
+        </ng-container>
+        <ng-container *ngIf="password.errors.minlength">
+          Minimum password length: 8
+        </ng-container>
       </nz-form-explain>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkPassword" nzRequired>Confirm Password</nz-form-label>
+    <nz-form-label [nzSm]="8" [nzXs]="24" nzFor="checkPassword" nzRequired>Confirm Password</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
       <input nz-input type="password" formControlName="checkPassword" id="checkPassword">
-      <nz-form-explain *ngIf="validateForm.get('checkPassword').dirty && validateForm.get('checkPassword').errors">
-        <ng-container *ngIf="validateForm.get('checkPassword').hasError('required')">
+      <nz-form-explain *ngIf="checkPassword.dirty && checkPassword.errors">
+        <ng-container *ngIf="checkPassword.errors.required">
           Please confirm your password!
         </ng-container>
-        <ng-container *ngIf="validateForm.get('checkPassword').hasError('confirm')">
-          Two passwords that you enter is inconsistent!
+        <ng-container *ngIf="checkPassword.errors.notSame">
+          Two passwords that you entered are inconsistent!
         </ng-container>
       </nz-form-explain>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="nickname" nzRequired>
+    <nz-form-label [nzSm]="8" [nzXs]="24" nzFor="nickname" nzRequired>
       <span>
         Username
         <nz-tooltip nzTitle="To display on the website">
@@ -42,13 +46,21 @@
     </nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
       <input nz-input id="username" formControlName="username">
-      <nz-form-explain *ngIf="validateForm.get('username').dirty && validateForm.get('username').errors">Please input your
-        username!
+      <nz-form-explain *ngIf="username.dirty && username.errors">
+        <ng-container *ngIf="username.errors.required">
+          Please input your username!
+        </ng-container>
+        <ng-container *ngIf="username.errors.maxlength">
+          Maximum 20 characters
+        </ng-container>
+        <ng-container *ngIf="username.errors.pattern">
+          Allowed characters: letters, numbers and . - _
+        </ng-container>
       </nz-form-explain>
     </nz-form-control>
   </nz-form-item>
-  <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="captcha" nzRequired>Captcha</nz-form-label>
+  <!-- <nz-form-item>
+    <nz-form-label [nzSm]="8" [nzXs]="24" nzFor="captcha" nzRequired>Captcha</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
       <div nz-row [nzGutter]="8">
         <div nz-col [nzSpan]="12">
@@ -62,17 +74,22 @@
         you got!</nz-form-explain>
       <nz-form-extra>We must make sure that your are a human.</nz-form-extra>
     </nz-form-control>
-  </nz-form-item>
-  <nz-form-item nz-row style="margin-bottom:8px;">
+  </nz-form-item> -->
+  <!-- <nz-form-item nz-row style="margin-bottom:8px;">
     <nz-form-control [nzSpan]="14" [nzOffset]="6">
       <label nz-checkbox formControlName="agree">
         <span>I have read the <a>agreement</a></span>
       </label>
     </nz-form-control>
-  </nz-form-item>
+  </nz-form-item> -->
   <nz-form-item nz-row style="margin-bottom:8px;">
     <nz-form-control [nzSpan]="14" [nzOffset]="10">
       <button nz-button nzType="primary">Register</button>
     </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-explain style="color: red; text-align: center" *ngIf="registerError">
+      {{registerError}}
+    </nz-form-explain>
   </nz-form-item>
 </form>

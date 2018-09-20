@@ -1,0 +1,19 @@
+.login-form {
+  max-width: 400px;
+}
+
+[nz-input-group] {
+  max-width: 50%;
+}
+
+[nz-form] {
+  text-align: center;
+}
+
+.login-form-forgot {
+  float: right;
+}
+
+.login-form-button {
+  width: 20%;
+}

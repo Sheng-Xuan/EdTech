@@ -1,0 +1,7 @@
+<nz-card nzTitle="{{getAction()}}" [nzBordered]="false" [nzExtra]="extraTemplate">
+  <app-register-form *ngIf="action==='register'" (changeToLogin)="onRegisterSucceed($event)"></app-register-form>
+  <app-login-form *ngIf="action==='login'"></app-login-form>
+</nz-card>
+<ng-template #extraTemplate>
+  {{getNextActionText()}}<a (click)="switchAction()">{{getNextAction()}}</a>
+</ng-template>
