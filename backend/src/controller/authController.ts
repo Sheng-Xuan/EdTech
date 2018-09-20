@@ -17,7 +17,7 @@ import {
 /**
  * @api {POST} /v1/register Register a new user
  * @apiGroup Authentication
- * @apiParam {String} userName
+ * @apiParam {String} username
  * @apiParam {String} email
  * @apiParam {String} password
  * @apiSuccess (200) {String} OK registration was successful
@@ -25,7 +25,7 @@ import {
  * @apiError (400) {Object} error Duplicate email
  */
 export async function registerUser(request: Request, response: Response) {
-  const userName = request.body.userName;
+  const username = request.body.username;
   const password = request.body.password;
   const email = request.body.email;
   const userRepository = getRepository(User);
@@ -38,12 +38,12 @@ export async function registerUser(request: Request, response: Response) {
   user.email = email;
   user.isAdmin = false;
   user.passwordHash = await hashPassword(password);
-  user.userName = userName;
+  user.username = username;
   await userRepository.save(user).catch(error => {
     response.status(300).send({ error: error.message });
     return;
   });
-  response.status(200).send('OK');
+  response.status(200).json({ message: 'OK' });
   return;
 }
 
@@ -67,11 +67,14 @@ export async function login(request: Request, response: Response) {
   try {
     await validatePassword(password, user.passwordHash);
     const json = {
-      jwt: await generateAccessToken(user)
+      token: await generateAccessToken(user),
+      userId: user.userId,
+      email: user.email,
+      username: user.username
     };
     response.status(200).json(json);
   } catch (e) {
-      console.log(e);
+    console.log(e);
     response.status(401).json({ error: 'Email and password not matched' });
   }
 }

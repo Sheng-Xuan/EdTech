@@ -16,7 +16,7 @@ beforeAll(async () => {
   user = new User();
   user.email = 'test@edtech.com';
   user.passwordHash = await hashPassword('test');
-  user.userName = 'Bob';
+  user.username = 'Bob';
   user.userId = 1;
   user.isAdmin = false;
   accessToken = await generateAccessToken(user);
@@ -38,7 +38,7 @@ describe('User test', () => {
       .expect(200);
     expect(response.body).toEqual({
       email: user.email,
-      userName: user.userName,
+      username: user.username,
       isAdmin: false
     });
   });

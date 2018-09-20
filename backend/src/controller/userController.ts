@@ -12,7 +12,7 @@ import { hashPassword } from "../util/authUtils";
  * @apiGroup UserGroup
  * @apiParam {Number} id User's unique ID
  * @apiSuccess {String} email email address
- * @apiSuccess {String} userName user name
+ * @apiSuccess {String} username user name
  * @apiSuccess {Boolean} isAdmin Is this user a admin user
  */
 export async function getUserById(request: Request, response: Response) {
@@ -24,7 +24,7 @@ export async function getUserById(request: Request, response: Response) {
     }
     response.send({
         email: user.email,
-        userName: user.userName,
+        username: user.username,
         isAdmin: user.isAdmin
     });
 }

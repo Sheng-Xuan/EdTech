@@ -13,7 +13,7 @@ afterAll(async () => {
 });
 const email = 'test@edtech.com';
 const password = 'test';
-const userName = 'Bob';
+const username = 'Bob';
 const API_VERSION = process.env.API_VERSION;
 
 describe('Registration and Login test', () => {
@@ -23,13 +23,13 @@ describe('Registration and Login test', () => {
       .send({
         email: email,
         password: password,
-        userName: userName
+        username: username
       })
       .expect(200);
     const user = await getRepository(User).findOne({ email: email });
     expect(user).toBeTruthy();
     expect(user.email).toEqual(email);
-    expect(user.userName).toEqual(userName);
+    expect(user.username).toEqual(username);
     expect(await validatePassword(password, user.passwordHash)).toBe(true);
   });
   test('POST /login, should get a correct response with jwt', async () => {
