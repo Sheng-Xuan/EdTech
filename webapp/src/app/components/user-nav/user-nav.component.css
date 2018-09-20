@@ -1,6 +1,10 @@
 [nz-button] {
     margin-right: 5px;
 }
-.container {
+.auth-container {
     float: right;
+}
+.username {
+    display: inline;
+    padding-left: 10px;
 }

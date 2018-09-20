@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd';
-import { RegisterModalComponent } from '../register-modal/register-modal.component';
+import { AuthModalComponent } from '../auth-modal/auth-modal.component';
+import { UserService } from '../../services/user.service';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-user-nav',
@@ -8,17 +10,42 @@ import { RegisterModalComponent } from '../register-modal/register-modal.compone
   styleUrls: ['./user-nav.component.css']
 })
 export class UserNavComponent implements OnInit {
-
-  constructor(private modalService: NzModalService) { }
+  private currentUser: User;
+  constructor(private modalService: NzModalService, private userService: UserService) { }
 
   ngOnInit() {
+    this.currentUser = this.userService.getCurrentUser();
+  }
+  isLoginedIn(): boolean {
+    return this.userService.isLoggedIn();
+  }
+  logout() {
+    this.userService.logout();
+  }
+  get username() {
+    return this.currentUser.username ? this.currentUser.username : 'unknown';
   }
 
   openRegisterModal() {
     const modal = this.modalService.create({
-      nzTitle: 'Register',
-      nzContent: RegisterModalComponent,
-      nzFooter: null
+      nzComponentParams: {action: 'register'},
+      nzContent: AuthModalComponent,
+      nzClosable: false,
+      nzFooter: null,
+      nzBodyStyle: {
+        padding: 0
+      }
+    });
+  }
+  openLoginModal() {
+    const modal = this.modalService.create({
+      nzComponentParams: {action: 'login'},
+      nzContent: AuthModalComponent,
+      nzClosable: false,
+      nzFooter: null,
+      nzBodyStyle: {
+        padding: 0
+      }
     });
   }
 

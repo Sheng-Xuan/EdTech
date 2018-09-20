@@ -1,4 +1,23 @@
-<div class="container">
-  <button nz-button nzType="primary" (click)="openLoginModal()">Login</button>
+<div *ngIf="!isLoginedIn()" class="auth-container">
+  <button nz-button nzType="primary" (click)="openLoginModal()">Log in</button>
   <button nz-button nzType="primary" (click)="openRegisterModal()">Register</button>
+</div>
+<div *ngIf="isLoginedIn()" class="auth-container">
+  <nz-dropdown>
+    <a nz-dropdown>
+      <nz-avatar nzSize="small" nzIcon="anticon anticon-user">{{username}}</nz-avatar>
+      <div class="username">{{username}}</div><i class="anticon anticon-down"></i>
+    </a>
+    <ul nz-menu nzSelectable>
+      <li nz-menu-item>
+        <a routerLink="/publish" routerLinkActive="active">Publish Tool</a>
+      </li>
+      <li nz-menu-item>
+        <a>User Center</a>
+      </li>
+      <li nz-menu-item>
+        <a (click)="logout()">Log out</a>
+      </li>
+    </ul>
+  </nz-dropdown>`,
 </div>

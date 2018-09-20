@@ -6,24 +6,34 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
+import { NgxEditorModule } from 'ngx-editor';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
-import { LoginModalComponent } from './components/login-modal/login-modal.component';
-import { RegisterModalComponent } from './components/register-modal/register-modal.component';
 import { UserNavComponent } from './components/user-nav/user-nav.component';
+import { AuthModalComponent } from './components/auth-modal/auth-modal.component';
+import { LoginFormComponent } from './components/login-form/login-form.component';
+import { RegisterFormComponent } from './components/register-form/register-form.component';
+import { ServiceModule } from './services/service.module';
+import { EditorComponent } from './components/editor/editor.component';
+import { AppRoutingModule } from './routing.module';
 
 registerLocaleData(en);
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginModalComponent,
-    RegisterModalComponent,
+    AuthModalComponent,
     UserNavComponent,
+    LoginFormComponent,
+    RegisterFormComponent,
+    EditorComponent
   ],
   entryComponents: [
-    LoginModalComponent,
-    RegisterModalComponent
+    UserNavComponent,
+    AuthModalComponent,
+    LoginFormComponent,
+    RegisterFormComponent
   ],
   imports: [
     BrowserModule,
@@ -31,9 +41,13 @@ registerLocaleData(en);
     FormsModule,
     HttpClientModule,
     NgZorroAntdModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ServiceModule,
+    AppRoutingModule,
+    NgxEditorModule,
+    AngularFontAwesomeModule,
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
