@@ -4,6 +4,7 @@ import { UserService } from './user.service';
 import { ReviewService } from './review.service';
 import { JwtService } from './jwt.service';
 import { CommentService } from './comment.service';
+import { ImageService } from './image.service';
 
 @NgModule({
   imports: [],
@@ -12,7 +13,8 @@ import { CommentService } from './comment.service';
     UserService,
     ReviewService,
     JwtService,
-    CommentService
+    CommentService,
+    ImageService
   ]
 })
 export class ServiceModule {}

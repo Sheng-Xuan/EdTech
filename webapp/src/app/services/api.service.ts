@@ -11,9 +11,15 @@ import { catchError } from 'rxjs/operators';
 @Injectable()
 export class ApiService {
   constructor(private http: HttpClient, private jwtService: JwtService) {}
-  httpOptions = {
+  httpOptionsWithoutAuth = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
+    })
+  };
+
+  httpOptionsWithAuth = {
+    headers: new HttpHeaders({
+      Authorization: 'Bearer ' + this.jwtService.getToken()
     })
   };
 
@@ -21,35 +27,51 @@ export class ApiService {
     return throwError(error.error);
   }
 
-  get(path: string, params: HttpParams = new HttpParams()): Observable<any> {
+  get(path: string, options): Observable<any> {
     return this.http
-      .get(`${environment.api_url}${path}`, { params })
+      .get(
+        `${environment.api_url}${path}`,
+        options
+      )
       .pipe(catchError(this.formatErrors));
   }
 
-  put(path: string, body: Object = {}): Observable<any> {
+  put(path: string, body: Object = {}, options): Observable<any> {
     return this.http
       .put(
         `${environment.api_url}${path}`,
         JSON.stringify(body),
-        this.httpOptions
+        options
       )
       .pipe(catchError(this.formatErrors));
   }
 
-  post(path: string, body: Object = {}): Observable<any> {
+  post(path: string, body: Object = {}, options): Observable<any> {
     return this.http
       .post(
         `${environment.api_url}${path}`,
         JSON.stringify(body),
-        this.httpOptions
+        options
       )
       .pipe(catchError(this.formatErrors));
   }
 
-  delete(path): Observable<any> {
+  postData(path: string, body: FormData, options): Observable<any> {
     return this.http
-      .delete(`${environment.api_url}${path}`)
+      .post(
+        `${environment.api_url}${path}`,
+        body,
+        options
+      )
+      .pipe(catchError(this.formatErrors));
+  }
+
+  delete(path, options): Observable<any> {
+    return this.http
+      .delete(
+        `${environment.api_url}${path}`,
+        options
+      )
       .pipe(catchError(this.formatErrors));
   }
 }

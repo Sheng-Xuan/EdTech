@@ -3,6 +3,7 @@ import { ApiService } from './api.service';
 import { User } from '../models/user.model';
 import { Observable } from 'rxjs';
 import { JwtService } from './jwt.service';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +34,10 @@ export class UserService {
     return this.apiService.post('/login', {
       email: email,
       password: password
+    }, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
     });
   }
 
@@ -48,6 +53,10 @@ export class UserService {
       email: email,
       password: password,
       username: username
+    }, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
     });
   }
 
