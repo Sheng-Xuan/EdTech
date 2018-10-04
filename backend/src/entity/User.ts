@@ -2,6 +2,7 @@ import {Entity, PrimaryGeneratedColumn, Column, OneToMany, Timestamp, OneToOne, 
 import {Tool} from "./Tool";
 import {Review} from "./Review";
 import { ReviewComment } from "./ReviewComment";
+import { Image } from "./Image";
 
 @Entity()
 export class User {
@@ -35,4 +36,7 @@ export class User {
 
     @OneToMany(type => ReviewComment, comment => comment.author)
     reviewsComments: ReviewComment[];
+
+    @OneToMany(type => Image, image => image.uploader)
+    uploadImages: Image[];
 }
