@@ -30,7 +30,6 @@ export class ToolPublishPageComponent implements OnInit {
     return this.imageService.uploadImage(formData).subscribe(
       (res: Response) => {
         item.onSuccess(res, item.file, event);
-        console.log(this.fileList);
       },
       err => {
         this.msg.error('Upload image failed, please retry');
@@ -41,7 +40,6 @@ export class ToolPublishPageComponent implements OnInit {
   }
 
   handlePreview = (file: UploadFile) => {
-    console.log(file);
     this.previewImage = file.response.url;
     this.previewVisible = true;
   }
