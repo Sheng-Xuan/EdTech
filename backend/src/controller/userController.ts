@@ -2,6 +2,7 @@ import {Request, Response} from "express";
 import { getRepository } from "typeorm";
 import { User } from "../entity/User";
 import { hashPassword } from "../util/authUtils";
+import { UserTokenData } from "../model/userTokenData";
 /**
  * @apiDefine UserGroup /user
  * CRUD api for users.
@@ -38,7 +39,7 @@ export async function getUserById(request: Request, response: Response) {
  */
 export async function updatePassword(request: Request, response: Response) {
     const userRepository = getRepository(User);
-    const userInfo = response.locals.userInfo;
+    const userInfo : UserTokenData = response.locals.userInfo;
     const oldPassword = request.body.oldPassword;
     const newPassword = request.body.newPassword;
     const user = await userRepository.findOne(userInfo.id);

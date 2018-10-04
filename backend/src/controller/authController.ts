@@ -87,6 +87,7 @@ export async function authenticate(
   try {
     const accessToken = extractAccessToken(request);
     const userInfo = await verifyAccessToken(accessToken);
+    // Add userInfo to the response, to be used in next steps
     response.locals.userInfo = userInfo;
     next();
   } catch (e) {
