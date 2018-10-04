@@ -3,6 +3,7 @@ import ms = require('ms');
 import jwt = require('jsonwebtoken');
 import { Request } from 'express';
 import { User } from '../entity/User';
+import { UserTokenData } from '../model/userTokenData';
 
 export const hashPassword = async (password: string): Promise<string> =>
   bcrypt.hash(password, 10);
@@ -13,21 +14,26 @@ export const validatePassword = async (
 ): Promise<boolean> => bcrypt.compare(password, hash);
 
 export const generateAccessToken = async (user: User): Promise<string> => {
-  const token = {
+  const token : UserTokenData = {
     id: user.userId,
     email: user.email,
-    expires: +new Date() + ms('7 days')
+    expireTime: +new Date() + ms('7 days')
   };
   return await jwt.sign(token, process.env.JWT_SECRET);
 };
 
-export const verifyAccessToken = async (accessToken: string): Promise<Object> => {
+export const verifyAccessToken = async (accessToken: string): Promise<UserTokenData> => {
   try {
-    const tokenData = await jwt.verify(accessToken, process.env.JWT_SECRET);
-    if (tokenData['expires'] < +new Date()) {
+    const tokenData  = await jwt.verify(accessToken, process.env.JWT_SECRET);
+    const userTokenData : UserTokenData = {
+      id : tokenData['id'],
+      email: tokenData['email'],
+      expireTime: tokenData['expireTime']
+    }
+    if (userTokenData.expireTime < +new Date()) {
       throw new Error('EXPIRED_ACCESS_TOKEN');
     }
-    return tokenData;
+    return userTokenData;
   } catch (e) {
     throw e;
   }
