@@ -17,6 +17,8 @@ import { RegisterFormComponent } from './components/register-form/register-form.
 import { ServiceModule } from './services/service.module';
 import { EditorComponent } from './components/editor/editor.component';
 import { AppRoutingModule } from './routing.module';
+import { EditorModule } from './components/editor/editor.module';
+import { ToolPublishPageModule } from './pages/tool-publish-page/tool-publish-page.module';
 
 registerLocaleData(en);
 
@@ -26,8 +28,7 @@ registerLocaleData(en);
     AuthModalComponent,
     UserNavComponent,
     LoginFormComponent,
-    RegisterFormComponent,
-    EditorComponent
+    RegisterFormComponent
   ],
   entryComponents: [
     UserNavComponent,
@@ -46,6 +47,7 @@ registerLocaleData(en);
     AppRoutingModule,
     NgxEditorModule,
     AngularFontAwesomeModule,
+    ToolPublishPageModule
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent]

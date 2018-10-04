@@ -1,11 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { EditorComponent } from './components/editor/editor.component';
+import { ToolPublishPageComponent } from './pages/tool-publish-page/tool-publish-page.component';
 
 const routes: Routes = [
   {
     path: 'publish',
-    component: EditorComponent
+    component: ToolPublishPageComponent
+  },
+  {
+    path: 'tool/:id',
+    component: ToolPublishPageComponent
   },
   {
     path: '**',
