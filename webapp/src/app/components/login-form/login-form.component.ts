@@ -24,7 +24,9 @@ export class LoginFormComponent implements OnInit {
       this.userService.login(this.email.value, this.password.value).subscribe(
         (user: User) => {
           this.userService.setUser(user);
-          this.message.success('Logged in successfully, page will refresh in 3 second...');
+          this.message.success(
+            'Logged in successfully, page will refresh in 3 second...'
+          );
           setTimeout(_ => {
             window.location.reload();
           }, 3000);
@@ -36,7 +38,11 @@ export class LoginFormComponent implements OnInit {
     }
   }
 
-  constructor(private fb: FormBuilder, private userService: UserService, private message: NzMessageService) {}
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+    private message: NzMessageService
+  ) {}
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
