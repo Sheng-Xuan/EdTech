@@ -13,7 +13,7 @@ dotenv.config();
 const storage = multer.diskStorage({
   // Store uploaded file to temp file first
   destination: function (req, file, next) {
-    const path = __dirname + '/../uploads'
+    const path = __dirname + '/../uploads/images'
     next(null, path);
   },
   filename: function(req, file, next) {
@@ -24,7 +24,8 @@ const storage = multer.diskStorage({
 // create express app
 const app = express();
 // Add middlewares
-app.use('/files', express.static(__dirname + '/../uploads'));
+// Serve static files with nginx instead
+//app.use('/files', express.static(__dirname + '/../uploads/images'));
 app.use(bodyPaser.json());
 app.use(
   bodyPaser.urlencoded({
