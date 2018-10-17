@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ToolPublishPageComponent } from './tool-publish-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
+import { ToolPublishPageComponent } from './tool-publish-page/tool-publish-page.component';
+import { ToolPageComponent } from './tool-page/tool-page.component';
+import { BarRatingModule } from 'ngx-bar-rating';
 
 @NgModule({
   imports: [
@@ -12,7 +14,8 @@ import { NgZorroAntdModule } from 'ng-zorro-antd';
     HttpClientModule,
     NgZorroAntdModule,
     ReactiveFormsModule,
+    BarRatingModule,
   ],
-  declarations: [ToolPublishPageComponent]
+  declarations: [ToolPublishPageComponent, ToolPageComponent]
 })
-export class ToolPublishPageModule { }
+export class PagesModule {}
