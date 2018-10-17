@@ -1,0 +1,39 @@
+.img_sm {
+    width: 33%;
+    max-height: 70px;
+    object-fit: contain;
+    padding: 5px;
+    transition: 0.3s;
+}
+.img_sm:hover {
+    cursor: pointer;
+    opacity: 0.7;
+}
+.img_container {
+    white-space: nowrap;
+    display: inline;
+}
+.img_display {
+    height: 300px;
+    padding: 10px;
+    object-fit: contain;
+}
+ul {
+    list-style: none;
+}
+.desc_row {
+    padding-bottom: 10px;
+}
+.rating_row {
+    line-height: 2;
+}
+.rating_number {
+    line-height: 2;
+    font-size: 35px;
+    float: left;
+    min-width: 30%;
+}
+.rating_right {
+    line-height: 2;
+    margin-bottom: 10px;
+}

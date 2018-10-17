@@ -1,0 +1,103 @@
+<div *ngIf="!toolLoading" nz-row>
+  <nz-card nzTitle="{{tool.name}}">
+    <div nz-col nzSpan="8">
+      <nz-card class="card" [nzBordered]="false" [nzBodyStyle]="{padding:0}" [nzCover]="coverTemplate">
+        <div class="img_container" *ngFor="let image of tool.images">
+          <img (click)="onImageSelect(image.localFileName)" class="img_sm" [src]="getImageAddress(image.localFileName)">
+        </div>
+      </nz-card>
+      <ng-template #coverTemplate>
+        <img class="img_display" alt="loading" [src]="selectedImage" />
+      </ng-template>
+    </div>
+    <div nz-col nzSpan="8">
+      <nz-card [nzBordered]="false">
+        <ul>
+          <li class="desc_row">
+            <strong>Categories</strong>
+          </li>
+          <li class="desc_row">
+            <nz-tag *ngFor="let cat of tool.categories">
+              {{cat.name}}
+            </nz-tag>
+          </li>
+          <li class="desc_row">
+            <strong>Update Time</strong>
+          </li>
+          <li class="desc_row">
+            {{tool.updateTime.substring(0, 10)}}
+          </li>
+          <li class="desc_row">
+            <strong>About This Tool</strong>
+          </li>
+          <li class="desc_row">
+            {{tool.description}}
+          </li>
+        </ul>
+      </nz-card>
+    </div>
+    <div nz-col nzSpan="8">
+      <nz-card [nzBordered]="false">
+        <ul>
+          <li>
+            <strong>EdTech Rating</strong>
+          </li>
+          <li class="rating_row">
+            <div class="rating_number">{{showDecimal(tool.rating)}}</div>
+            <div class="rating_right">
+              <bar-rating *ngIf="!tool.rating" [theme]="'fontawesome-o'" [(rate)]="defaultRating" [max]="5" [readOnly]="true"></bar-rating>
+              <bar-rating *ngIf="tool.rating" [theme]="'fontawesome-o'" [(rate)]="tool.rating" [max]="5" [readOnly]="true"></bar-rating>
+              <span *ngIf="!tool.rating">
+                No rating yet
+              </span>
+              <span *ngIf="tool.rating">
+                Rated by {{tool.ratingCount}} users
+              </span>
+            </div>
+          </li>
+          <li class="desc_row">
+            <strong>Your Rating</strong>
+            <bar-rating [theme]="'square'" [(rate)]="myRating" [max]="5"></bar-rating>
+            <button nz-button nzType="primary" (click)="submitRating()" [nzLoading]="rateButtonLoading">Submit</button>
+          </li>
+        </ul>
+      </nz-card>
+    </div>
+  </nz-card>
+</div>
+<div nz-row>
+  <nz-card nzTitle='Reviews'>
+
+  </nz-card>
+</div>
+<div nz-row>
+  <nz-card nzTitle='Comments'>
+    <nz-list [nzDataSource]="comments" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+      <ng-template #item let-item>
+        <nz-list-item>
+          <nz-list-item-meta [nzTitle]="nzTitle" [nzDescription]="content">
+            <ng-template #nzTitle>
+              <nz-avatar [nzText]="item.author.username.substring(0,1)" [nzSize]="'small'" style="vertical-align: middle;"></nz-avatar>
+              {{item.author.username}}
+              <div style="float:right">{{getTime(item.createTime)}}</div>
+            </ng-template>
+            <ng-template #content>
+              <div style="padding-left: 5%; color:rgba(0,0,0,0.8)">
+                {{item.content}}
+              </div>
+            </ng-template>
+          </nz-list-item-meta>
+        </nz-list-item>
+      </ng-template>
+    </nz-list>
+    <nz-pagination *ngIf="commentCount>10" [nzPageIndex]="1" [nzTotal]="50"></nz-pagination>
+    <div nz-row nzType="flex" nzJustify="space-between" nzAlign="bottom">
+      <div nz-col nzSpan=18>
+        <textarea [(ngModel)]="newComment" nz-input placeholder="Write comment..." [nzAutosize]="{ minRows: 3, maxRows: 6 }"></textarea>
+      </div>
+      <div nz-col nzOffset=2 nzSpan=4>
+        <button [disabled]="!newComment" nz-button nzType="primary" (click)="submitComment()">Add Comment</button>
+      </div>
+    </div>
+  </nz-card>
+</div>
