@@ -41,7 +41,7 @@ export class UserService {
     });
   }
 
-  setUser(user: User) {
+  async setUser(user: User) {
     window.localStorage['userId'] = user.userId;
     window.localStorage['email'] = user.email;
     window.localStorage['username'] = user.username;
