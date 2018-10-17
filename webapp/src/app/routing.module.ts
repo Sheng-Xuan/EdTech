@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { EditorComponent } from './components/editor/editor.component';
 import { ToolPublishPageComponent } from './pages/tool-publish-page/tool-publish-page.component';
+import { ToolPageComponent } from './pages/tool-page/tool-page.component';
 
 const routes: Routes = [
   {
@@ -10,7 +11,7 @@ const routes: Routes = [
   },
   {
     path: 'tool/:id',
-    component: ToolPublishPageComponent
+    component: ToolPageComponent
   },
   {
     path: '**',

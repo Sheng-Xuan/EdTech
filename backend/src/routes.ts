@@ -2,7 +2,9 @@ import { getUserById, updatePassword } from "./controller/userController";
 import { registerUser, login } from "./controller/authController";
 import * as dotenv from 'dotenv';
 import { uploadImage } from "./controller/imageController";
-import { createTool } from "./controller/toolController";
+import { createTool, getTool, getMyRating, postMyRating } from "./controller/toolController";
+import { getCategories } from "./controller/categoryController";
+import { getToolComments, postToolComment } from "./controller/commentController";
 
 dotenv.config();
 const apiVersion = process.env.API_VERSION;
@@ -45,5 +47,41 @@ export const AppRoutes = [
         method: "post",
         action: createTool,
         auth: true
-    }
+    },
+    {
+        path: apiVersion + "/categories",
+        method: "get",
+        action: getCategories,
+        auth: false
+    },
+    {
+        path: apiVersion + "/tool/:id",
+        method: "get",
+        action: getTool,
+        auth: false
+    },
+    {
+        path: apiVersion + "/tool/myrating/:toolId",
+        method: "get",
+        action: getMyRating,
+        auth: true
+    },
+    {
+        path: apiVersion + "/tool/myrating/",
+        method: "post",
+        action: postMyRating,
+        auth: true
+    },
+    {
+        path: apiVersion + "/tool/comment/:toolId",
+        method: "get",
+        action: getToolComments,
+        auth: false
+    },
+    {
+        path: apiVersion + "/tool/comment/",
+        method: "post",
+        action: postToolComment,
+        auth: true
+    },
 ];
