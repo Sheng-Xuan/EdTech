@@ -18,7 +18,8 @@ import { ServiceModule } from './services/service.module';
 import { EditorComponent } from './components/editor/editor.component';
 import { AppRoutingModule } from './routing.module';
 import { EditorModule } from './components/editor/editor.module';
-import { ToolPublishPageModule } from './pages/tool-publish-page/tool-publish-page.module';
+import { PagesModule } from './pages/pages.module';
+import { MessageService } from './services/message.service';
 
 registerLocaleData(en);
 
@@ -47,9 +48,9 @@ registerLocaleData(en);
     AppRoutingModule,
     NgxEditorModule,
     AngularFontAwesomeModule,
-    ToolPublishPageModule
+    PagesModule
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US }],
+  providers: [{ provide: NZ_I18N, useValue: en_US }, MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
