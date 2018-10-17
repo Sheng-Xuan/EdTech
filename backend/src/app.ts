@@ -8,6 +8,7 @@ import * as dotenv from 'dotenv';
 import { getConnection } from './db';
 import * as multer from 'multer';
 import * as uuid from 'uuid/v1';
+import { initCategories, getCategories } from './controller/categoryController';
 
 dotenv.config();
 const storage = multer.diskStorage({
@@ -24,8 +25,10 @@ const storage = multer.diskStorage({
 // create express app
 const app = express();
 // Add middlewares
-// Serve static files with nginx instead
-//app.use('/files', express.static(__dirname + '/../uploads/images'));
+// Serve static files only in development mode
+if (app.get('env') === 'development') {
+  app.use('/files', express.static(__dirname + '/../uploads/images'));
+}
 app.use(bodyPaser.json());
 app.use(
   bodyPaser.urlencoded({
@@ -64,6 +67,7 @@ AppRoutes.forEach(route => {
 });
 export const startServer = async () => {
   await getConnection();
+  await initCategories();
   const listener = app.listen(3000, () => {
     console.log(
       'App is running on http://localhost:%d in %s mode',
