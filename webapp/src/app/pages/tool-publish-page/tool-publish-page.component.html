@@ -13,7 +13,9 @@
         <nz-form-item>
           <nz-form-label [nzSpan]="6">Category</nz-form-label>
           <nz-form-control [nzSpan]="14">
-            <input nz-input formControlName="category" id="category">
+            <nz-select [nzMaxMultipleCount]="3" nzMode="multiple" nzPlaceHolder="Please select" formControlName="category">
+              <nz-option *ngFor="let item of categories" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+            </nz-select>
             <nz-form-explain *ngIf="category.dirty && category.errors">Please enter the categories of the tool.
             </nz-form-explain>
           </nz-form-control>

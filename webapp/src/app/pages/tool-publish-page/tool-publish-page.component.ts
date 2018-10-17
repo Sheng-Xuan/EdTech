@@ -15,6 +15,7 @@ export class ToolPublishPageComponent implements OnInit {
   fileList = [];
   previewVisible = false;
   previewImage = '';
+  categories = [];
 
   constructor(
     private formGroup: FormBuilder,
@@ -76,6 +77,11 @@ export class ToolPublishPageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.toolService.getCategories().subscribe(res => {
+      this.categories = res;
+    }, err => {
+      console.error(err);
+    });
     this.publishForm = this.formGroup.group({
       name: [null, [Validators.required]],
       category: [null, [Validators.required]],
