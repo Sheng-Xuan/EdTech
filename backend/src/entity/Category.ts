@@ -17,4 +17,5 @@ export class Category {
 
     @UpdateDateColumn()
     updateTime: Date;
+    
 }
