@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
 import { NzMessageService } from 'ng-zorro-antd';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-form',
@@ -23,13 +24,14 @@ export class LoginFormComponent implements OnInit {
     if (this.email.valid && this.password.valid) {
       this.userService.login(this.email.value, this.password.value).subscribe(
         (user: User) => {
-          this.userService.setUser(user);
-          this.message.success(
-            'Logged in successfully, page will refresh in 3 second...'
-          );
-          setTimeout(_ => {
-            window.location.reload();
-          }, 3000);
+          this.userService.setUser(user).then(res => {
+            this.message.success(
+              'Logged in successfully, page will refresh in 2 second...'
+            );
+            setTimeout(_ => {
+              window.location.reload();
+            }, 2000);
+          });
         },
         err => {
           this.loginError = err.error;
@@ -41,7 +43,7 @@ export class LoginFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private message: NzMessageService
+    private message: NzMessageService,
   ) {}
 
   ngOnInit(): void {

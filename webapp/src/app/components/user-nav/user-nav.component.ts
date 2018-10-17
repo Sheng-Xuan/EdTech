@@ -1,17 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd';
 import { AuthModalComponent } from '../auth-modal/auth-modal.component';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
+import { MessageService } from '../../services/message.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-nav',
   templateUrl: './user-nav.component.html',
   styleUrls: ['./user-nav.component.css']
 })
-export class UserNavComponent implements OnInit {
+export class UserNavComponent implements OnInit, OnDestroy {
   private currentUser: User;
-  constructor(private modalService: NzModalService, private userService: UserService) { }
+  private subscription: Subscription;
+  constructor(
+    private modalService: NzModalService,
+    private userService: UserService,
+    private messageService: MessageService
+  ) {
+    this.subscription = this.messageService.getMessage().subscribe(res => {
+      if (res.message === 'login') {
+        this.openLoginModal();
+      } else if (res.message === 'register') {
+        this.openRegisterModal();
+      }
+    });
+  }
 
   ngOnInit() {
     this.currentUser = this.userService.getCurrentUser();
@@ -28,7 +43,7 @@ export class UserNavComponent implements OnInit {
 
   openRegisterModal() {
     const modal = this.modalService.create({
-      nzComponentParams: {action: 'register'},
+      nzComponentParams: { action: 'register' },
       nzContent: AuthModalComponent,
       nzClosable: false,
       nzFooter: null,
@@ -39,7 +54,7 @@ export class UserNavComponent implements OnInit {
   }
   openLoginModal() {
     const modal = this.modalService.create({
-      nzComponentParams: {action: 'login'},
+      nzComponentParams: { action: 'login' },
       nzContent: AuthModalComponent,
       nzClosable: false,
       nzFooter: null,
@@ -49,4 +64,7 @@ export class UserNavComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 }
