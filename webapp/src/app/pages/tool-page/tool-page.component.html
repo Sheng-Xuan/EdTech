@@ -1,13 +1,18 @@
 <div *ngIf="!toolLoading" nz-row>
   <nz-card nzTitle="{{tool.name}}">
     <div nz-col nzSpan="8">
-      <nz-card class="card" [nzBordered]="false" [nzBodyStyle]="{padding:0}" [nzCover]="coverTemplate">
-        <div class="img_container" *ngFor="let image of tool.images">
-          <img (click)="onImageSelect(image.localFileName)" class="img_sm" [src]="getImageAddress(image.localFileName)">
+      <nz-card [nzBordered]="false" [nzBodyStyle]="{padding:0}" [nzCover]="coverTemplate">
+        <div *ngIf="tool.images[0]">
+          <div class="img_container" *ngFor="let image of tool.images">
+            <img (click)="onImageSelect(image.localFileName)" class="img_sm" [src]="getImageAddress(image.localFileName)">
+          </div>
+        </div>
+        <div class="no_image" *ngIf="!tool.images[0]">
+          No Image Avaliable
         </div>
       </nz-card>
       <ng-template #coverTemplate>
-        <img class="img_display" alt="loading" [src]="selectedImage" />
+        <img *ngIf="tool.images[0]" class="img_display" alt="loading" [src]="selectedImage" />
       </ng-template>
     </div>
     <div nz-col nzSpan="8">

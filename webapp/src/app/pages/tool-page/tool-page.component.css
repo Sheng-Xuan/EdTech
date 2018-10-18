@@ -37,3 +37,7 @@ ul {
     line-height: 2;
     margin-bottom: 10px;
 }
+.no_image {
+    text-align: center;
+    margin: 40% 40%;
+}
