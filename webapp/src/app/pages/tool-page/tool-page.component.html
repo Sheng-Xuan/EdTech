@@ -72,7 +72,7 @@
 </div>
 <div nz-row>
   <nz-card nzTitle='Comments'>
-    <nz-list [nzDataSource]="comments" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+    <nz-list [nzLoading]="commentsLoading" [nzDataSource]="comments" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
       <ng-template #item let-item>
         <nz-list-item>
           <nz-list-item-meta [nzTitle]="nzTitle" [nzDescription]="content">
@@ -82,7 +82,7 @@
               <div style="float:right">{{getTime(item.createTime)}}</div>
             </ng-template>
             <ng-template #content>
-              <div style="padding-left: 5%; color:rgba(0,0,0,0.8)">
+              <div style="padding-left: 4.16666667%; color:rgba(0,0,0,0.8)">
                 {{item.content}}
               </div>
             </ng-template>
@@ -92,7 +92,7 @@
     </nz-list>
     <nz-pagination *ngIf="commentCount>10" [nzPageIndex]="1" [nzTotal]="50"></nz-pagination>
     <div nz-row nzType="flex" nzJustify="space-between" nzAlign="bottom">
-      <div nz-col nzSpan=18>
+      <div nz-col nzOffset=1 nzSpan=17>
         <textarea [(ngModel)]="newComment" nz-input placeholder="Write comment..." [nzAutosize]="{ minRows: 3, maxRows: 6 }"></textarea>
       </div>
       <div nz-col nzOffset=2 nzSpan=4>

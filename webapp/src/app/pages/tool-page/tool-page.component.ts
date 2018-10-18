@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { MessageService } from '../../services/message.service';
 import { TimeService } from '../../services/time.service';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-tool-page',
@@ -23,12 +24,14 @@ export class ToolPageComponent implements OnInit {
   private comments;
   private commentCount: number;
   private commentButtonLoading = false;
+  private commentsLoading = true;
   constructor(
     private toolService: ToolService,
     private route: ActivatedRoute,
     private userService: UserService,
     private messageService: MessageService,
-    private timeService: TimeService
+    private timeService: TimeService,
+    private message: NzMessageService
   ) {}
 
   ngOnInit() {
@@ -71,10 +74,11 @@ export class ToolPageComponent implements OnInit {
           res => {
             this.myOriginalRating = this.myRating;
             this.rateButtonLoading = false;
+            this.message.success('Rated successfully');
             this.loadTool();
           },
           err => {
-            console.log(err);
+            this.message.error('Error, please try agian');
             this.rateButtonLoading = false;
           }
         );
@@ -94,10 +98,12 @@ export class ToolPageComponent implements OnInit {
         res => {
           this.commentButtonLoading = false;
           this.newComment = '';
+          this.message.success('Commented successfully');
+          this.loadComments();
         },
         err => {
           this.commentButtonLoading = false;
-          console.error(err);
+          this.message.error('Error, please try again');
         }
       );
     } else {
@@ -125,6 +131,7 @@ export class ToolPageComponent implements OnInit {
     this.toolService.getToolComments(this.toolId).subscribe(
       res => {
         this.comments = res;
+        this.commentsLoading = false;
       },
       err => {
         console.error(err);
