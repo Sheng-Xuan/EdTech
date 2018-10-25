@@ -71,38 +71,30 @@
   </nz-card>
 </div>
 <div nz-row>
-  <nz-card nzTitle='Reviews'>
-
-  </nz-card>
-</div>
-<div nz-row>
-  <nz-card nzTitle='Comments'>
-    <nz-list [nzLoading]="commentsLoading" [nzDataSource]="comments" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+  <nz-card nzTitle='Reviews' [nzExtra]="addReviewTemplate">
+    <nz-list [nzLoading]="reviewLoading" [nzDataSource]="reviews" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
       <ng-template #item let-item>
         <nz-list-item>
           <nz-list-item-meta [nzTitle]="nzTitle" [nzDescription]="content">
             <ng-template #nzTitle>
-              <nz-avatar [nzText]="item.author.username.substring(0,1)" [nzSize]="'small'" style="vertical-align: middle;"></nz-avatar>
+              <nz-avatar [nzText]="item.author.username.substring(0,1).toUpperCase()" [nzSize]="'small'" style="vertical-align: middle;"></nz-avatar>
               {{item.author.username}}
               <div style="float:right">{{getTime(item.createTime)}}</div>
             </ng-template>
             <ng-template #content>
               <div style="padding-left: 4.16666667%; color:rgba(0,0,0,0.8)">
-                {{item.content}}
+                <a routerLink="/review/{{item.reviewId}}" routerLinkActive="active">{{item.title}}</a>
               </div>
             </ng-template>
           </nz-list-item-meta>
         </nz-list-item>
       </ng-template>
     </nz-list>
-    <nz-pagination *ngIf="commentCount>10" [nzPageIndex]="1" [nzTotal]="50"></nz-pagination>
-    <div nz-row nzType="flex" nzJustify="space-between" nzAlign="bottom">
-      <div nz-col nzOffset=1 nzSpan=17>
-        <textarea [(ngModel)]="newComment" nz-input placeholder="Write comment..." [nzAutosize]="{ minRows: 3, maxRows: 6 }"></textarea>
-      </div>
-      <div nz-col nzOffset=2 nzSpan=4>
-        <button [disabled]="!newComment" nz-button nzType="primary" (click)="submitComment()">Add Comment</button>
-      </div>
-    </div>
   </nz-card>
+  <ng-template #addReviewTemplate>
+    <a routerLink="/review/publish/{{toolId}}">Add Review</a>
+  </ng-template>
+</div>
+<div nz-row>
+  <app-comment-view (commented)="onCommented($event)" [id]="toolId" [type]="'tool'"></app-comment-view>
 </div>

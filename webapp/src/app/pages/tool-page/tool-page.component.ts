@@ -5,6 +5,7 @@ import { UserService } from '../../services/user.service';
 import { MessageService } from '../../services/message.service';
 import { TimeService } from '../../services/time.service';
 import { NzMessageService } from 'ng-zorro-antd';
+import { ReviewService } from '../../services/review.service';
 
 @Component({
   selector: 'app-tool-page',
@@ -20,18 +21,15 @@ export class ToolPageComponent implements OnInit {
   private myRating;
   private myOriginalRating;
   private rateButtonLoading = false;
-  private newComment = '';
-  private comments;
-  private commentCount: number;
-  private commentButtonLoading = false;
-  private commentsLoading = true;
+  private reviewLoading = true;
+  private reviews;
   constructor(
     private toolService: ToolService,
     private route: ActivatedRoute,
     private userService: UserService,
     private messageService: MessageService,
-    private timeService: TimeService,
-    private message: NzMessageService
+    private message: NzMessageService,
+    private timeService: TimeService
   ) {}
 
   ngOnInit() {
@@ -39,7 +37,7 @@ export class ToolPageComponent implements OnInit {
       this.toolId = params['id'];
     });
     this.loadTool();
-    this.loadComments();
+    this.loadReviews();
     if (this.userService.isLoggedIn()) {
       this.toolService.getMyRating(this.toolId).subscribe(res => {
         if (res) {
@@ -88,26 +86,11 @@ export class ToolPageComponent implements OnInit {
     }
   }
 
-  submitComment() {
-    if (this.userService.isLoggedIn()) {
-      this.commentButtonLoading = true;
-      if (this.newComment.length === 0) {
-        return;
-      }
-      this.toolService.postComment(this.toolId, this.newComment).subscribe(
-        res => {
-          this.commentButtonLoading = false;
-          this.newComment = '';
-          this.message.success('Commented successfully');
-          this.loadComments();
-        },
-        err => {
-          this.commentButtonLoading = false;
-          this.message.error('Error, please try again');
-        }
-      );
+  onCommented(isCommented: boolean) {
+    if (isCommented) {
+      this.message.success('Commented successfully');
     } else {
-      this.messageService.sendMessage('login');
+      this.message.error('Error, please try again');
     }
   }
 
@@ -127,11 +110,11 @@ export class ToolPageComponent implements OnInit {
     );
   }
 
-  loadComments() {
-    this.toolService.getToolComments(this.toolId).subscribe(
+  loadReviews() {
+    this.toolService.getReviewsByToolId(this.toolId).subscribe(
       res => {
-        this.comments = res;
-        this.commentsLoading = false;
+        this.reviews = res;
+        this.reviewLoading = false;
       },
       err => {
         console.error(err);
