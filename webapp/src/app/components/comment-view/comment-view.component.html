@@ -17,7 +17,7 @@
       </nz-list-item>
     </ng-template>
   </nz-list>
-  <nz-pagination *ngIf="commentCount>10" [nzPageIndex]="1" [nzTotal]="50"></nz-pagination>
+  <!-- <nz-pagination *ngIf="commentCount>10" [nzPageIndex]="1" [nzTotal]="50"></nz-pagination> -->
   <div nz-row nzType="flex" nzJustify="space-between" nzAlign="bottom">
     <div nz-col nzOffset=1 nzSpan=17>
       <textarea [(ngModel)]="newComment" nz-input placeholder="Write comment..." [nzAutosize]="{ minRows: 3, maxRows: 6 }"></textarea>
