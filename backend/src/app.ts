@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
     next(null, path);
   },
   filename: function(req, file, next) {
-    const ext = file.originalname.split(".")[1];
+    const ext = file.originalname.split(".")[1].toLocaleLowerCase();
     next(null, uuid()+'.'+ext);
   }
 })
@@ -36,7 +36,7 @@ app.use(
   })
 );
 // Add routes
-const fileUpload = multer({ storage: storage }).single('file');
+const fileUpload = multer({ storage: storage }).single('image');
 AppRoutes.forEach(route => {
   if (route.auth) {
     app[route.method](
