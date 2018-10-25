@@ -99,7 +99,15 @@ export class ToolService {
   }
 
   getToolComments(toolId): Observable<any> {
-    return this.apiService.get('/tool/comment/' + toolId, {
+    return this.apiService.get('/tool/comments/' + toolId, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+
+  getReviewsByToolId(toolId): Observable<any> {
+    return this.apiService.get('/tool/reviews/' + toolId, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       })

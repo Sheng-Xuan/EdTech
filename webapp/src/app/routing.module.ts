@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
-import { EditorComponent } from './components/editor/editor.component';
 import { ToolPublishPageComponent } from './pages/tool-publish-page/tool-publish-page.component';
 import { ToolPageComponent } from './pages/tool-page/tool-page.component';
+import { ReviewPublishPageComponent } from './pages/review-publish-page/review-publish-page.component';
+import { ReviewPageComponent } from './pages/review-page/review-page.component';
 
 const routes: Routes = [
   {
@@ -12,6 +13,14 @@ const routes: Routes = [
   {
     path: 'tool/:id',
     component: ToolPageComponent
+  },
+  {
+    path: 'review/publish/:id',
+    component: ReviewPublishPageComponent
+  },
+  {
+    path: 'review/:id',
+    component: ReviewPageComponent
   },
   {
     path: '**',

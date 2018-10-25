@@ -2,9 +2,10 @@ import { getUserById, updatePassword } from "./controller/userController";
 import { registerUser, login } from "./controller/authController";
 import * as dotenv from 'dotenv';
 import { uploadImage } from "./controller/imageController";
-import { createTool, getTool, getMyRating, postMyRating } from "./controller/toolController";
+import { createTool, getTool, getMyRating, postMyRating, getReviewsByToolId } from "./controller/toolController";
 import { getCategories } from "./controller/categoryController";
-import { getToolComments, postToolComment } from "./controller/commentController";
+import { getToolComments, postToolComment, getReviewComments, postReviewComment } from "./controller/commentController";
+import { publishReview, getReviewById } from "./controller/reviewController";
 
 dotenv.config();
 const apiVersion = process.env.API_VERSION;
@@ -73,7 +74,7 @@ export const AppRoutes = [
         auth: true
     },
     {
-        path: apiVersion + "/tool/comment/:toolId",
+        path: apiVersion + "/tool/comments/:toolId",
         method: "get",
         action: getToolComments,
         auth: false
@@ -84,4 +85,34 @@ export const AppRoutes = [
         action: postToolComment,
         auth: true
     },
+    {
+        path: apiVersion + "/review/create/:toolId",
+        method: "post",
+        action: publishReview,
+        auth: true
+    },
+    {
+        path: apiVersion + "/review/:reviewId",
+        method: "get",
+        action: getReviewById,
+        auth: false
+    },
+    {
+        path: apiVersion + "/review/comments/:reviewId",
+        method: "get",
+        action: getReviewComments,
+        auth: false
+    },
+    {
+        path: apiVersion + "/review/comment/",
+        method: "post",
+        action: postReviewComment,
+        auth: true
+    },
+    {
+        path: apiVersion + "/tool/reviews/:toolId",
+        method: "get",
+        action: getReviewsByToolId,
+        auth: false
+    }
 ];

@@ -22,12 +22,12 @@ export class ToolPublishPageComponent implements OnInit {
     private imageService: ImageService,
     private msg: NzMessageService,
     private toolService: ToolService,
-    private route: Router
+    private router: Router
   ) {}
 
   uploadImage = (item: UploadXHRArgs) => {
     const formData = new FormData();
-    formData.append('file', item.file as any);
+    formData.append('image', item.file as any);
     return this.imageService.uploadImage(formData).subscribe(
       (res: Response) => {
         item.onSuccess(res, item.file, event);
@@ -69,7 +69,7 @@ export class ToolPublishPageComponent implements OnInit {
         this.description.value,
         this.fileList.map(file => file.response.fileName)
       ).subscribe(res => {
-        this.route.navigateByUrl('/tool/' + res.toolId);
+        this.router.navigateByUrl('/tool/' + res.toolId);
       }, err => {
         this.msg.error(err.error);
       });

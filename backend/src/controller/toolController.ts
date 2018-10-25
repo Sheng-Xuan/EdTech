@@ -7,6 +7,8 @@ import { Tool } from '../entity/Tool';
 import * as fs from 'fs';
 import { Category } from '../entity/Category';
 import { Rating } from '../entity/Rating';
+import { Review } from '../entity/Review';
+import { ReviewComment } from '../entity/ReviewComment';
 
 /**
  * @apiDefine Tool
@@ -73,11 +75,18 @@ export async function createTool(request: Request, response: Response) {
       tool.categories.push(cat);
     }
   }
-  await toolRepository.save(tool);
-  let newTool = await toolRepository.findOne({ name: name });
-  response.status(200).json({
-    toolId: newTool.toolId
-  });
+  await toolRepository
+    .save(tool)
+    .then(tool => {
+      response.status(200).json({
+        toolId: tool.toolId
+      });
+    })
+    .catch(err => {
+      response.status(400).json({
+        error: 'Publish tool failed'
+      });
+    });
   return;
 }
 
@@ -159,4 +168,33 @@ export async function postMyRating(request: Request, response: Response) {
     await ratingRepository.save(myRating);
   }
   response.status(200).json({ message: 'OK' });
+}
+
+/**
+ * @api {GET} /v1/tool/reviews/:toolId Retrive reviews under tool with toolId
+ * @apiGroup Tool
+ * @apiParam {number} toolId id of the tool
+ * @apiSuccess {json} reviewList
+ * @apiError (400) {json} error
+ */
+export async function getReviewsByToolId(request: Request, response: Response) {
+  const reviewController = getRepository(Review);
+  const toolController = getRepository(Tool);
+  let tool = await toolController.findOne(request.params.toolId);
+  if (tool) {
+    let reviews = await reviewController
+      .createQueryBuilder('review')
+      .select([
+        'review.title',
+        'review.createTime',
+        'review.reviewId',
+        'author.username'
+      ])
+      .innerJoin('review.author', 'author')
+      .where({ tool: tool })
+      .getMany();
+    response.status(200).json(reviews);
+  } else {
+    response.status(400).json({ error: 'Invalid tool' });
+  }
 }
