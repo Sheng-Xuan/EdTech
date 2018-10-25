@@ -1,0 +1,8 @@
+.review_title {
+    text-align: center;
+    font-size: 25px;
+}
+quill-editor {
+    display: block;
+    background: white;
+  }

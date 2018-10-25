@@ -1,0 +1,14 @@
+<nz-skeleton [nzActive]="true" [nzLoading]="!reviewLoaded">
+  <div *ngIf="reviewLoaded">
+    <div class="review_title">
+      {{review.title}}
+    </div>
+    <div class="row" nz-row>
+      <quill-editor [modules]="modules" [readOnly]="true" [(ngModel)]="review.html">
+      </quill-editor>
+    </div>
+  </div>
+</nz-skeleton>
+<div nz-row>
+  <app-comment-view (commented)="onCommented($event)" [id]="reviewId" [type]="'review'"></app-comment-view>
+</div>
