@@ -13,11 +13,8 @@ export class Review {
     @Column()
     title: string;
 
-    @Column("text")
-    content: string;
-
     @Column()
-    imageUrl: string;
+    fileName: string;
 
     @CreateDateColumn()
     createTime: Date;
