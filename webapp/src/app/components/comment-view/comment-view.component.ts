@@ -18,10 +18,10 @@ export class CommentViewComponent implements OnInit {
   @Output()
   commented = new EventEmitter<boolean>();
 
-  private comments = [];
-  private commentsLoading;
-  private commentButtonLoading = false;
-  private newComment: string;
+  comments = [];
+  commentsLoading;
+  commentButtonLoading = false;
+  newComment: string;
 
   constructor(
     private toolService: ToolService,

@@ -32,14 +32,14 @@ Quill.register('modules/imageResize', ImageResize);
   styleUrls: ['./review-publish-page.component.css']
 })
 export class ReviewPublishPageComponent implements OnInit {
-  private modules = {};
-  private isImageUploaderVisible = false;
-  private title;
-  private toolId;
-  private content;
-  private tool;
-  private toolLoaded = false;
-  private images = [];
+  modules = {};
+  isImageUploaderVisible = false;
+  title;
+  toolId;
+  content;
+  tool;
+  toolLoaded = false;
+  images = [];
   constructor(
     private jwtService: JwtService,
     private toolService: ToolService,

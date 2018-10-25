@@ -25,11 +25,11 @@ Quill.register('modules/imageResize', ImageResize);
   styleUrls: ['./review-page.component.css']
 })
 export class ReviewPageComponent implements OnInit {
-  private content;
-  private reviewId;
-  private review;
-  private reviewLoaded = false;
-  private modules;
+  content;
+  reviewId;
+  review;
+  reviewLoaded = false;
+  modules;
   constructor(
     private reviewService: ReviewService,
     private route: ActivatedRoute,

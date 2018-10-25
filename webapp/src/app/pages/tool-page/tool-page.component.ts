@@ -13,16 +13,16 @@ import { ReviewService } from '../../services/review.service';
   styleUrls: ['./tool-page.component.css']
 })
 export class ToolPageComponent implements OnInit {
-  private toolId: number;
-  private defaultRating = 0;
-  private tool;
-  private toolLoading = true;
-  private selectedImage;
-  private myRating;
-  private myOriginalRating;
-  private rateButtonLoading = false;
-  private reviewLoading = true;
-  private reviews;
+  toolId: number;
+  defaultRating = 0;
+  tool;
+  toolLoading = true;
+  selectedImage;
+  myRating;
+  myOriginalRating;
+  rateButtonLoading = false;
+  reviewLoading = true;
+  reviews;
   constructor(
     private toolService: ToolService,
     private route: ActivatedRoute,
