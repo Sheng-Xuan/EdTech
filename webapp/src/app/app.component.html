@@ -1,22 +1,22 @@
 <nz-layout class="layout">
-  <nz-header>
+  <nz-header class="header">
     <div nz-row>
-      <div nz-col nzSpan="16">
-        <div class="logo"><img src="assets/logo.png"></div>
+      <div nz-col nzSpan="12" nzOffset="4">
+        <div class="logo" routerLink="/"><img src="assets/logo.png"></div>
         <ul nz-menu [nzTheme]="'dark'" [nzMode]="'horizontal'" style="line-height: 64px;">
           <!-- <li nz-menu-item>AAAAA</li>
           <li nz-menu-item>BBBBB</li>
           <li nz-menu-item>CCCCC</li> -->
         </ul>
       </div>
-      <div nz-col nzSpan="8">
+      <div nz-col nzSpan="4">
         <app-user-nav></app-user-nav>
       </div>
     </div>
   </nz-header>
-  <nz-content style="padding:0 50px">
+  <nz-content class="content">
     <div nz-col nzSpan="16" nzOffset="4">
-      <router-outlet style="padding: 24px;"></router-outlet>
+      <router-outlet></router-outlet>
     </div>
   </nz-content>
   <nz-footer style="text-align: center;">Footer</nz-footer>

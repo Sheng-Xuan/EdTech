@@ -2,7 +2,7 @@ import { getUserById, updatePassword } from "./controller/userController";
 import { registerUser, login } from "./controller/authController";
 import * as dotenv from 'dotenv';
 import { uploadImage } from "./controller/imageController";
-import { createTool, getTool, getMyRating, postMyRating, getReviewsByToolId } from "./controller/toolController";
+import { createTool, getTool, getMyRating, postMyRating, getReviewsByToolId, getRecommandedTools, searchTool } from "./controller/toolController";
 import { getCategories } from "./controller/categoryController";
 import { getToolComments, postToolComment, getReviewComments, postReviewComment } from "./controller/commentController";
 import { publishReview, getReviewById } from "./controller/reviewController";
@@ -66,6 +66,18 @@ export const AppRoutes = [
         method: "get",
         action: getMyRating,
         auth: true
+    },
+    {
+        path: apiVersion + "/tool/search/:category/:keyword",
+        method: "get",
+        action: searchTool,
+        auth: false
+    },
+    {
+        path: apiVersion + "/tools/recommanded",
+        method: "get",
+        action: getRecommandedTools,
+        auth: false
     },
     {
         path: apiVersion + "/tool/myrating/",

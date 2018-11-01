@@ -1,9 +1,9 @@
 .logo {
     width: 120px;
     float: left;
-    margin-right: 20px;
     vertical-align: middle;
     line-height: 64px;
+    cursor: pointer;
 }
 .logo img {
     width: 100%;
@@ -11,4 +11,15 @@
 .loginButtonGroup {
     line-height: 64px;
     float: right;
+}
+.header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 10;
+}
+.content {
+    margin-top: 100px;
+    min-height: 800px;
 }

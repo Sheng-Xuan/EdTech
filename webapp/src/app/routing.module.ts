@@ -4,6 +4,8 @@ import { ToolPublishPageComponent } from './pages/tool-publish-page/tool-publish
 import { ToolPageComponent } from './pages/tool-page/tool-page.component';
 import { ReviewPublishPageComponent } from './pages/review-publish-page/review-publish-page.component';
 import { ReviewPageComponent } from './pages/review-page/review-page.component';
+import { HomePageComponent } from './pages/home-page/home-page.component';
+import { ToolListPageComponent } from './pages/tool-list-page/tool-list-page.component';
 
 const routes: Routes = [
   {
@@ -21,6 +23,14 @@ const routes: Routes = [
   {
     path: 'review/:id',
     component: ReviewPageComponent
+  },
+  {
+    path: 'search/:category/:keyword',
+    component: ToolListPageComponent
+  },
+  {
+    path: '',
+    component: HomePageComponent
   },
   {
     path: '**',

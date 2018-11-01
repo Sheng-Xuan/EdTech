@@ -1,0 +1,11 @@
+.item_img {
+    height: 100px;
+    width: auto;
+}
+.item {
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.item:hover{
+    background: white;
+}

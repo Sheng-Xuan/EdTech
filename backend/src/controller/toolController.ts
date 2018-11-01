@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getRepository } from 'typeorm';
+import { getRepository, Like, Equal } from 'typeorm';
 import { User } from '../entity/User';
 import { UserTokenData } from '../model/userTokenData';
 import { Image } from '../entity/Image';
@@ -120,6 +120,60 @@ export async function getTool(request: Request, response: Response) {
     tool['ratingCount'] = ratingAndCount['count'];
   }
   response.status(200).json(tool);
+}
+
+/**
+ * @api {GET} /v1/tool/search/:category/:keyword Get a tool
+ * @apiGroup Tool
+ * @apiParam {number} category tool category, 0 indicates all.
+ * @apiParam {number} keyword key word to search
+ * @apiSuccess {json} tool object list
+ * @apiError (400) {json} error
+ */
+export async function searchTool(request: Request, response: Response) {
+  const toolRepository = getRepository(Tool);
+  const category = request.params.category;
+  const keyword = request.params.keyword;
+  let tools;
+  if (category == 0) {
+    tools = await toolRepository.find({
+      select: ['name', 'description', 'toolId'],
+      relations: ['categories', 'images'],
+      where: {
+        name: Like('%' + keyword + '%')
+      }
+    });
+  } else {
+    tools = await getRepository(Tool)
+      .createQueryBuilder('tool')
+      .leftJoinAndSelect('tool.images', 'image')
+      .leftJoinAndSelect('tool.categories', 'category')
+      .where('tool.name like :name', { name: '%' + keyword + '%' })
+      .andWhere('category.categoryId = :id', { id: category })
+      .getMany();
+  }
+  response.status(200).json(tools);
+}
+
+/**
+ * @api {GET} /v1/tools/recommanded Get recommanded tool list
+ * @apiGroup Tool
+ * @apiSuccess {json} tool objects list
+ * @apiError (400) {json} error
+ */
+export async function getRecommandedTools(
+  request: Request,
+  response: Response
+) {
+  const toolRepository = getRepository(Tool);
+  let tools = await toolRepository.find({
+    relations: ['categories', 'images']
+  });
+  if (!tools) {
+    response.status(400).json({ error: 'Tool not found' });
+    return;
+  }
+  response.status(200).json(tools);
 }
 
 /**

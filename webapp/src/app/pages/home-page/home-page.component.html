@@ -1,0 +1,39 @@
+<div nz-row style="margin-bottom: 50px">
+  <div nz-col [nzLg]="{span:12, offset:6}" [nzSm]="{span:20, offset:2}">
+    <nz-input-group nzSearch nzSize="large" [nzSuffix]="suffixButton" [nzAddOnBefore]="categoryTemplate">
+      <input type="text" [(ngModel)]="searchText" nz-input placeholder="search tool by name...">
+    </nz-input-group>
+    <ng-template #categoryTemplate>
+      <nz-select style="width: 150px;" [(ngModel)]="searchCategory">
+        <nz-option [nzLabel]="'All'" [nzValue]="0"></nz-option>
+        <nz-option *ngFor="let category of categories" [nzLabel]="category.name" [nzValue]="category.id"></nz-option>
+      </nz-select>
+    </ng-template>
+    <ng-template #suffixButton>
+      <button style="left: 11px" nz-button nzType="primary" nzSize="large" nzSearch (click)="search()">Search</button>
+    </ng-template>
+  </div>
+</div>
+<div class="title">Recommended Tools</div>
+<div nz-row *ngIf="recommandationLoaded">
+  <ngu-carousel #myCarousel [inputs]="carouselTileConfig" [dataSource]="recommandedTools">
+    <ngu-tile *nguCarouselDef="let item">
+      <nz-card [routerLink]="['/tool/', item.toolId]" style="height:270px;" [nzBodyStyle]="{padding:'10px'}"
+        nzHoverable [nzCover]="toolImage">
+        <nz-card-meta [nzTitle]="item.name" [nzDescription]="toolCategory"></nz-card-meta>
+      </nz-card>
+      <ng-template #toolImage>
+        <img class="tool_img" onError="this.src='assets/img-not-available.jpg';" alt="loading" [src]="getImagePath(item.images[0])" />
+      </ng-template>
+      <ng-template #toolCategory>
+        <div class="category" *ngFor="let cat of item.categories">
+          {{cat.name}}
+        </div>
+      </ng-template>
+    </ngu-tile>
+    <button NguCarouselPrev class="leftRs" [style.opacity]="myCarousel.isFirst ? 0.5:1"><i nz-icon type="left" theme="outline"></i></button>
+    <button NguCarouselNext class="rightRs" [style.opacity]="myCarousel.isLast ? 0.5:1"><i nz-icon type="right" theme="outline"></i></button>
+  </ngu-carousel>
+</div>
+<div nz-row>
+</div>

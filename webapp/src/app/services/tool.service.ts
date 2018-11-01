@@ -42,7 +42,15 @@ export class ToolService {
   }
 
   getToolList(): Observable<any> {
-    return this.apiService.get('/tool/list', {
+    return this.apiService.get('/tools/list', {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    });
+  }
+
+  getRecommandedToolList(): Observable<any> {
+    return this.apiService.get('/tools/recommanded', {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
@@ -101,7 +109,7 @@ export class ToolService {
   getToolComments(toolId): Observable<any> {
     return this.apiService.get('/tool/comments/' + toolId, {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       })
     });
   }
@@ -109,7 +117,15 @@ export class ToolService {
   getReviewsByToolId(toolId): Observable<any> {
     return this.apiService.get('/tool/reviews/' + toolId, {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
+      })
+    });
+  }
+
+  searchTool(category, keyword): Observable<any> {
+    return this.apiService.get('/tool/search/' + category + '/' + keyword, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
       })
     });
   }

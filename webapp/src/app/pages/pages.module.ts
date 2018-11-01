@@ -11,6 +11,9 @@ import { ReviewPublishPageComponent } from './review-publish-page/review-publish
 import { QuillModule } from 'ngx-quill';
 import { ReviewPageComponent } from './review-page/review-page.component';
 import { CommentViewComponent } from '../components/comment-view/comment-view.component';
+import { HomePageComponent } from './home-page/home-page.component';
+import { NguCarouselModule } from '@ngu/carousel';
+import { ToolListPageComponent } from './tool-list-page/tool-list-page.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -20,14 +23,17 @@ import { CommentViewComponent } from '../components/comment-view/comment-view.co
     ReactiveFormsModule,
     BarRatingModule,
     RouterModule,
-    QuillModule
+    QuillModule,
+    NguCarouselModule
   ],
   declarations: [
     ToolPublishPageComponent,
     ToolPageComponent,
     ReviewPublishPageComponent,
     ReviewPageComponent,
-    CommentViewComponent
+    CommentViewComponent,
+    HomePageComponent,
+    ToolListPageComponent
   ]
 })
 export class PagesModule {}
