@@ -8,6 +8,7 @@ import { JwtService } from '../../services/jwt.service';
 import { ToolService } from '../../services/tool.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReviewService } from '../../services/review.service';
+import { UserService } from '../../services/user.service';
 
 // override p with div tag
 const Parchment = Quill.import('parchment');
@@ -45,7 +46,8 @@ export class ReviewPublishPageComponent implements OnInit {
     private toolService: ToolService,
     private reviewService: ReviewService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private userService: UserService
   ) {
     this.modules = {
       toolbar: [
@@ -108,6 +110,10 @@ export class ReviewPublishPageComponent implements OnInit {
 
   canPublish() {
     return this.title && this.content;
+  }
+
+  isLoggedin() {
+    return this.userService.isLoggedIn();
   }
 
   publish() {

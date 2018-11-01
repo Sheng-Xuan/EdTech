@@ -92,7 +92,7 @@
     </nz-list>
   </nz-card>
   <ng-template #addReviewTemplate>
-    <a routerLink="/review/publish/{{toolId}}">Add Review</a>
+    <a (click)="onAddReview()">Add Review</a>
   </ng-template>
 </div>
 <div nz-row>

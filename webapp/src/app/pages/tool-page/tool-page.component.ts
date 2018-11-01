@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ToolService } from '../../services/tool.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { MessageService } from '../../services/message.service';
 import { TimeService } from '../../services/time.service';
@@ -26,6 +26,7 @@ export class ToolPageComponent implements OnInit {
   constructor(
     private toolService: ToolService,
     private route: ActivatedRoute,
+    private router: Router,
     private userService: UserService,
     private messageService: MessageService,
     private message: NzMessageService,
@@ -122,6 +123,13 @@ export class ToolPageComponent implements OnInit {
     );
   }
 
+  onAddReview() {
+    if (this.userService.isLoggedIn()) {
+      this.router.navigateByUrl('/review/publish/' + this.toolId);
+    } else {
+      this.messageService.sendMessage('login');
+    }
+  }
   getTime(time): string {
     return this.timeService.convertGMTToLocalTime(time);
   }

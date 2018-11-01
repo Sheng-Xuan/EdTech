@@ -1,19 +1,24 @@
-<nz-skeleton [nzActive]="true" [nzLoading]="!toolLoaded">
-  <div *ngIf="toolLoaded">
-    <div class="tool_info">
-      Add review for {{tool.name}}
-    </div>
-    <div class="row" nz-row>
-      <nz-input-group nzAddOnBefore="Review Title">
-        <input type="text" nz-input [(ngModel)]="title">
-      </nz-input-group>
-    </div>
-    <div class="row" nz-row>
-      <quill-editor [(ngModel)]="content" [modules]="modules" [style]="{height: '700px'}">
-      </quill-editor>
-    </div>
-  </div>
-  <div class="row" style="text-align: center;" nz-row>
-    <button [disabled]="!canPublish()" nz-button nzType="primary" (click)="publish()">Publish</button>
-  </div>
-</nz-skeleton>
+<div *ngIf="isLoggedin()">
+    <nz-skeleton [nzActive]="true" [nzLoading]="!toolLoaded">
+        <div *ngIf="toolLoaded">
+          <div class="tool_info">
+            Add review for {{tool.name}}
+          </div>
+          <div class="row" nz-row>
+            <nz-input-group nzAddOnBefore="Review Title">
+              <input type="text" nz-input [(ngModel)]="title">
+            </nz-input-group>
+          </div>
+          <div class="row" nz-row>
+            <quill-editor [(ngModel)]="content" [modules]="modules" [style]="{height: '700px'}">
+            </quill-editor>
+          </div>
+        </div>
+        <div class="row" style="text-align: center;" nz-row>
+          <button [disabled]="!canPublish()" nz-button nzType="primary" (click)="publish()">Publish</button>
+        </div>
+      </nz-skeleton>
+</div>
+<div *ngIf="!isLoggedin()">
+  <h1>Please login</h1>
+</div>
