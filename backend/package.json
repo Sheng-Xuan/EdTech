@@ -6,6 +6,7 @@
   "scripts": {
     "test": "jest --runInBand",
     "build": "gulp scripts",
+    "build-ts": "tsc --outDir build",
     "start": "NODE_ENV=development nodemon --exec ./node_modules/.bin/ts-node -- ./src/index.ts",
     "doc": "apidoc -i src/controller/ -o doc/"
   },
