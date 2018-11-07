@@ -5,6 +5,7 @@ import {
   hashPassword,
   generateAccessToken
 } from '../../src/util/authUtils';
+import {} from 'ts-jest';
 import * as app from '../../src/app';
 import * as request from 'supertest';
 
