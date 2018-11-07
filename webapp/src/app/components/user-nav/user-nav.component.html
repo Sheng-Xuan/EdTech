@@ -3,12 +3,12 @@
   <button nz-button nzType="primary" (click)="openRegisterModal()">Register</button>
 </div>
 <div *ngIf="isLoginedIn()" class="auth-container">
-  <nz-dropdown>
+  <nz-dropdown [nzPlacement]="'bottomRight'">
     <a nz-dropdown>
       <nz-avatar nzSize="small" nzIcon="anticon anticon-user">{{username}}</nz-avatar>
       <div class="username">{{username}}</div><i class="anticon anticon-down"></i>
     </a>
-    <ul nz-menu nzSelectable>
+    <ul style="transform: translateY(10px)" nz-menu>
       <li nz-menu-item>
         <a routerLink="/publish" routerLinkActive="active">Publish Tool</a>
       </li>
@@ -19,5 +19,5 @@
         <a (click)="logout()">Log out</a>
       </li>
     </ul>
-  </nz-dropdown>`,
+  </nz-dropdown>
 </div>
