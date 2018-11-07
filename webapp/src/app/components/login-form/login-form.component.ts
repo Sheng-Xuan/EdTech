@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 export class LoginFormComponent implements OnInit {
   validateForm: FormGroup;
   loginError: string;
+  isLogingIn = false;
 
   submitForm(): void {
     // tslint:disable-next-line:forin
@@ -22,6 +23,7 @@ export class LoginFormComponent implements OnInit {
       this.validateForm.controls[i].updateValueAndValidity();
     }
     if (this.email.valid && this.password.valid) {
+      this.isLogingIn = true;
       this.userService.login(this.email.value, this.password.value).subscribe(
         (user: User) => {
           this.userService.setUser(user).then(res => {
