@@ -7,6 +7,7 @@ import {
 import { NguCarouselConfig } from '@ngu/carousel';
 import { ToolService } from '../../services/tool.service';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home-page',
@@ -41,9 +42,11 @@ export class HomePageComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private toolService: ToolService,
     private router: Router,
+    private titleService: Title
   ) {}
 
   ngOnInit() {
+    this.titleService.setTitle('EdTech | Home Page');
     this.toolService.getRecommandedToolList().subscribe(res => {
       this.recommandedTools = res;
       this.recommandationLoaded = true;

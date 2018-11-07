@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
 import Quill from 'quill';
 import ImageResize from 'quill-image-resize-module';
+import { Title } from '@angular/platform-browser';
 
 // override p with div tag
 const Parchment = Quill.import('parchment');
@@ -33,7 +34,8 @@ export class ReviewPageComponent implements OnInit {
   constructor(
     private reviewService: ReviewService,
     private route: ActivatedRoute,
-    private message: NzMessageService
+    private message: NzMessageService,
+    private titleService: Title
   ) {
     this.modules = {
       toolbar: false,
@@ -49,6 +51,7 @@ export class ReviewPageComponent implements OnInit {
       res => {
         this.review = res;
         this.reviewLoaded = true;
+        this.titleService.setTitle('EdTech | Review | ' + this.review.title);
       },
       err => {
         console.error(err);

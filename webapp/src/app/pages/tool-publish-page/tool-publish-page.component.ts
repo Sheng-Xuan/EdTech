@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ImageService } from '../../services/image.service';
 import { ToolService } from '../../services/tool.service';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-tool-publish-page',
@@ -22,7 +23,8 @@ export class ToolPublishPageComponent implements OnInit {
     private imageService: ImageService,
     private msg: NzMessageService,
     private toolService: ToolService,
-    private router: Router
+    private router: Router,
+    private titleService: Title
   ) {}
 
   uploadImage = (item: UploadXHRArgs) => {
@@ -77,6 +79,7 @@ export class ToolPublishPageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.titleService.setTitle('EdTech | Publish Tool');
     this.toolService.getCategories().subscribe(res => {
       this.categories = res;
     }, err => {

@@ -9,6 +9,7 @@ import { ToolService } from '../../services/tool.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReviewService } from '../../services/review.service';
 import { UserService } from '../../services/user.service';
+import { Title } from '@angular/platform-browser';
 
 // override p with div tag
 const Parchment = Quill.import('parchment');
@@ -47,7 +48,8 @@ export class ReviewPublishPageComponent implements OnInit {
     private reviewService: ReviewService,
     private route: ActivatedRoute,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private titleService: Title
   ) {
     this.modules = {
       toolbar: [
@@ -90,6 +92,7 @@ export class ReviewPublishPageComponent implements OnInit {
     };
   }
   ngOnInit() {
+    this.titleService.setTitle('EdTech | Publish Review');
     this.loadTool();
   }
 

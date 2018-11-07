@@ -6,6 +6,7 @@ import { MessageService } from '../../services/message.service';
 import { TimeService } from '../../services/time.service';
 import { NzMessageService } from 'ng-zorro-antd';
 import { ReviewService } from '../../services/review.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-tool-page',
@@ -30,7 +31,8 @@ export class ToolPageComponent implements OnInit {
     private userService: UserService,
     private messageService: MessageService,
     private message: NzMessageService,
-    private timeService: TimeService
+    private timeService: TimeService,
+    private titleService: Title
   ) {}
 
   ngOnInit() {
@@ -104,6 +106,7 @@ export class ToolPageComponent implements OnInit {
         this.selectedImage = this.getImageAddress(
           this.tool.images[0].localFileName
         );
+        this.titleService.setTitle('EdTech | Tool | ' + this.tool.name);
       },
       err => {
         console.error(err);
