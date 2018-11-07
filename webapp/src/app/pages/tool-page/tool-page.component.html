@@ -1,6 +1,6 @@
 <div *ngIf="!toolLoading" nz-row>
   <nz-card nzTitle="{{tool.name}}">
-    <div nz-col nzSpan="8">
+    <div nz-col [nzSm]="{span:24}" [nzMd]="{span:8, offset:0}">
       <nz-card [nzBordered]="false" [nzBodyStyle]="{padding:0}" [nzCover]="coverTemplate">
         <div *ngIf="tool.images[0]">
           <div class="img_container" *ngFor="let image of tool.images">
@@ -15,7 +15,7 @@
         <img *ngIf="tool.images[0]" class="img_display" alt="loading" [src]="selectedImage" />
       </ng-template>
     </div>
-    <div nz-col nzSpan="8">
+    <div nz-col [nzSm]="{span:12, offset:0}" [nzMd]="{span:8, offset:0}">
       <nz-card [nzBordered]="false">
         <ul>
           <li class="desc_row">
@@ -41,7 +41,7 @@
         </ul>
       </nz-card>
     </div>
-    <div nz-col nzSpan="8">
+    <div nz-col [nzSm]="{span:12, offset:0}" [nzMd]="{span:8, offset:0}">
       <nz-card [nzBordered]="false">
         <ul>
           <li>
