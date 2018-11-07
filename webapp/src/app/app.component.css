@@ -8,10 +8,7 @@
 .logo img {
     width: 100%;
 }
-.loginButtonGroup {
-    line-height: 64px;
-    float: right;
-}
+
 .header {
     position: fixed;
     top: 0;
@@ -22,4 +19,8 @@
 .content {
     margin-top: 100px;
     min-height: 800px;
+}
+
+.user-panel {
+    float: right;
 }
