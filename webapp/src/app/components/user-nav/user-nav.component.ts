@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { AuthModalComponent } from '../auth-modal/auth-modal.component';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
@@ -17,7 +17,8 @@ export class UserNavComponent implements OnInit, OnDestroy {
   constructor(
     private modalService: NzModalService,
     private userService: UserService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private noticification: NzMessageService,
   ) {
     this.subscription = this.messageService.getMessage().subscribe(res => {
       if (res.message === 'login') {
@@ -36,6 +37,7 @@ export class UserNavComponent implements OnInit, OnDestroy {
   }
   logout() {
     this.userService.logout();
+    this.noticification.success('You are logged out.');
   }
   get username() {
     return this.currentUser.username ? this.currentUser.username : 'unknown';
