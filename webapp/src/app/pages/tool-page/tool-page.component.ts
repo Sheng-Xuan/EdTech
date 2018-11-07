@@ -22,7 +22,7 @@ export class ToolPageComponent implements OnInit {
   myOriginalRating;
   rateButtonLoading = false;
   reviewLoading = true;
-  reviews;
+  reviews = [];
   constructor(
     private toolService: ToolService,
     private route: ActivatedRoute,

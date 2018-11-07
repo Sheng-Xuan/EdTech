@@ -73,6 +73,7 @@
 <div nz-row>
   <nz-card nzTitle='Reviews' [nzExtra]="addReviewTemplate">
     <nz-list [nzLoading]="reviewLoading" [nzDataSource]="reviews" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+      <div (click)="onAddReview()" style="cursor: pointer;" nz-col nzOffset="1" *ngIf="reviews && reviews.length==0">No reviews yet, be the first reviewer now!</div>
       <ng-template #item let-item>
         <nz-list-item>
           <nz-list-item-meta [nzTitle]="nzTitle" [nzDescription]="content">

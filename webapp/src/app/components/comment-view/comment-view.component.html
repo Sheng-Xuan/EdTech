@@ -1,5 +1,6 @@
 <nz-card nzTitle='Comments'>
   <nz-list [nzLoading]="commentsLoading" [nzDataSource]="comments" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+    <div class="no-comment" *ngIf="comments && comments.length==0">No comment yet, share your opinions now!</div>
     <ng-template #item let-item>
       <nz-list-item>
         <nz-list-item-meta [nzTitle]="nzTitle" [nzDescription]="content">
