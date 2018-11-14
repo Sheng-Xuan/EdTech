@@ -1,16 +1,13 @@
-import {Entity, PrimaryGeneratedColumn, Column, Timestamp, CreateDateColumn, UpdateDateColumn} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, Timestamp, CreateDateColumn, UpdateDateColumn, PrimaryColumn} from "typeorm";
 @Entity()
 export class Rating {
-    @PrimaryGeneratedColumn()
-    ratingId: number;
-
     @Column()
     score: number;
 
-    @Column()
+    @PrimaryColumn()
     userId: number;
 
-    @Column()
+    @PrimaryColumn()
     toolId: number;
 
     @CreateDateColumn()

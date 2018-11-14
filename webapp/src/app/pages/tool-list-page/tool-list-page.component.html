@@ -1,19 +1,46 @@
 <div nz-row>
-  <div nz-col [nzLg]="{span:18, offset:3}" [nzSm]="{span:24}">
-    <h1>Search Result: {{keyword}}</h1>
-    <nz-list [nzBordered]="true" [nzDataSource]="data" [nzItemLayout]="'vertical'" [nzRenderItem]="item">
+  <div nz-col [nzLg]="{ span: 18, offset: 3 }" [nzSm]="{ span: 24 }">
+    <h1>Search Result: {{ keyword }}</h1>
+    <nz-list
+      [nzBordered]="true"
+      [nzDataSource]="data"
+      [nzItemLayout]="'vertical'"
+      [nzRenderItem]="item"
+    >
       <ng-template #item let-item>
-        <nz-list-item class="item" [routerLink]="['/tool/', item.toolId]" [nzContent]="item.content" [nzActions]="[rating]"
-          [nzExtra]="extra">
-          <ng-template #rating>
+        <nz-list-item
+          class="item"
+          [routerLink]="['/tool/', item.toolId]"
+          [nzContent]="rating"
+          [nzActions]="[categories]"
+          [nzExtra]="image"
+        >
+          <ng-template #categories>
             <nz-tag *ngFor="let cat of item.categories">
-              {{cat.name}}
+              {{ cat.name }}
             </nz-tag>
           </ng-template>
-          <nz-list-item-meta [nzTitle]="item.name" [nzDescription]="item.description">
+          <nz-list-item-meta
+            [nzTitle]="item.name"
+            [nzDescription]="item.description"
+          >
           </nz-list-item-meta>
-          <ng-template #extra>
-            <img class="item_img" onError="this.src='assets/img-not-available.jpg';" alt="loading" [src]="getImagePath(item.images[0])">
+          <ng-template style="float: right;" #image>
+            <img
+              class="item_img"
+              onError="this.src='assets/img-not-available.jpg';"
+              alt="loading"
+              [src]="getImagePath(item.images[0])"
+            />
+          </ng-template>
+          <ng-template #rating>
+            <bar-rating
+              *ngIf="item.averageRating"
+              [theme]="'fontawesome-o'"
+              [(rate)]="item.averageRating"
+              [max]="5"
+              [readOnly]="true"
+            ></bar-rating>
           </ng-template>
         </nz-list-item>
       </ng-template>

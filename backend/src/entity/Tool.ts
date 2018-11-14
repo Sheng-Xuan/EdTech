@@ -1,41 +1,59 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, ManyToMany, JoinTable, UpdateDateColumn, CreateDateColumn} from "typeorm";
-import {User} from "./User";
-import {Review} from "./Review";
-import {ToolComment} from "./ToolComment";
-import { Category } from "./Category";
-import { Image } from "./Image";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+  ManyToMany,
+  JoinTable,
+  UpdateDateColumn,
+  CreateDateColumn
+} from 'typeorm';
+import { User } from './User';
+import { Review } from './Review';
+import { ToolComment } from './ToolComment';
+import { Category } from './Category';
+import { Image } from './Image';
 
 @Entity()
 export class Tool {
+  @PrimaryGeneratedColumn()
+  toolId: number;
 
-    @PrimaryGeneratedColumn()
-    toolId: number;
+  @Column()
+  name: string;
 
-    @Column()
-    name: string;
+  @Column()
+  description: string;
 
-    @Column()
-    description: string;
+  @Column({ type: "double precision", nullable: true })
+  averageRating: number;
 
-    @OneToMany(type => Image, image => image.tool)
-    images: Image[];
+  @Column({ default: 0 })
+  rateCount: number;
 
-    @CreateDateColumn()
-    createTime: Date;
+  @Column({ nullable: true })
+  website: string;
 
-    @UpdateDateColumn()
-    updateTime: Date;
+  @OneToMany(type => Image, image => image.tool)
+  images: Image[];
 
-    @ManyToOne(type => User, user => user.tools)
-    author: User;
+  @CreateDateColumn()
+  createTime: Date;
 
-    @OneToMany(type => Review, review => review.tool)
-    reviews: Review[];
+  @UpdateDateColumn()
+  updateTime: Date;
 
-    @OneToMany(type => ToolComment, comment => comment.tool)
-    comments: ToolComment[];
+  @ManyToOne(type => User, user => user.tools)
+  author: User;
 
-    @ManyToMany(type => Category, category => category.tools)
-    @JoinTable()
-    categories: Category[];
+  @OneToMany(type => Review, review => review.tool)
+  reviews: Review[];
+
+  @OneToMany(type => ToolComment, comment => comment.tool)
+  comments: ToolComment[];
+
+  @ManyToMany(type => Category, category => category.tools)
+  @JoinTable()
+  categories: Category[];
 }

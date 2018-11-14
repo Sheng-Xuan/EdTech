@@ -39,6 +39,7 @@ export async function createTool(request: Request, response: Response) {
   const description = request.body.description;
   const imageNames = request.body.images;
   const category = request.body.category;
+  const website = request.body.website;
   // Handle duplicate names
   let existTool = await toolRepository.findOne({ name: name });
   if (existTool) {
@@ -67,6 +68,7 @@ export async function createTool(request: Request, response: Response) {
   tool.description = description;
   tool.author = user;
   tool.images = images;
+  tool.website = website;
   tool.categories = categories;
   // Check if category exists
   for (let i in category) {
@@ -106,19 +108,6 @@ export async function getTool(request: Request, response: Response) {
     response.status(400).json({ error: 'Tool not found' });
     return;
   }
-  const ratingRepository = getRepository(Rating);
-  let ratingAndCount = await ratingRepository
-    .createQueryBuilder('rating')
-    .select('AVG(rating.score)', 'averageScore')
-    .addSelect('COUNT(*)', 'count')
-    .where('rating.toolId = :toolId', { toolId: tool.toolId })
-    .getRawOne();
-  if (ratingAndCount['averageScore']) {
-    tool['rating'] = ratingAndCount['averageScore'];
-  }
-  if (ratingAndCount['count']) {
-    tool['ratingCount'] = ratingAndCount['count'];
-  }
   response.status(200).json(tool);
 }
 
@@ -136,21 +125,28 @@ export async function searchTool(request: Request, response: Response) {
   const keyword = request.params.keyword;
   let tools;
   if (category == 0) {
-    tools = await toolRepository.find({
-      select: ['name', 'description', 'toolId'],
-      relations: ['categories', 'images'],
-      where: {
-        name: Like('%' + keyword + '%')
-      }
-    });
-  } else {
     tools = await getRepository(Tool)
       .createQueryBuilder('tool')
-      .leftJoinAndSelect('tool.images', 'image')
       .leftJoinAndSelect('tool.categories', 'category')
-      .where('tool.name like :name', { name: '%' + keyword + '%' })
+      .leftJoinAndSelect('tool.images', 'images')
+      .where('LOWER(tool.name) like :name', {
+        name: `%${keyword.toLowerCase()}%`
+      })
+      .getMany();
+  } else {
+    // Find tools with keyword and category
+    tools = await getRepository(Tool)
+      .createQueryBuilder('tool')
+      .leftJoinAndSelect('tool.categories', 'category')
+      .where('LOWER(tool.name) like :name', {
+        name: `%${keyword.toLowerCase()}%`
+      })
       .andWhere('category.categoryId = :id', { id: category })
       .getMany();
+    // Join images and categories
+    tools = await getRepository(Tool).findByIds(tools.map(_ => _.toolId), {
+      relations: ['images', 'categories']
+    });
   }
   response.status(200).json(tools);
 }
@@ -207,8 +203,12 @@ export async function getMyRating(request: Request, response: Response) {
 export async function postMyRating(request: Request, response: Response) {
   const userInfo: UserTokenData = response.locals.userInfo;
   const ratingRepository = getRepository(Rating);
+  const toolRepository = getRepository(Tool);
   let myRating = await ratingRepository.findOne({
     userId: userInfo.id,
+    toolId: request.body.toolId
+  });
+  let tool = await toolRepository.findOne({
     toolId: request.body.toolId
   });
   if (!myRating) {
@@ -217,9 +217,26 @@ export async function postMyRating(request: Request, response: Response) {
     myRating.userId = userInfo.id;
     myRating.score = request.body.score;
     await ratingRepository.save(myRating);
+    // Update rate count
+    tool.rateCount += 1;
+    if (tool.averageRating) {
+      // Incremental average
+      tool.averageRating =
+        tool.averageRating +
+        (myRating.score - tool.averageRating) / tool.rateCount;
+    } else {
+      // It is the only count
+      tool.averageRating = myRating.score;
+    }
+    await toolRepository.save(tool);
   } else {
+    let oldRating = myRating.score;
     myRating.score = request.body.score;
     await ratingRepository.save(myRating);
+    // Update tool average score
+    tool.averageRating =
+      tool.averageRating + (myRating.score - oldRating) / tool.rateCount;
+    await toolRepository.save(tool);
   }
   response.status(200).json({ message: 'OK' });
 }
