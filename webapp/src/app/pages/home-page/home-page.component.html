@@ -1,7 +1,7 @@
 <div nz-row style="margin-bottom: 50px">
   <div nz-col [nzXXl]="{span:12, offset:6}" [nzLg]="{span:14, offset:5}" [nzMd]="{span:16, offset:4}" [nzSm]="{span:20, offset:2}">
     <nz-input-group nzSearch nzSize="large" [nzSuffix]="suffixButton" [nzAddOnBefore]="categoryTemplate">
-      <input type="text" [(ngModel)]="searchText" nz-input placeholder="search tool by name...">
+      <input type="text" (keyup.enter)="search()" [(ngModel)]="searchText" nz-input placeholder="search tool by name...">
     </nz-input-group>
     <ng-template #categoryTemplate>
       <nz-select style="width: 150px;" [(ngModel)]="searchCategory">
