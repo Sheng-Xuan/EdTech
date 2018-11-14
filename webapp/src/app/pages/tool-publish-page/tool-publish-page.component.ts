@@ -17,7 +17,6 @@ export class ToolPublishPageComponent implements OnInit {
   previewVisible = false;
   previewImage = '';
   categories = [];
-
   constructor(
     private formGroup: FormBuilder,
     private imageService: ImageService,
@@ -49,7 +48,11 @@ export class ToolPublishPageComponent implements OnInit {
 
   uploadCheck = (file: UploadFile) => {
     // Format check
-    if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
+    if (
+      file.type !== 'image/jpeg' &&
+      file.type !== 'image/png' &&
+      file.type !== 'image/gif'
+    ) {
       this.msg.error('Only support jpeg, png and gif format images');
       return false;
     } else if (file.size > 1024 * 1024) {
@@ -65,31 +68,41 @@ export class ToolPublishPageComponent implements OnInit {
       this.publishForm.controls[i].updateValueAndValidity();
     }
     if (this.name.valid && this.category.valid && this.description.valid) {
-      this.toolService.publishTool(
-        this.name.value,
-        this.category.value,
-        this.description.value,
-        this.fileList.map(file => file.response.fileName)
-      ).subscribe(res => {
-        this.router.navigateByUrl('/tool/' + res.toolId);
-      }, err => {
-        this.msg.error(err.error);
-      });
+      this.toolService
+        .publishTool(
+          this.name.value,
+          this.category.value,
+          this.description.value,
+          this.website.value,
+          this.fileList.map(file => file.response.fileName)
+        )
+        .subscribe(
+          res => {
+            this.router.navigateByUrl('/tool/' + res.toolId);
+          },
+          err => {
+            this.msg.error(err.error);
+          }
+        );
     }
   }
 
   ngOnInit() {
     this.titleService.setTitle('EdTech | Publish Tool');
-    this.toolService.getCategories().subscribe(res => {
-      this.categories = res;
-    }, err => {
-      console.error(err);
-    });
+    this.toolService.getCategories().subscribe(
+      res => {
+        this.categories = res;
+      },
+      err => {
+        console.error(err);
+      }
+    );
     this.publishForm = this.formGroup.group({
       name: [null, [Validators.required]],
       category: [null, [Validators.required]],
       description: [null, [Validators.required]],
-      images: [null]
+      images: [null],
+      website: [null]
     });
   }
 
@@ -104,5 +117,8 @@ export class ToolPublishPageComponent implements OnInit {
   }
   get description() {
     return this.publishForm.get('description');
+  }
+  get website() {
+    return this.publishForm.get('website');
   }
 }

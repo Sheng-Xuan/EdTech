@@ -1,49 +1,85 @@
 <div nz-row>
-  <div nz-col nzSpan="16" nzOffset="4">
+  <div nz-col>
     <nz-card style="width:100%" [nzBordered]="false" nzTitle="Publish Tool">
       <form nz-form [formGroup]="publishForm" (ngSubmit)="submitForm()">
         <nz-form-item>
           <nz-form-label [nzSpan]="6">Tool Name</nz-form-label>
           <nz-form-control [nzSpan]="14">
-            <input nz-input formControlName="name" id="name">
-            <nz-form-explain *ngIf="name.dirty && name.errors">Please enter the name of the tool.
+            <input nz-input formControlName="name" id="name" />
+            <nz-form-explain *ngIf="name.dirty && name.errors"
+              >Please enter the name of the tool.
             </nz-form-explain>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
           <nz-form-label [nzSpan]="6">Category</nz-form-label>
           <nz-form-control [nzSpan]="14">
-            <nz-select [nzMaxMultipleCount]="3" nzMode="multiple" nzPlaceHolder="Please select" formControlName="category">
-              <nz-option *ngFor="let item of categories" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+            <nz-select
+              [nzMaxMultipleCount]="3"
+              nzMode="multiple"
+              nzPlaceHolder="Please select"
+              formControlName="category"
+            >
+              <nz-option
+                *ngFor="let item of categories"
+                [nzLabel]="item.name"
+                [nzValue]="item.id"
+              ></nz-option>
             </nz-select>
-            <nz-form-explain *ngIf="category.dirty && category.errors">Please enter the categories of the tool.
+            <nz-form-explain *ngIf="category.dirty && category.errors"
+              >Please enter the categories of the tool.
             </nz-form-explain>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label [nzSpan]="6">Images</nz-form-label>
-          <nz-upload nzListType="picture-card" [nzCustomRequest]="uploadImage" [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 3"
-            [nzPreview]="handlePreview" [nzBeforeUpload]="uploadCheck">
+          <nz-form-label [nzSpan]="6">Images(optional)</nz-form-label>
+          <nz-upload
+            nzListType="picture-card"
+            [nzCustomRequest]="uploadImage"
+            [(nzFileList)]="fileList"
+            [nzShowButton]="fileList.length < 3"
+            [nzPreview]="handlePreview"
+            [nzBeforeUpload]="uploadCheck"
+          >
             <i class="anticon anticon-plus"></i>
             <div class="ant-upload-text">Upload</div>
           </nz-upload>
-          <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null" (nzOnCancel)="previewVisible=false">
+          <nz-modal
+            [nzVisible]="previewVisible"
+            [nzContent]="modalContent"
+            [nzFooter]="null"
+            (nzOnCancel)="previewVisible = false"
+          >
             <ng-template #modalContent>
-              <img [src]="previewImage" [ngStyle]="{ 'width': '100%' }" />
+              <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
             </ng-template>
           </nz-modal>
         </nz-form-item>
         <nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSpan]="6">Website(optional)</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+              <input nz-input formControlName="website" id="website" />
+            </nz-form-control>
+          </nz-form-item>
           <nz-form-label [nzSpan]="6">Description</nz-form-label>
           <nz-form-control [nzSpan]="14">
-            <textarea formControlName="description" nz-input rows="5" placeholder="Please describe this tool in detail."></textarea>
-            <nz-form-explain *ngIf="description.dirty && description.errors">Please enter the description of the tool.
+            <textarea
+              formControlName="description"
+              nz-input
+              rows="5"
+              placeholder="Please describe this tool in detail."
+            ></textarea>
+            <nz-form-explain *ngIf="description.dirty && description.errors"
+              >Please enter the description of the tool.
             </nz-form-explain>
           </nz-form-control>
         </nz-form-item>
-        <nz-form-item>
-          <nz-form-control [nzSpan]="14" [nzOffset]="10">
-            <button nz-button class="publish-button" [nzType]="'primary'">Publish</button>
+        <nz-form-item style="text-align: center">
+          <nz-form-control>
+            <button nz-button class="publish-button" [nzType]="'primary'">
+              Publish
+            </button>
           </nz-form-control>
         </nz-form-item>
       </form>

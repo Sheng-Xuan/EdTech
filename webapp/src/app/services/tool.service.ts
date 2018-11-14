@@ -14,6 +14,7 @@ export class ToolService {
     name,
     category,
     description,
+    website,
     imageNames: string[]
   ): Observable<any> {
     return this.apiService.post(
@@ -22,7 +23,8 @@ export class ToolService {
         name: name,
         category: category,
         description: description,
-        images: imageNames
+        images: imageNames,
+        website: website
       },
       {
         headers: new HttpHeaders({
