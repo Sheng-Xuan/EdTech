@@ -101,7 +101,6 @@ export class ToolPageComponent implements OnInit {
     this.toolService.getTool(this.toolId).subscribe(
       res => {
         this.tool = res;
-        console.log(this.tool);
         this.toolLoading = false;
         this.selectedImage = this.getImageAddress(
           this.tool.images[0].localFileName

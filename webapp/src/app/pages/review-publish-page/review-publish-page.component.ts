@@ -124,7 +124,6 @@ export class ReviewPublishPageComponent implements OnInit {
     this.images = this.images.filter(imageName => this.content.search(imageName) >= 0);
     this.reviewService.publishReview(this.toolId, this.title, this.content, this.images).subscribe(
       res => {
-        console.log(res);
         this.router.navigateByUrl('/review/' + res.reviewId);
       },
       err => {
