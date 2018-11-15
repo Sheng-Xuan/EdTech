@@ -43,4 +43,30 @@ describe('User test', () => {
       isAdmin: false
     });
   });
+  test('PUT /user/password, should return OK', async () => {
+    const response = await request(server)
+      .put(API_VERSION + '/user/password')
+      .auth(accessToken, {
+        type: 'bearer'
+      })
+      .send({
+        oldPassword: 'test',
+        newPassword: 'changed'
+      })
+      .expect(200);
+    expect(response.text).toEqual('OK');
+  });
+  test('PUT /user/password, wrong old password, should return Unauthorized', async () => {
+    const response = await request(server)
+      .put(API_VERSION + '/user/password')
+      .auth(accessToken, {
+        type: 'bearer'
+      })
+      .send({
+        oldPassword: 'test',
+        newPassword: 'wrong'
+      })
+      .expect(401);
+    expect(response.text).toEqual('Current password is wrong');
+  });
 });

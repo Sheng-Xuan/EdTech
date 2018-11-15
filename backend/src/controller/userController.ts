@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 import { getRepository } from "typeorm";
 import { User } from "../entity/User";
-import { hashPassword } from "../util/authUtils";
+import { hashPassword, validatePassword } from "../util/authUtils";
 import { UserTokenData } from "../model/userTokenData";
 /**
  * @apiDefine UserGroup /user
@@ -51,7 +51,8 @@ export async function updatePassword(request: Request, response: Response) {
         response.status(401).send("Unauthorized");
         return;
     }
-    if (user.passwordHash !== await hashPassword(oldPassword)) {
+    let isCorrectPassword = await validatePassword(oldPassword, user.passwordHash);
+    if (!isCorrectPassword) {
         response.status(401).send("Current password is wrong");
         return;
     }
