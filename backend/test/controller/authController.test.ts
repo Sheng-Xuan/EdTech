@@ -40,6 +40,6 @@ describe('Registration and Login test', () => {
         password: password
       })
       .expect(200);
-    expect(response.body).toHaveProperty('jwt');
+    expect(response.body).toHaveProperty('token');
   });
 });
