@@ -1,5 +1,7 @@
 .item_img {
-    max-height: 100px;
+    max-height: 150px;
+    max-width: 300px;
+    object-fit: fill
 }
 .item {
     background: white;
