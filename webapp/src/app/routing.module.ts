@@ -6,6 +6,7 @@ import { ReviewPublishPageComponent } from './pages/review-publish-page/review-p
 import { ReviewPageComponent } from './pages/review-page/review-page.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { ToolListPageComponent } from './pages/tool-list-page/tool-list-page.component';
+import { ErrorPageComponent } from './pages/error-page/error-page.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,10 @@ const routes: Routes = [
   {
     path: '',
     component: HomePageComponent
+  },
+  {
+    path: 'notfound',
+    component: ErrorPageComponent
   },
   {
     path: '**',

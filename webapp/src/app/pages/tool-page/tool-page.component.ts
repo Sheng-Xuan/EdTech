@@ -109,6 +109,7 @@ export class ToolPageComponent implements OnInit {
       },
       err => {
         console.error(err);
+        this.router.navigateByUrl('/notfound');
       }
     );
   }

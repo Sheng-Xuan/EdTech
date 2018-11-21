@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ReviewService } from '../../services/review.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
 import Quill from 'quill';
 import ImageResize from 'quill-image-resize-module';
@@ -35,7 +35,8 @@ export class ReviewPageComponent implements OnInit {
     private reviewService: ReviewService,
     private route: ActivatedRoute,
     private message: NzMessageService,
-    private titleService: Title
+    private titleService: Title,
+    private router: Router,
   ) {
     this.modules = {
       toolbar: false,
@@ -55,6 +56,7 @@ export class ReviewPageComponent implements OnInit {
       },
       err => {
         console.error(err);
+        this.router.navigateByUrl('/notfound');
       }
     );
   }

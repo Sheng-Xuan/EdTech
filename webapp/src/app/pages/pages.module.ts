@@ -14,6 +14,7 @@ import { CommentViewComponent } from '../components/comment-view/comment-view.co
 import { HomePageComponent } from './home-page/home-page.component';
 import { NguCarouselModule } from '@ngu/carousel';
 import { ToolListPageComponent } from './tool-list-page/tool-list-page.component';
+import { ErrorPageComponent } from './error-page/error-page.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -33,7 +34,8 @@ import { ToolListPageComponent } from './tool-list-page/tool-list-page.component
     ReviewPageComponent,
     CommentViewComponent,
     HomePageComponent,
-    ToolListPageComponent
+    ToolListPageComponent,
+    ErrorPageComponent
   ]
 })
 export class PagesModule {}
