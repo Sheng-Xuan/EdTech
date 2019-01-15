@@ -23,7 +23,9 @@ beforeAll(async () => {
   accessToken = await generateAccessToken(user);
 });
 afterAll(async () => {
-  await server.close();
+  if (server) {
+    await server.close();
+  }
   await getConnection().close();
 });
 

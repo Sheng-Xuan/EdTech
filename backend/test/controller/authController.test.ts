@@ -8,7 +8,9 @@ beforeAll(async () => {
   server = await app.startServer();
 });
 afterAll(async () => {
-  await server.close();
+  if (server) {
+    await server.close();
+  }
   await getConnection().close();
 });
 const email = 'test@edtech.com';
