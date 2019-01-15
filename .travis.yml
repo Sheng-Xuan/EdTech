@@ -5,7 +5,7 @@ node_js:
 services:
   - postgresql
 before_script:
-  - psql -c "CREATE DATABASE test;' -U postgres
+  - psql -c "CREATE DATABASE test;" -U postgres
   - psql -c "CREATE USER dbuser with password '12345678';" -U postgres
 install:
   - cd backend
