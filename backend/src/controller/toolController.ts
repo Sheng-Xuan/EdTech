@@ -125,7 +125,7 @@ export async function searchTool(request: Request, response: Response) {
   const keyword = request.params.keyword;
   let tools;
   if (category == 0) {
-    tools = await getRepository(Tool)
+    tools = await toolRepository
       .createQueryBuilder('tool')
       .leftJoinAndSelect('tool.categories', 'category')
       .leftJoinAndSelect('tool.images', 'images')
@@ -135,7 +135,7 @@ export async function searchTool(request: Request, response: Response) {
       .getMany();
   } else {
     // Find tools with keyword and category
-    tools = await getRepository(Tool)
+    tools = await toolRepository
       .createQueryBuilder('tool')
       .leftJoinAndSelect('tool.categories', 'category')
       .where('LOWER(tool.name) like :name', {
@@ -144,7 +144,7 @@ export async function searchTool(request: Request, response: Response) {
       .andWhere('category.categoryId = :id', { id: category })
       .getMany();
     // Join images and categories
-    tools = await getRepository(Tool).findByIds(tools.map(_ => _.toolId), {
+    tools = await toolRepository.findByIds(tools.map(_ => _.toolId), {
       relations: ['images', 'categories']
     });
   }
