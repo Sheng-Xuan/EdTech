@@ -30,7 +30,7 @@ afterAll(async () => {
 });
 
 describe('Tool creation tests', () => {
-  test('POST /tool/create Creat Tool Test, shoule return 200', async () => {
+  test('POST /tool/create Creat Tool Test, should return 200', async () => {
     const response = await request(server)
       .post(API_VERSION + '/tool/create')
       .auth(accessToken, {
@@ -47,7 +47,7 @@ describe('Tool creation tests', () => {
       expect(response.body).toHaveProperty('toolId');
       toolId = response.body.toolId;
   });
-  test('POST /tool/create Creat Tool with duplicate name, shoule return 400', async () => {
+  test('POST /tool/create Creat Tool with duplicate name, should return 400', async () => {
     const response = await request(server)
       .post(API_VERSION + '/tool/create')
       .auth(accessToken, {
