@@ -7,6 +7,7 @@ import { ReviewPageComponent } from './pages/review-page/review-page.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { ToolListPageComponent } from './pages/tool-list-page/tool-list-page.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
+import { AdminPageComponent } from './pages/admin-page/admin-page.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,10 @@ const routes: Routes = [
   {
     path: 'notfound',
     component: ErrorPageComponent
+  },
+  {
+    path: 'admin',
+    component: AdminPageComponent
   },
   {
     path: '**',
