@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getRepository, Like, Equal } from 'typeorm';
+import { getRepository, Like, Equal, Repository } from 'typeorm';
 import { User } from '../entity/User';
 import { UserTokenData } from '../model/userTokenData';
 import { Image } from '../entity/Image';
@@ -10,6 +10,9 @@ import { Rating } from '../entity/Rating';
 import { Review } from '../entity/Review';
 import { ReviewComment } from '../entity/ReviewComment';
 
+const NORMAL = 0;
+const PENDING = 1;
+const DELETED = 2;
 /**
  * @apiDefine Tool
  * Tool related calls.
@@ -102,7 +105,8 @@ export async function createTool(request: Request, response: Response) {
 export async function getTool(request: Request, response: Response) {
   const toolRepository = getRepository(Tool);
   let tool = await toolRepository.findOne(request.params.id, {
-    relations: ['categories', 'images']
+    relations: ['categories', 'images'],
+    where: { status: NORMAL }
   });
   if (!tool) {
     response.status(400).json({ error: 'Tool not found' });
@@ -129,7 +133,8 @@ export async function searchTool(request: Request, response: Response) {
       .createQueryBuilder('tool')
       .leftJoinAndSelect('tool.categories', 'category')
       .leftJoinAndSelect('tool.images', 'images')
-      .where('LOWER(tool.name) like :name', {
+      .where('tool.status = 0')
+      .andWhere('LOWER(tool.name) like :name', {
         name: `%${keyword.toLowerCase()}%`
       })
       .getMany();
@@ -138,7 +143,8 @@ export async function searchTool(request: Request, response: Response) {
     tools = await toolRepository
       .createQueryBuilder('tool')
       .leftJoinAndSelect('tool.categories', 'category')
-      .where('LOWER(tool.name) like :name', {
+      .where('tool.status = 0')
+      .andWhere('LOWER(tool.name) like :name', {
         name: `%${keyword.toLowerCase()}%`
       })
       .andWhere('category.categoryId = :id', { id: category })
@@ -163,7 +169,8 @@ export async function getRecommandedTools(
 ) {
   const toolRepository = getRepository(Tool);
   let tools = await toolRepository.find({
-    relations: ['categories', 'images']
+    relations: ['categories', 'images'],
+    where: { status: NORMAL }
   });
   if (!tools) {
     response.status(400).json({ error: 'Tool not found' });
@@ -267,5 +274,82 @@ export async function getReviewsByToolId(request: Request, response: Response) {
     response.status(200).json(reviews);
   } else {
     response.status(400).json({ error: 'Invalid tool' });
+  }
+}
+
+/**
+ * @api {DELETE} /v1/tool/:toolId Delete a tool by toolId
+ * @apiGroup Tool
+ * @apiParam {number} toolId id of the tool
+ * @apiSuccess {string} OK
+ * @apiError (400) {json} error
+ */
+export async function deleteToolById(request: Request, response: Response) {
+  const userInfo: UserTokenData = response.locals.userInfo;
+  let user = await getRepository(User).findOne({ userId: userInfo.id });
+  const toolController = getRepository(Tool);
+  let tool = await toolController.findOne(request.params.toolId);
+  if (!user || !user.isAdmin) {
+    response.status(401).json({ error: 'Unauthorized' });
+  } else if (tool) {
+    tool.status = DELETED;
+    toolController.save(tool);
+    response.status(200).json({ message: 'OK' });
+  } else {
+    response.status(400).json({ error: 'Invalid tool' });
+  }
+}
+
+/**
+ * @api {GET} /v1/tools/ Get all tools (admin api)
+ * @apiGroup Tool
+ * @apiSuccess {json} tools
+ * @apiError (401) {error} Unauthorized
+ */
+export async function getAllTools(request: Request, response: Response) {
+  const userInfo: UserTokenData = response.locals.userInfo;
+  let user = await getRepository(User).findOne({ userId: userInfo.id });
+  const toolRepository = getRepository(Tool);
+  if (!user || !user.isAdmin) {
+    response.status(401).json({ error: 'Unauthorized' });
+  } else {
+    let tools = await toolRepository.find({
+      relations: ['categories', 'images']
+    });
+    response.status(200).json(tools);
+  }
+}
+
+/**
+ * @api {PUT} /v1/tool/status Update a tool's status (admin api)
+ * @apiGroup UserGroup
+ * @apiParam toolId
+ * @apiParam status
+ * @apiSuccess {json} OK
+ */
+export async function updateToolStatusById(
+  request: Request,
+  response: Response
+) {
+  const userInfo: UserTokenData = response.locals.userInfo;
+  const userRepository = await getRepository(User);
+  let user = await userRepository.findOne({ userId: userInfo.id });
+  if (!user || !user.isAdmin) {
+    response.status(401).json({ error: 'Unauthorized' });
+  } else {
+    const toolRepository = await getRepository(Tool);
+    const newStatus = request.body.status;
+    const toolId = request.body.toolId;
+    let tool = await toolRepository.findOne(toolId);
+    if (tool) {
+      tool.status = newStatus;
+      await toolRepository.save(tool).catch(err => {
+        console.error(err);
+        response.status(400).json({ error: 'error' });
+      });
+      response.status(200).json({ message: 'OK' });
+    } else {
+      response.status(400).json({ error: 'tool does not exist' });
+    }
   }
 }

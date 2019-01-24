@@ -35,6 +35,14 @@ export class Tool {
   @Column({ nullable: true })
   website: string;
 
+  @Column({ default: 0 })
+  /*
+    0: normal,
+    1: pending,
+    2: deleted
+  */
+  status: number;
+
   @OneToMany(type => Image, image => image.tool)
   images: Image[];
 
