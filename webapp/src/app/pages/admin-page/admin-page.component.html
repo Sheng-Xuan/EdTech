@@ -1,0 +1,305 @@
+<h2>EdTech Admin Dashboard</h2>
+<nz-layout>
+  <nz-sider [nzWidth]="200" style="background:#fff">
+    <ul nz-menu [nzMode]="'inline'" style="height:100%">
+      <li nz-menu-item [nzSelected]="true" (click)="setTable('users')">
+        <span title><i nz-icon type="user"></i>Users</span>
+      </li>
+      <li nz-menu-item (click)="setTable('tools')">
+        <span title><i nz-icon type="laptop"></i>Tools</span>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout style="margin-left: 200">
+    <nz-content style="overflow: initial; background:#fff">
+      <!-- User table -->
+      <nz-table
+        *ngIf="currentTable === 'users'"
+        #userTable
+        [nzData]="displayedUsers"
+      >
+        <thead>
+          <tr>
+            <th
+              nzShowSort
+              [(nzSort)]="sortMap.userId"
+              (nzSortChange)="sort('userId', $event)"
+            >
+              UserId
+            </th>
+            <th nzCustomFilter>
+              Username
+              <nz-dropdown
+                nzTrigger="click"
+                [nzPlacement]="'bottomRight'"
+                [nzClickHide]="false"
+                #dropdown
+              >
+                <i
+                  nz-icon
+                  type="search"
+                  class="ant-table-filter-icon"
+                  [class.ant-table-filter-open]="dropdown.nzVisible"
+                  nz-dropdown
+                ></i>
+                <div class="custom-filter-dropdown">
+                  <input
+                    type="text"
+                    nz-input
+                    placeholder="Search name"
+                    [(ngModel)]="searchUsername"
+                  />
+                  <button
+                    nz-button
+                    [nzType]="'primary'"
+                    (click)="
+                      searchUsers(filterUserGroupList, filterUserStatusList)
+                    "
+                  >
+                    Search
+                  </button>
+                </div>
+              </nz-dropdown>
+            </th>
+            <th>Email</th>
+            <th
+              nzShowFilter
+              [nzFilters]="userGroupList"
+              (nzFilterChange)="searchUsers($event, filterUserStatusList)"
+            >
+              Group
+            </th>
+            <th
+              nzShowFilter
+              [nzFilters]="userStatusList"
+              (nzFilterChange)="searchUsers(filterUserGroupList, $event)"
+            >
+              Status
+            </th>
+            <th
+              nzShowSort
+              [(nzSort)]="sortMap.registerTime"
+              (nzSortChange)="sort('registerTime', $event)"
+            >
+              Register Time
+            </th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of userTable.data">
+            <td>{{ user.userId }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ displayGroup(user.isAdmin) }}</td>
+            <td>{{ displayUserStatus(user.status) }}</td>
+            <td>{{ displayTime(user.registerTime) }}</td>
+            <td>
+              <nz-button-group>
+                <nz-popconfirm
+                  [nzTitle]="'Confirm?'"
+                  (nzOnConfirm)="changeUserGroup(user.userId, true)"
+                >
+                  <button
+                    nz-popconfirm
+                    *ngIf="!user.isAdmin"
+                    nz-button
+                    nzType="default"
+                  >
+                    To Admin
+                  </button>
+                </nz-popconfirm>
+                <nz-popconfirm
+                  [nzTitle]="'Confirm?'"
+                  (nzOnConfirm)="changeUserGroup(user.userId, false)"
+                >
+                  <button
+                    nz-popconfirm
+                    *ngIf="user.isAdmin"
+                    nz-button
+                    nzType="default"
+                  >
+                    To Member
+                  </button>
+                </nz-popconfirm>
+                <nz-popconfirm
+                  [nzTitle]="'Confirm?'"
+                  (nzOnConfirm)="changeUserStatus(user.userId, 2)"
+                >
+                  <button
+                    nz-popconfirm
+                    *ngIf="user.status != 2"
+                    nz-button
+                    nzType="default"
+                  >
+                    Block
+                  </button>
+                </nz-popconfirm>
+                <nz-popconfirm
+                  [nzTitle]="'Confirm?'"
+                  (nzOnConfirm)="changeUserStatus(user.userId, 0)"
+                >
+                  <button
+                    nz-popconfirm
+                    *ngIf="user.status != 0"
+                    nz-button
+                    nzType="default"
+                  >
+                    To Normal
+                  </button>
+                </nz-popconfirm>
+                <nz-popconfirm
+                  [nzTitle]="'Confirm?'"
+                  (nzOnConfirm)="changeUserStatus(user.userId, 1)"
+                >
+                  <button
+                    nz-popconfirm
+                    *ngIf="user.status != 1"
+                    nz-button
+                    nzType="default"
+                  >
+                    To Pending
+                  </button>
+                </nz-popconfirm>
+              </nz-button-group>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <!-- User table -->
+      <nz-table
+        *ngIf="currentTable === 'tools'"
+        #toolTable
+        [nzData]="displayedTools"
+      >
+        <thead>
+          <tr>
+            <th
+              nzShowSort
+              [(nzSort)]="sortMap.userId"
+              (nzSortChange)="sort('userId', $event)"
+            >
+              ToolId
+            </th>
+            <th nzCustomFilter>
+              Name
+              <nz-dropdown
+                nzTrigger="click"
+                [nzPlacement]="'bottomRight'"
+                [nzClickHide]="false"
+                #dropdown
+              >
+                <i
+                  nz-icon
+                  type="search"
+                  class="ant-table-filter-icon"
+                  [class.ant-table-filter-open]="dropdown.nzVisible"
+                  nz-dropdown
+                ></i>
+                <div class="custom-filter-dropdown">
+                  <input
+                    type="text"
+                    nz-input
+                    placeholder="Search name"
+                    [(ngModel)]="searchToolName"
+                  />
+                  <button
+                    nz-button
+                    [nzType]="'primary'"
+                    (click)="searchTools(filterToolStatusList)"
+                  >
+                    Search
+                  </button>
+                </div>
+              </nz-dropdown>
+            </th>
+            <th
+              nzShowSort
+              [(nzSort)]="sortMap.rateCount"
+              (nzSortChange)="sort('rateCount', $event)"
+            >
+              Rate Count
+            </th>
+            <th
+              nzShowSort
+              [(nzSort)]="sortMap.avgRating"
+              (nzSortChange)="sort('avgRating', $event)"
+            >
+              Average Rating
+            </th>
+            <th
+              nzShowFilter
+              [nzFilters]="toolStatusList"
+              (nzFilterChange)="searchTools($event)"
+            >
+              Status
+            </th>
+            <th
+              nzShowSort
+              [(nzSort)]="sortMap.registerTime"
+              (nzSortChange)="sort('registerTime', $event)"
+            >
+              Create Time
+            </th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let tool of toolTable.data">
+            <td>{{ tool.toolId }}</td>
+            <td>
+              <a (click)="openToolPage(tool.toolId)">{{ tool.name }}</a>
+            </td>
+            <td>{{ tool.rateCount }}</td>
+            <td>{{ tool.averageRating }}</td>
+            <td>{{ displayToolStatus(tool.status) }}</td>
+            <td>{{ displayTime(tool.createTime) }}</td>
+            <td>
+              <nz-button-group>
+                <nz-popconfirm
+                  [nzTitle]="'Confirm?'"
+                  (nzOnConfirm)="changeToolStatus(tool.toolId, 2)"
+                >
+                  <button
+                    nz-popconfirm
+                    *ngIf="tool.status != 2"
+                    nz-button
+                    nzType="default"
+                  >
+                    Delete
+                  </button>
+                </nz-popconfirm>
+                <nz-popconfirm
+                  [nzTitle]="'Confirm?'"
+                  (nzOnConfirm)="changeToolStatus(tool.toolId, 0)"
+                >
+                  <button
+                    nz-popconfirm
+                    *ngIf="tool.status != 0"
+                    nz-button
+                    nzType="default"
+                  >
+                    To Normal
+                  </button>
+                </nz-popconfirm>
+                <nz-popconfirm
+                  [nzTitle]="'Confirm?'"
+                  (nzOnConfirm)="changeToolStatus(tool.toolId, 1)"
+                >
+                  <button
+                    nz-popconfirm
+                    *ngIf="tool.status != 1"
+                    nz-button
+                    nzType="default"
+                  >
+                    To Pending
+                  </button>
+                </nz-popconfirm>
+              </nz-button-group>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

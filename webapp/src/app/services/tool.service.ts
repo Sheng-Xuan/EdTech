@@ -59,6 +59,15 @@ export class ToolService {
     });
   }
 
+  getAllTools(): Observable<any> {
+    return this.apiService.get('/tools', {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.jwtService.getToken()
+      })
+    });
+  }
+
   getTool(id): Observable<any> {
     return this.apiService.get('/tool/' + id, {
       headers: new HttpHeaders({
@@ -128,6 +137,20 @@ export class ToolService {
     return this.apiService.get('/tool/search/' + category + '/' + keyword, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
+      })
+    });
+  }
+
+  updateToolStatusById(id: number, status: number): Observable<any> {
+    return this.apiService.put('/tool/status',
+    {
+      toolId: id,
+      status: status
+    },
+    {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.jwtService.getToken()
       })
     });
   }

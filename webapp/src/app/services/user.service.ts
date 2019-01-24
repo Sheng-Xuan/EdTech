@@ -31,14 +31,18 @@ export class UserService {
   }
 
   login(email, password): Observable<any> {
-    return this.apiService.post('/login', {
-      email: email,
-      password: password
-    }, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    });
+    return this.apiService.post(
+      '/login',
+      {
+        email: email,
+        password: password
+      },
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      }
+    );
   }
 
   async setUser(user: User) {
@@ -49,15 +53,19 @@ export class UserService {
   }
 
   register(username, email, password): Observable<any> {
-    return this.apiService.post('/register', {
-      email: email,
-      password: password,
-      username: username
-    }, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    });
+    return this.apiService.post(
+      '/register',
+      {
+        email: email,
+        password: password,
+        username: username
+      },
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      }
+    );
   }
 
   logout() {
@@ -69,5 +77,42 @@ export class UserService {
 
   isLoggedIn(): boolean {
     return this.jwtService.getToken() !== undefined;
+  }
+
+  getAllUsers(): Observable<any> {
+    return this.apiService.get('/users', {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.jwtService.getToken()
+      })
+    });
+  }
+
+  updateUserGroupById(id: number, isAdmin: boolean): Observable<any> {
+    return this.apiService.put('/user/group',
+    {
+      userId: id,
+      isAdmin: isAdmin
+    },
+    {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.jwtService.getToken()
+      })
+    });
+  }
+
+  updateUserStatusById(id: number, status: number): Observable<any> {
+    return this.apiService.put('/user/status',
+    {
+      userId: id,
+      status: status
+    },
+    {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.jwtService.getToken()
+      })
+    });
   }
 }
