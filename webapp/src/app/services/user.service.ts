@@ -61,7 +61,7 @@ export class UserService {
   }
 
   logout() {
-    this.jwtService.destoryToken();
+    this.jwtService.destroyToken();
     window.localStorage.removeItem('userId');
     window.localStorage.removeItem('email');
     window.localStorage.removeItem('username');
