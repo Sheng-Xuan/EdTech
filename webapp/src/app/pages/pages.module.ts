@@ -16,6 +16,8 @@ import { NguCarouselModule } from '@ngu/carousel';
 import { ToolListPageComponent } from './tool-list-page/tool-list-page.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
+import { UserPageComponent } from './user-page/user-page.component';
+import { VerificationPageComponent } from './verification-page/verification-page.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -37,7 +39,9 @@ import { AdminPageComponent } from './admin-page/admin-page.component';
     HomePageComponent,
     ToolListPageComponent,
     ErrorPageComponent,
-    AdminPageComponent
+    AdminPageComponent,
+    UserPageComponent,
+    VerificationPageComponent
   ]
 })
 export class PagesModule {}

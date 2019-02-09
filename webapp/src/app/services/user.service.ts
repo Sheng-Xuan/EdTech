@@ -89,30 +89,65 @@ export class UserService {
   }
 
   updateUserGroupById(id: number, isAdmin: boolean): Observable<any> {
-    return this.apiService.put('/user/group',
-    {
-      userId: id,
-      isAdmin: isAdmin
-    },
-    {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + this.jwtService.getToken()
-      })
-    });
+    return this.apiService.put(
+      '/user/group',
+      {
+        userId: id,
+        isAdmin: isAdmin
+      },
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + this.jwtService.getToken()
+        })
+      }
+    );
   }
 
   updateUserStatusById(id: number, status: number): Observable<any> {
-    return this.apiService.put('/user/status',
-    {
-      userId: id,
-      status: status
-    },
-    {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + this.jwtService.getToken()
-      })
-    });
+    return this.apiService.put(
+      '/user/status',
+      {
+        userId: id,
+        status: status
+      },
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + this.jwtService.getToken()
+        })
+      }
+    );
+  }
+
+  changePassword(oldPassword: string, newPassword: string): Observable<any> {
+    return this.apiService.put(
+      '/user/password',
+      {
+        oldPassword: oldPassword,
+        newPassword: newPassword
+      },
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + this.jwtService.getToken()
+        })
+      }
+    );
+  }
+
+  verifyEmail(code: string, email: string): Observable<any> {
+    return this.apiService.post(
+      '/verification',
+      {
+        code: code,
+        email: email
+      },
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      }
+    );
   }
 }
