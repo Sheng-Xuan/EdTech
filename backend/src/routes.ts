@@ -5,7 +5,7 @@ import {
   updateUserGroupById,
   updateUserStatusById
 } from './controller/userController';
-import { registerUser, login } from './controller/authController';
+import { registerUser, login, verifyEmail } from './controller/authController';
 import * as dotenv from 'dotenv';
 import { uploadImage } from './controller/imageController';
 import {
@@ -184,5 +184,11 @@ export const AppRoutes = [
     method: 'put',
     action: updateToolStatusById,
     auth: true
+  },
+  {
+    path: apiVersion + '/verification',
+    method: 'post',
+    action: verifyEmail,
+    auth: false
   }
 ];
