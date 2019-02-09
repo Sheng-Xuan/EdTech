@@ -39,6 +39,9 @@ export class User {
   @Column()
   isAdmin: boolean;
 
+  @Column({nullable: true})
+  verificationCode: string;
+
   @CreateDateColumn()
   registerTime: Date;
 

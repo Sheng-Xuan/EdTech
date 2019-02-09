@@ -20,6 +20,7 @@ beforeAll(async () => {
   user.username = 'Bob';
   user.userId = 1;
   user.isAdmin = false;
+  user.status = 0;
   accessToken = await generateAccessToken(user);
 });
 afterAll(async () => {
@@ -56,7 +57,7 @@ describe('User test', () => {
         newPassword: 'changed'
       })
       .expect(200);
-    expect(response.text).toEqual('OK');
+    expect(response.text).toContain('OK');
   });
   test('PUT /user/password, wrong old password, should return Unauthorized', async () => {
     const response = await request(server)
@@ -69,6 +70,6 @@ describe('User test', () => {
         newPassword: 'wrong'
       })
       .expect(401);
-    expect(response.text).toEqual('Current password is wrong');
+    expect(response.text).toContain('Old password is wrong');
   });
 });

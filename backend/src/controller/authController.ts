@@ -8,6 +8,8 @@ import {
   verifyAccessToken,
   hashPassword
 } from '../util/authUtils';
+import { sendUserVerification } from '../util/emailService';
+import uuid = require('uuid/v1');
 
 /**
  * @apiDefine Authentication
@@ -39,10 +41,16 @@ export async function registerUser(request: Request, response: Response) {
   user.isAdmin = false;
   user.passwordHash = await hashPassword(password);
   user.username = username;
+  user.verificationCode = uuid();
+  user.status = 1;
   await userRepository.save(user).catch(error => {
     response.status(300).send({ error: error.message });
     return;
   });
+  // Will not send email in test mode
+  if (process.env.NODE_ENV !== 'test') {
+    sendUserVerification(email, user.verificationCode);
+  }
   response.status(200).json({ message: 'OK' });
   return;
 }
@@ -64,17 +72,20 @@ export async function login(request: Request, response: Response) {
     response.status(401).send({ error: 'Email and password not matched' });
     return;
   }
-  try {
-    await validatePassword(password, user.passwordHash);
+  const isCorrect = await validatePassword(password, user.passwordHash);
+  if (isCorrect) {
     const json = {
       token: await generateAccessToken(user),
       userId: user.userId,
       email: user.email,
       username: user.username
     };
-    response.status(200).json(json);
-  } catch (e) {
-    console.log(e);
+    if (user.status !== 0) {
+      response.status(403).json({ error: 'Your account is not activated.' });
+    } else {
+      response.status(200).json(json);
+    }
+  } else {
     response.status(401).json({ error: 'Email and password not matched' });
   }
 }
@@ -92,5 +103,19 @@ export async function authenticate(
     next();
   } catch (e) {
     response.status(401).json({ error: 'Unauthorized' });
+  }
+}
+
+export async function verifyEmail(request: Request, response: Response) {
+  const code = request.body.code;
+  const email = request.body.email;
+  const userRepository = getRepository(User);
+  let user = await userRepository.findOne({ verificationCode: code });
+  if (user && user.status === 1 && user.email === email) {
+    user.status = 0;
+    await userRepository.save(user);
+    response.status(200).json({ message: 'OK' });
+  } else {
+    response.status(404).json({ message: 'not found' });
   }
 }

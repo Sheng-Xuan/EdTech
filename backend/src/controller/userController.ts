@@ -145,15 +145,13 @@ export async function updatePassword(request: Request, response: Response) {
     response.status(401).send('Unauthorized');
     return;
   }
-  let isCorrectPassword = await validatePassword(
-    oldPassword,
-    user.passwordHash
-  );
-  if (!isCorrectPassword) {
-    response.status(401).send('Current password is wrong');
+  const isCorrect = await validatePassword(oldPassword, user.passwordHash);
+  if (isCorrect) {
+    user.passwordHash = await hashPassword(newPassword);
+    await userRepository.save(user);
+    response.status(200).json({ message: 'OK' });
+  } else {
+    response.status(401).json({ error: 'Old password is wrong' });
     return;
   }
-  user.passwordHash = await hashPassword(newPassword);
-  await userRepository.save(user);
-  response.send('OK');
 }

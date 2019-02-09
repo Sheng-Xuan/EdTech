@@ -3,6 +3,7 @@ import { User } from '../../src/entity/User';
 import { validatePassword } from '../../src/util/authUtils';
 import * as app from '../../src/app';
 import * as request from 'supertest';
+import {} from 'ts-jest';
 let server;
 beforeAll(async () => {
   server = await app.startServer();
@@ -34,6 +35,30 @@ describe('Registration and Login test', () => {
     expect(user.username).toEqual(username);
     expect(await validatePassword(password, user.passwordHash)).toBe(true);
   });
+  test('POST /login, should get 403 to login because account is not activated', async () => {
+    const response = await request(server)
+    .post(API_VERSION + '/login')
+    .send({
+      email: email,
+      password: password
+    })
+    .expect(403);
+    const user = await getRepository(User).findOne({ email: email });
+    expect(user.status).toEqual(1);
+  })
+  test('POST /verification, should get 200 to activate the account', async () => {
+    let user = await getRepository(User).findOne({ email: email });
+    const code = user.verificationCode;
+    const response = await request(server)
+    .post(API_VERSION + '/verification')
+    .send({
+      code: code,
+      email: email
+    })
+    .expect(200);
+    user = await getRepository(User).findOne({ email: email });
+    expect(user.status).toEqual(0);
+  })
   test('POST /login, should get a correct response with jwt', async () => {
     const response = await request(server)
       .post(API_VERSION + '/login')
