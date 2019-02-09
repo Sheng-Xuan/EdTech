@@ -17,6 +17,6 @@ before_script:
   - psql -c "CREATE USER dbuser with password '12345678';" -U postgres
 install:
   - cd backend
-  - npm install
+  - npm install --save bcrypt-nodejs && npm uninstall --save bcrypt
 script:
   - npm test
