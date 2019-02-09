@@ -1,0 +1,65 @@
+<nz-layout>
+  <nz-sider [nzWidth]="200" style="background:#fff">
+    <ul nz-menu [nzMode]="'inline'" style="height:100%">
+      <li nz-menu-item [nzSelected]="true" (click)="setContent('account')">
+        <span title><i nz-icon type="user"></i>My Account</span>
+      </li>
+      <li nz-menu-item (click)="setContent('password')">
+        <span title
+          ><i nz-icon type="key" theme="outline"></i>Change Password</span
+        >
+      </li>
+      <li nz-menu-item (click)="setContent('tools')">
+        <span title><i nz-icon type="laptop"></i>My tools</span>
+      </li>
+      <li nz-menu-item (click)="setContent('reviews')">
+        <span title><i nz-icon type="read" theme="outline"></i>My reviews</span>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout class="right-panel">
+    <nz-content [ngSwitch]="selectedTab">
+      <nz-content *ngSwitchCase="'account'">1</nz-content>
+      <nz-content *ngSwitchCase="'password'">
+          <form nz-form [formGroup]="validateForm" class="password-form" (ngSubmit)="changePassword()">
+              <nz-form-item>
+                <nz-form-control>
+                    <nz-form-label nzRequired>Old Password</nz-form-label>
+                    <input type="password" nz-input formControlName="oldPassword" placeholder="Old Password">
+                  <nz-form-explain *ngIf="oldPassword.dirty && oldPassword.errors && oldPassword.errors.required">Please input your old password!
+                  </nz-form-explain>
+                  <nz-form-explain *ngIf="oldPassword.dirty && oldPassword.errors && oldPassword.errors.wrong">Old password is wrong, please check again.
+                  </nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item>
+                <nz-form-control>
+                  <nz-form-label nzRequired>New Password</nz-form-label>
+                    <input type="password" nz-input formControlName="newPassword" placeholder="New Password">
+                  <nz-form-explain *ngIf="newPassword.dirty && newPassword.errors && newPassword.errors.minlength">Minimum password length is 8!
+                  </nz-form-explain>
+                  <nz-form-explain *ngIf="newPassword.dirty && newPassword.errors && newPassword.errors.notNew">New password cannot be same as the old password!
+                  </nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item>
+                  <nz-form-control>
+                    <nz-form-label nzRequired>Confirm New Password</nz-form-label>
+                      <input type="password" nz-input formControlName="checkPassword" placeholder="Confirm your new password">
+                    <nz-form-explain *ngIf="checkPassword.dirty && checkPassword.errors">Passwords not matched!
+                    </nz-form-explain>
+                  </nz-form-control>
+                </nz-form-item>
+              <nz-form-item>
+                <nz-form-explain style="color: red" *ngIf="loginError">
+                  {{loginError}}
+                </nz-form-explain>
+              </nz-form-item>
+              <button nz-button [nzType]="'primary'" [nzLoading]="isChangingPassword">Change Password</button>
+            </form>
+      </nz-content>
+      <nz-content *ngSwitchCase="'tools'">3</nz-content>
+      <nz-content *ngSwitchCase="'reviews'">4</nz-content>
+    </nz-content>
+  </nz-layout>
+</nz-layout>
