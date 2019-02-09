@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { environment } from '../environments/environment';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { ToolPublishPageComponent } from './pages/tool-publish-page/tool-publish-page.component';
 import { ToolPageComponent } from './pages/tool-page/tool-page.component';
@@ -8,6 +9,8 @@ import { HomePageComponent } from './pages/home-page/home-page.component';
 import { ToolListPageComponent } from './pages/tool-list-page/tool-list-page.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { AdminPageComponent } from './pages/admin-page/admin-page.component';
+import { UserPageComponent } from './pages/user-page/user-page.component';
+import { VerificationPageComponent } from './pages/verification-page/verification-page.component';
 
 const routes: Routes = [
   {
@@ -41,6 +44,14 @@ const routes: Routes = [
   {
     path: 'admin',
     component: AdminPageComponent
+  },
+  {
+    path: 'user-center',
+    component: UserPageComponent
+  },
+  {
+    path: 'verification',
+    component: VerificationPageComponent
   },
   {
     path: '**',
