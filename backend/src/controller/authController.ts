@@ -49,7 +49,7 @@ export async function registerUser(request: Request, response: Response) {
   });
   // Will not send email in test mode
   if (process.env.NODE_ENV !== 'test') {
-    sendUserVerification(email, user.verificationCode);
+    sendUserVerification(email, user.verificationCode, username);
   }
   response.status(200).json({ message: 'OK' });
   return;
