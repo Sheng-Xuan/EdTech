@@ -10,7 +10,7 @@ export function sendUserVerification(userEmail: string, code: string, username: 
     senderAddress,
     process.env.SENDGRID_VERIFICATION_ID,
     {
-        url: process.env.URL_LOCAL + '/verification?code=' + code + '&email=' + userEmail,
+        url: process.env.URL + '/verification?code=' + code + '&email=' + userEmail,
         username: username
     }
   );
