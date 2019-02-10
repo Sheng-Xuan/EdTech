@@ -14,7 +14,7 @@ import { ReviewService } from 'src/app/services/review.service';
   styleUrls: ['./user-page.component.css']
 })
 export class UserPageComponent implements OnInit {
-  private selectedTab = 'account';
+  selectedTab = 'account';
   validateForm: FormGroup;
   isChangingPassword = false;
   user: User;
