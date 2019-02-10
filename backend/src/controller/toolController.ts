@@ -353,3 +353,28 @@ export async function updateToolStatusById(
     }
   }
 }
+
+/**
+ * @api {GET} /v1/tools/:id Get all tools published by a user
+ * @apiGroup Tool
+ * @apiSuccess {json} tools
+ * @apiError (401) {error} Unauthorized
+ */
+export async function getToolsByUserId(request: Request, response: Response) {
+  const userInfo: UserTokenData = response.locals.userInfo;
+  if (!userInfo.id === request.params.id) {
+    response.status(401).json({ error: 'Unauthorized' });
+  } else {
+    let user = await getRepository(User).findOne({ userId: userInfo.id });
+    const toolRepository = getRepository(Tool);
+    if (!user) {
+      response.status(401).json({ error: 'Unauthorized' });
+    } else {
+      let tools = await toolRepository.find({
+        relations: ['categories', 'images'],
+        where: { author: user }
+      });
+      response.status(200).json(tools);
+    }
+  }
+}

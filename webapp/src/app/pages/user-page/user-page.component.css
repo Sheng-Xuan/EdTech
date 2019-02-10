@@ -7,3 +7,17 @@
     margin-left: 50px;
     padding: 30px;
 }
+
+.account-list {
+    list-style: none;
+}
+
+.account-item {
+    margin-top: 20px;
+}
+
+a.disabled {
+    pointer-events: none;
+    cursor: not-allowed; 
+    color: rgba(0,0,0,.65);
+ }

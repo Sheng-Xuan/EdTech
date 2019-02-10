@@ -19,47 +19,147 @@
   </nz-sider>
   <nz-layout class="right-panel">
     <nz-content [ngSwitch]="selectedTab">
-      <nz-content *ngSwitchCase="'account'">1</nz-content>
-      <nz-content *ngSwitchCase="'password'">
-          <form nz-form [formGroup]="validateForm" class="password-form" (ngSubmit)="changePassword()">
-              <nz-form-item>
-                <nz-form-control>
-                    <nz-form-label nzRequired>Old Password</nz-form-label>
-                    <input type="password" nz-input formControlName="oldPassword" placeholder="Old Password">
-                  <nz-form-explain *ngIf="oldPassword.dirty && oldPassword.errors && oldPassword.errors.required">Please input your old password!
-                  </nz-form-explain>
-                  <nz-form-explain *ngIf="oldPassword.dirty && oldPassword.errors && oldPassword.errors.wrong">Old password is wrong, please check again.
-                  </nz-form-explain>
-                </nz-form-control>
-              </nz-form-item>
-              <nz-form-item>
-                <nz-form-control>
-                  <nz-form-label nzRequired>New Password</nz-form-label>
-                    <input type="password" nz-input formControlName="newPassword" placeholder="New Password">
-                  <nz-form-explain *ngIf="newPassword.dirty && newPassword.errors && newPassword.errors.minlength">Minimum password length is 8!
-                  </nz-form-explain>
-                  <nz-form-explain *ngIf="newPassword.dirty && newPassword.errors && newPassword.errors.notNew">New password cannot be same as the old password!
-                  </nz-form-explain>
-                </nz-form-control>
-              </nz-form-item>
-              <nz-form-item>
-                  <nz-form-control>
-                    <nz-form-label nzRequired>Confirm New Password</nz-form-label>
-                      <input type="password" nz-input formControlName="checkPassword" placeholder="Confirm your new password">
-                    <nz-form-explain *ngIf="checkPassword.dirty && checkPassword.errors">Passwords not matched!
-                    </nz-form-explain>
-                  </nz-form-control>
-                </nz-form-item>
-              <nz-form-item>
-                <nz-form-explain style="color: red" *ngIf="loginError">
-                  {{loginError}}
-                </nz-form-explain>
-              </nz-form-item>
-              <button nz-button [nzType]="'primary'" [nzLoading]="isChangingPassword">Change Password</button>
-            </form>
+      <nz-content *ngSwitchCase="'account'">
+        <ul class="account-list">
+          <li class="account-item"><b>Username</b>: {{ user.username }}</li>
+          <li class="account-item"><b>Email</b>: {{ user.email }}</li>
+        </ul>
       </nz-content>
-      <nz-content *ngSwitchCase="'tools'">3</nz-content>
-      <nz-content *ngSwitchCase="'reviews'">4</nz-content>
+      <nz-content *ngSwitchCase="'password'">
+        <form
+          nz-form
+          [formGroup]="validateForm"
+          class="password-form"
+          (ngSubmit)="changePassword()"
+        >
+          <nz-form-item>
+            <nz-form-control>
+              <nz-form-label nzRequired>Old Password</nz-form-label>
+              <input
+                type="password"
+                nz-input
+                formControlName="oldPassword"
+                placeholder="Old Password"
+              />
+              <nz-form-explain
+                *ngIf="
+                  oldPassword.dirty &&
+                  oldPassword.errors &&
+                  oldPassword.errors.required
+                "
+                >Please input your old password!
+              </nz-form-explain>
+              <nz-form-explain
+                *ngIf="
+                  oldPassword.dirty &&
+                  oldPassword.errors &&
+                  oldPassword.errors.wrong
+                "
+                >Old password is wrong, please check again.
+              </nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-control>
+              <nz-form-label nzRequired>New Password</nz-form-label>
+              <input
+                type="password"
+                nz-input
+                formControlName="newPassword"
+                placeholder="New Password"
+              />
+              <nz-form-explain
+                *ngIf="
+                  newPassword.dirty &&
+                  newPassword.errors &&
+                  newPassword.errors.minlength
+                "
+                >Minimum password length is 8!
+              </nz-form-explain>
+              <nz-form-explain
+                *ngIf="
+                  newPassword.dirty &&
+                  newPassword.errors &&
+                  newPassword.errors.notNew
+                "
+                >New password cannot be same as the old password!
+              </nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-control>
+              <nz-form-label nzRequired>Confirm New Password</nz-form-label>
+              <input
+                type="password"
+                nz-input
+                formControlName="checkPassword"
+                placeholder="Confirm your new password"
+              />
+              <nz-form-explain
+                *ngIf="checkPassword.dirty && checkPassword.errors"
+                >Passwords not matched!
+              </nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-explain style="color: red" *ngIf="loginError">
+              {{ loginError }}
+            </nz-form-explain>
+          </nz-form-item>
+          <button
+            nz-button
+            [nzType]="'primary'"
+            [nzLoading]="isChangingPassword"
+          >
+            Change Password
+          </button>
+        </form>
+      </nz-content>
+      <nz-content *ngSwitchCase="'tools'">
+          <nz-table #toolTable [nzData]="myTools">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Categories</th>
+                  <th>Average Rating</th>
+                  <th>No. of Rating</th>
+                  <th>Status</th>
+                  <th>Publish Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let tool of toolTable.data">
+                  <td><a [class.disabled]="tool.status===2" href="/tool/{{tool.toolId}}">{{tool.name}}</a></td>
+                  <td><span *ngFor="let cat of tool.categories">
+                    {{cat.name}}<nz-divider nzType="vertical"></nz-divider>
+                  </span>
+                  </td>
+                  <td>{{tool.averageRating}}</td>
+                  <td>{{tool.rateCount}}</td>
+                  <td>{{displayToolStatus(tool.status)}}</td>
+                  <td>{{displayTime(tool.createTime)}}</td>
+                </tr>
+              </tbody>
+            </nz-table>
+      </nz-content>
+      <nz-content *ngSwitchCase="'reviews'">
+          <nz-table #reviewTable [nzData]="myReviews">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Tool</th>
+                  <th>Publish Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let review of reviewTable.data">
+                  <td><a href="/review/{{review.reviewId}}">{{review.title}}</a></td>
+                  <td><a href="/tool/{{review.tool.toolId}}">{{review.tool.name}}</a></td>
+                  <td>{{displayTime(review.createTime)}}</td>
+                </tr>
+              </tbody>
+            </nz-table>
+      </nz-content>
     </nz-content>
   </nz-layout>
 </nz-layout>

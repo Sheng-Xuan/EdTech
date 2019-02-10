@@ -10,7 +10,12 @@ import { Observable } from 'rxjs';
 export class ReviewService {
   constructor(private apiService: ApiService, private jwtService: JwtService) {}
 
-  publishReview(id: number, title: string, content: string, images: string[]): Observable<any> {
+  publishReview(
+    id: number,
+    title: string,
+    content: string,
+    images: string[]
+  ): Observable<any> {
     return this.apiService.post(
       '/review/create/' + id,
       {
@@ -27,14 +32,11 @@ export class ReviewService {
     );
   }
   getReviewById(id: number): Observable<any> {
-    return this.apiService.get(
-      '/review/' + id,
-      {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json'
-        })
-      }
-    );
+    return this.apiService.get('/review/' + id, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    });
   }
 
   postComment(commentId, comment): Observable<any> {
@@ -56,7 +58,16 @@ export class ReviewService {
   getReviewComments(reviewId): Observable<any> {
     return this.apiService.get('/review/comments/' + reviewId, {
       headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    });
+  }
+
+  getReviewsByUserId(userId: number): Observable<any> {
+    return this.apiService.get('/reviews/' + userId, {
+      headers: new HttpHeaders({
         'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.jwtService.getToken()
       })
     });
   }

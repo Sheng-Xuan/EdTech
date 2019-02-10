@@ -125,3 +125,30 @@ export async function getReviewById(request: Request, response: Response) {
     });
   }
 }
+
+/**
+ * @api {GET} /v1/reviews/:userId Retrive reviews written by a user
+ * @apiGroup Review
+ * @apiParam {number} userId id of the author
+ * @apiSuccess {json} list of reviews info
+ * @apiError (400) {json} error
+ */
+export async function getReviewsByUserId(request: Request, response: Response) {
+  const userInfo: UserTokenData = response.locals.userInfo;
+  if (!userInfo.id === request.params.userId) {
+    response.status(401).json({ error: 'Unauthorized' });
+  } else {
+    let user = await getRepository(User).findOne({ userId: userInfo.id });
+    const reviewRepository = getRepository(Review);
+    if (!user) {
+      response.status(401).json({ error: 'Author not found' });
+    } else {
+      let reviews = await reviewRepository.find({
+        relations: ['tool'],
+        select: ['reviewId', 'title', 'createTime'],
+        where: { author: user }
+      });
+      response.status(200).json(reviews);
+    }
+  }
+}

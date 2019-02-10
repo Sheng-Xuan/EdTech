@@ -142,12 +142,23 @@ export class ToolService {
   }
 
   updateToolStatusById(id: number, status: number): Observable<any> {
-    return this.apiService.put('/tool/status',
-    {
-      toolId: id,
-      status: status
-    },
-    {
+    return this.apiService.put(
+      '/tool/status',
+      {
+        toolId: id,
+        status: status
+      },
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + this.jwtService.getToken()
+        })
+      }
+    );
+  }
+
+  getToolsByUser(id: number): Observable<any> {
+    return this.apiService.get('/tools/' + id, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + this.jwtService.getToken()

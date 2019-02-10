@@ -18,7 +18,8 @@ import {
   searchTool,
   deleteToolById,
   getAllTools,
-  updateToolStatusById
+  updateToolStatusById,
+  getToolsByUserId
 } from './controller/toolController';
 import { getCategories } from './controller/categoryController';
 import {
@@ -27,7 +28,7 @@ import {
   getReviewComments,
   postReviewComment
 } from './controller/commentController';
-import { publishReview, getReviewById } from './controller/reviewController';
+import { publishReview, getReviewById, getReviewsByUserId } from './controller/reviewController';
 
 dotenv.config();
 const apiVersion = process.env.API_VERSION;
@@ -190,5 +191,17 @@ export const AppRoutes = [
     method: 'post',
     action: verifyEmail,
     auth: false
+  },
+  {
+    path: apiVersion + '/tools/:id',
+    method: 'get',
+    action: getToolsByUserId,
+    auth: true
+  },
+  {
+    path: apiVersion + '/reviews/:userId',
+    method: 'get',
+    action: getReviewsByUserId,
+    auth: true
   }
 ];

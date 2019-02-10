@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
 import { NzMessageService } from 'ng-zorro-antd';
+import { User } from 'src/app/models/user.model';
+import { TimeService } from 'src/app/services/time.service';
+import { ToolService } from 'src/app/services/tool.service';
+import { MapType } from '@angular/compiler';
+import { ReviewService } from 'src/app/services/review.service';
 
 @Component({
   selector: 'app-user-page',
@@ -12,11 +17,16 @@ export class UserPageComponent implements OnInit {
   private selectedTab = 'account';
   validateForm: FormGroup;
   isChangingPassword = false;
-
+  user: User;
+  myTools = [];
+  myReviews = [];
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
     private message: NzMessageService,
+    private timeService: TimeService,
+    private toolService: ToolService,
+    private reviewService: ReviewService
   ) {
     this.validateForm = this.formBuilder.group(
       {
@@ -28,12 +38,41 @@ export class UserPageComponent implements OnInit {
     );
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.user = this.userService.getCurrentUser();
+  }
   setContent(tab: string) {
     this.selectedTab = tab;
+    if (this.selectedTab === 'tools') {
+      this.loadTools();
+    }
+    if (this.selectedTab === 'reviews') {
+      this.loadReviews();
+    }
     this.validateForm.reset();
     this.isChangingPassword = false;
-    console.log(this.selectedTab);
+  }
+
+  loadTools() {
+    this.toolService.getToolsByUser(this.user.userId).subscribe(
+      res => {
+        this.myTools = res;
+      },
+      err => {
+        this.message.error(err.error);
+      }
+    );
+  }
+
+  loadReviews() {
+    this.reviewService.getReviewsByUserId(this.user.userId).subscribe(
+      res => {
+        this.myReviews = res;
+      },
+      err => {
+        this.message.error(err.error);
+      }
+    );
   }
 
   changePassword(): void {
@@ -84,5 +123,22 @@ export class UserPageComponent implements OnInit {
   }
   get checkPassword() {
     return this.validateForm.get('checkPassword');
+  }
+
+  displayToolStatus(status) {
+    switch (status) {
+      case 0:
+        return 'Normal';
+      case 1:
+        return 'Pending';
+      case 2:
+        return 'Deleted';
+      default:
+        return 'Unknown';
+    }
+  }
+
+  displayTime(time: string) {
+    return this.timeService.convertGMTToLocalTime(time);
   }
 }
