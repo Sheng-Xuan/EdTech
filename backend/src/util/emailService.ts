@@ -1,35 +1,40 @@
 // using SendGrid's v3 Node.js Library
 // https://github.com/sendgrid/sendgrid-nodejs
 import sgMail = require('@sendgrid/mail');
+
 const senderAddress = 'noreply@edtech.top';
 
-export function sendUserVerification(userEmail: string, code: string) {
+export function sendUserVerification(userEmail: string, code: string, username: string) {
   sendEmail(
     userEmail,
     senderAddress,
-    'EdTech | Please verify your email.',
-    'Please verify your email address',
-    'Please click this link: edtech.top/verification?code=' + code + '?email=' + userEmail
+    process.env.SENDGRID_VERIFICATION_ID,
+    {
+        url: process.env.URL_LOCAL + '/verification?code=' + code + '&email=' + userEmail,
+        username: username
+    }
   );
 }
 export function sendForgetPassword(userEmail: string) {
-  sendEmail(userEmail, 'default', 'default', 'default', 'default');
+  sendEmail(userEmail, senderAddress, 'default', {});
 }
 
 function sendEmail(
   to: string,
   from: string,
-  subject: string,
-  text: string,
-  html: string
+  templateId: string,
+  data: object
 ) {
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
   const msg = {
     to: to,
     from: from,
-    subject: subject,
-    text: text,
-    html: html
+    subject: 'default',
+    text: 'default',
+    html: '<p></p>',
+    templateId: templateId,
+    dynamic_template_data: data
   };
+  sgMail.setSubstitutionWrappers('{{', '}}'); // Configure the substitution tag wrappers globally
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
   sgMail.send(msg);
 }
