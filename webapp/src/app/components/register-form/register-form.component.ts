@@ -26,7 +26,9 @@ export class RegisterFormComponent implements OnInit {
         .register(this.username.value, this.email.value, this.password.value)
         .subscribe(
           (body: Response) => {
-            this.message.success('Register successfully, please log in.');
+            this.message.success(
+              'Registered successfully, we have sent an email to your email address. Please verify your email before login.'
+            , { nzDuration: 0 });
             this.changeToLogin.emit(true);
           },
           err => {
@@ -62,9 +64,6 @@ export class RegisterFormComponent implements OnInit {
     return noError;
   }
 
-  getCaptcha(e: MouseEvent): void {
-    e.preventDefault();
-  }
   constructor(
     private formbuilder: FormBuilder,
     private userService: UserService,
