@@ -107,7 +107,7 @@
 <div nz-row>
   <nz-card nzTitle="Reviews" [nzExtra]="addReviewTemplate">
     <nz-list
-      *ngIf="comments && comments.length > 0"
+      *ngIf="reviews && reviews.length > 0"
       [nzLoading]="reviewLoading"
       [nzDataSource]="reviews"
       [nzRenderItem]="item"
