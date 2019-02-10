@@ -67,7 +67,7 @@ export class ToolPublishPageComponent implements OnInit {
       this.publishForm.controls[i].markAsDirty();
       this.publishForm.controls[i].updateValueAndValidity();
     }
-    if (this.name.valid && this.category.valid && this.description.valid) {
+    if (this.name.valid && this.category.valid && this.description.valid && this.website.valid) {
       this.toolService
         .publishTool(
           this.name.value,
@@ -102,7 +102,7 @@ export class ToolPublishPageComponent implements OnInit {
       category: [null, [Validators.required]],
       description: [null, [Validators.required]],
       images: [null],
-      website: [null]
+      website: [null, [Validators.pattern('^https?:\/\/(.*)')]]
     });
   }
 

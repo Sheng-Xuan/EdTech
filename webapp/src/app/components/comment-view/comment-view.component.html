@@ -1,6 +1,5 @@
 <nz-card nzTitle='Comments'>
-  <nz-list [nzLoading]="commentsLoading" [nzDataSource]="comments" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
-    <div class="no-comment" *ngIf="comments && comments.length==0">No comment yet, share your opinions now!</div>
+  <nz-list *ngIf="comments && comments.length>0" [nzLoading]="commentsLoading" [nzDataSource]="comments" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
     <ng-template #item let-item>
       <nz-list-item>
         <nz-list-item-meta [nzTitle]="nzTitle" [nzDescription]="content">
@@ -18,6 +17,7 @@
       </nz-list-item>
     </ng-template>
   </nz-list>
+  <div class="no-comment" *ngIf="comments && comments.length==0">No comment yet, share your opinions now!</div>
   <!-- <nz-pagination *ngIf="commentCount>10" [nzPageIndex]="1" [nzTotal]="50"></nz-pagination> -->
   <div nz-row nzType="flex" nzJustify="space-between" nzAlign="bottom">
     <div nz-col nzOffset=1 nzSpan=17>

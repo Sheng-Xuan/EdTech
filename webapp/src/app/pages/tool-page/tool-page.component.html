@@ -1,5 +1,5 @@
 <div *ngIf="!toolLoading" nz-row>
-  <nz-card nzTitle="{{tool.name}}">
+  <nz-card nzTitle="{{ tool.name }}">
     <div nz-col [nzSm]="{ span: 24 }" [nzMd]="{ span: 8, offset: 0 }">
       <nz-card
         [nzBordered]="false"
@@ -44,7 +44,9 @@
           <li *ngIf="tool.website" class="desc_row">
             <strong>Website</strong>
           </li>
-          <li *ngIf="tool.website" class="desc_row">{{ tool.website }}</li>
+          <li *ngIf="tool.website" class="desc_row">
+            <a href="{{ tool.website }}">{{ tool.website }}</a>
+          </li>
           <li class="desc_row"><strong>About This Tool</strong></li>
           <li class="desc_row">{{ tool.description }}</li>
         </ul>
@@ -105,20 +107,12 @@
 <div nz-row>
   <nz-card nzTitle="Reviews" [nzExtra]="addReviewTemplate">
     <nz-list
+      *ngIf="comments && comments.length > 0"
       [nzLoading]="reviewLoading"
       [nzDataSource]="reviews"
       [nzRenderItem]="item"
       [nzItemLayout]="'horizontal'"
     >
-      <div
-        (click)="onAddReview()"
-        style="cursor: pointer;"
-        nz-col
-        nzOffset="1"
-        *ngIf="reviews && reviews.length == 0"
-      >
-        No reviews yet, be the first reviewer now!
-      </div>
       <ng-template #item let-item>
         <nz-list-item>
           <nz-list-item-meta [nzTitle]="nzTitle" [nzDescription]="content">
@@ -134,7 +128,7 @@
             <ng-template #content>
               <div style="padding-left: 4.16666667%; color:rgba(0,0,0,0.8)">
                 <a
-                  routerLink="/review/{{item.reviewId}}"
+                  routerLink="/review/{{ item.reviewId }}"
                   routerLinkActive="active"
                   >{{ item.title }}</a
                 >
@@ -144,6 +138,15 @@
         </nz-list-item>
       </ng-template>
     </nz-list>
+    <div
+      (click)="onAddReview()"
+      style="cursor: pointer;"
+      nz-col
+      nzOffset="1"
+      *ngIf="reviews && reviews.length == 0"
+    >
+      No reviews yet, be the first reviewer now!
+    </div>
   </nz-card>
   <ng-template #addReviewTemplate>
     <a (click)="onAddReview()">Add Review</a>

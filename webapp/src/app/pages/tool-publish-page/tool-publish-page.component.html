@@ -41,7 +41,7 @@
             [nzPreview]="handlePreview"
             [nzBeforeUpload]="uploadCheck"
           >
-            <i class="anticon anticon-plus"></i>
+            <i nz-icon type="plus" theme="outline"></i>
             <div class="ant-upload-text">Upload</div>
           </nz-upload>
           <nz-modal
@@ -60,6 +60,9 @@
             <nz-form-label [nzSpan]="6">Website(optional)</nz-form-label>
             <nz-form-control [nzSpan]="14">
               <input nz-input formControlName="website" id="website" />
+              <nz-form-explain *ngIf="website.dirty && website.errors"
+                >Website must start with http:// or https://
+              </nz-form-explain>
             </nz-form-control>
           </nz-form-item>
           <nz-form-label [nzSpan]="6">Description</nz-form-label>
