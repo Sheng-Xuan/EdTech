@@ -26,7 +26,7 @@ export class AuthModalComponent implements OnInit {
     return this.action === 'login' ? 'Register' : 'Login';
   }
   getNextActionText() {
-    return this.action === 'login' ? 'Not register yet? ' : 'Already registered? ';
+    return this.action === 'login' ? 'Not registered yet? ' : 'Already registered? ';
   }
   switchAction() {
     this.action = this.action === 'login' ? 'register' : 'login';

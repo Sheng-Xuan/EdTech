@@ -15,8 +15,10 @@ export function sendUserVerification(userEmail: string, code: string, username: 
     }
   );
 }
-export function sendForgetPassword(userEmail: string) {
-  sendEmail(userEmail, senderAddress, 'default', {});
+export function sendForgotPassword(userEmail: string, code: string) {
+  sendEmail(userEmail, senderAddress, process.env.SENDGRID_FORGET_PASSWORD, {
+    code: code
+  });
 }
 
 function sendEmail(

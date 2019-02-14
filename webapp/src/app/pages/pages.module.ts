@@ -18,6 +18,7 @@ import { ErrorPageComponent } from './error-page/error-page.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { UserPageComponent } from './user-page/user-page.component';
 import { VerificationPageComponent } from './verification-page/verification-page.component';
+import { ForgotPasswordPageComponent } from './forgot-password-page/forgot-password-page.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -41,7 +42,8 @@ import { VerificationPageComponent } from './verification-page/verification-page
     ErrorPageComponent,
     AdminPageComponent,
     UserPageComponent,
-    VerificationPageComponent
+    VerificationPageComponent,
+    ForgotPasswordPageComponent
   ]
 })
 export class PagesModule {}

@@ -8,8 +8,9 @@ import {
   verifyAccessToken,
   hashPassword
 } from '../util/authUtils';
-import { sendUserVerification } from '../util/emailService';
+import { sendUserVerification, sendForgotPassword } from '../util/emailService';
 import uuid = require('uuid/v1');
+import { ResetPasswordCode } from '../entity/ResetPasswordCode';
 
 /**
  * @apiDefine Authentication
@@ -69,7 +70,7 @@ export async function login(request: Request, response: Response) {
   const userRepository = getRepository(User);
   let user = await userRepository.findOne({ email: email });
   if (!user) {
-    response.status(401).send({ error: 'Email and password not matched' });
+    response.status(401).json({ error: 'Email and password not matched' });
     return;
   }
   const isCorrect = await validatePassword(password, user.passwordHash);
@@ -87,6 +88,110 @@ export async function login(request: Request, response: Response) {
     }
   } else {
     response.status(401).json({ error: 'Email and password not matched' });
+  }
+}
+
+/**
+ * @api {POST} /v1/forgotpassword/code Request server to send reset password code to email
+ * @apiGroup Authentication
+ * @apiParam {String} email
+ * @apiSuccess (200)
+ * @apiError (401) {Object} error
+ */
+export async function getResetPasswordCode(request: Request, response: Response) {
+  const email = request.body.email;
+  const userRepository = getRepository(User);
+  let user = await userRepository.findOne({ email: email });
+  if (!user) {
+    response.status(401).json({ error: 'Email is not registered' });
+    return;
+  }
+  const codeRepository = getRepository(ResetPasswordCode);
+  let code = new ResetPasswordCode();
+  code.email = email;
+  code.code = uuid().substring(0, 8)
+  code.key = uuid();
+  await codeRepository.save(code);
+  sendForgotPassword(email, code.code);
+  response.status(200).json({ message: 'Code has sent to your email.' });
+}
+
+/**
+ * @api {POST} /v1/forgotpassword/verification Compare the code stored and user given
+ * @apiGroup Authentication
+ * @apiParam {String} email
+ * @apiParam {String} code
+ * @apiSuccess (200) {Object} key
+ * @apiError (401) {Object} error
+ */
+export async function checkResetPasswordCode(request: Request, response: Response) {
+  const email = request.body.email;
+  const verificationCode = request.body.code;
+  const userRepository = getRepository(User);
+  let user = await userRepository.findOne({ email: email });
+  if (!user) {
+    response.status(401).json({ error: 'Failed, please check your email and code' });
+    return;
+  }
+  const codeRepository = getRepository(ResetPasswordCode);
+  let code = await codeRepository.findOne({ email: email, code: verificationCode });
+  if (!code) {
+    response.status(401).json({ error: 'Failed, please check your email and code' });
+    return;
+  } else {
+    const now = Date.now();
+    const saved = new Date(code.createTime).getTime();
+    console.log(now, saved);
+    // Expire time is 10 minutes
+    if (now - saved > 600000) {
+      await codeRepository.delete(code);
+      response.status(401).json({ error: 'Code is expired, please request a new code again' });
+      return;
+    }
+    response.status(200).json({key: code.key});
+    return;
+  }
+}
+
+/**
+ * @api {POST} /v1/forgotpassword/newpassword Set new password
+ * @apiGroup Authentication
+ * @apiParam {String} password
+ * @apiParam {String} key
+ * @apiParam {String} email
+ * @apiSuccess (200)
+ * @apiError (401) {Object} error
+ */
+export async function resetPassword(request: Request, response: Response) {
+  const email = request.body.email;
+  const key = request.body.key;
+  const password = request.body.password
+  const userRepository = getRepository(User);
+  let user = await userRepository.findOne({ email: email });
+  if (!user) {
+    response.status(401).json({ error: 'Something is wrong, please retry' });
+    return;
+  }
+  const codeRepository = getRepository(ResetPasswordCode);
+  let code = await codeRepository.findOne({ email: email, key: key });
+  if (!code) {
+    response.status(401).json({ error: 'Something is wrong, please retry' });
+    return;
+  } else {
+    const now = Date.now();
+    const saved = new Date(code.createTime).getTime();
+    console.log(now, saved);
+    // Expire time for this step is 15 minutes
+    if (now - saved > 900000) {
+      await codeRepository.delete(code);
+      response.status(401).json({ error: 'Session is expired, please request a new code again' });
+      return;
+    }
+    user.passwordHash = await hashPassword(password);
+    userRepository.save(user);
+    response.status(200).json({message: 'OK'});
+    codeRepository.delete(code);
+    return;
   }
 }
 

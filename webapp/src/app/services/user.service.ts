@@ -150,4 +150,49 @@ export class UserService {
       }
     );
   }
+
+  sendVerificationCode(email: string): Observable<any> {
+    return this.apiService.post(
+      '/forgotpassword/code',
+      {
+        email: email
+      },
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      }
+    );
+  }
+
+  checkVerificationCode(email: string, code: string): Observable<any> {
+    return this.apiService.post(
+      '/forgotpassword/verification',
+      {
+        email: email,
+        code: code
+      },
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      }
+    );
+  }
+
+  resetPassword(newPassword: string, key: string, email: string): Observable<any> {
+    return this.apiService.post(
+      '/forgotpassword/newpassword',
+      {
+        email: email,
+        password: newPassword,
+        key: key
+      },
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      }
+    );
+  }
 }

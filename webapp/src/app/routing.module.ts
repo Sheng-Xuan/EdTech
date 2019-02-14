@@ -11,6 +11,7 @@ import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { AdminPageComponent } from './pages/admin-page/admin-page.component';
 import { UserPageComponent } from './pages/user-page/user-page.component';
 import { VerificationPageComponent } from './pages/verification-page/verification-page.component';
+import { ForgotPasswordPageComponent } from './pages/forgot-password-page/forgot-password-page.component';
 
 const routes: Routes = [
   {
@@ -52,6 +53,10 @@ const routes: Routes = [
   {
     path: 'verification',
     component: VerificationPageComponent
+  },
+  {
+    path: 'forgot-password',
+    component: ForgotPasswordPageComponent
   },
   {
     path: '**',

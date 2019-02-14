@@ -5,7 +5,7 @@ import {
   updateUserGroupById,
   updateUserStatusById
 } from './controller/userController';
-import { registerUser, login, verifyEmail } from './controller/authController';
+import { registerUser, login, verifyEmail, getResetPasswordCode, checkResetPasswordCode, resetPassword } from './controller/authController';
 import * as dotenv from 'dotenv';
 import { uploadImage } from './controller/imageController';
 import {
@@ -203,5 +203,23 @@ export const AppRoutes = [
     method: 'get',
     action: getReviewsByUserId,
     auth: true
+  },
+  {
+    path: apiVersion + '/forgotpassword/code',
+    method: 'post',
+    action: getResetPasswordCode,
+    auth: false
+  },
+  {
+    path: apiVersion + '/forgotpassword/verification',
+    method: 'post',
+    action: checkResetPasswordCode,
+    auth: false
+  },
+  {
+    path: apiVersion + '/forgotpassword/newpassword',
+    method: 'post',
+    action: resetPassword,
+    auth: false
   }
 ];
