@@ -37,10 +37,14 @@ export class LoginFormComponent implements OnInit {
         },
         err => {
           this.loginError = err.error;
+          this.isLogingIn = false;
         }
       );
     }
   }
+  // resolved(captchaResponse: string) {
+  //   console.log(`Resolved captcha with response ${captchaResponse}:`);
+  // }
 
   constructor(
     private fb: FormBuilder,
@@ -52,7 +56,8 @@ export class LoginFormComponent implements OnInit {
     this.validateForm = this.fb.group({
       email: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required]],
-      remember: [true]
+      remember: [true],
+      // captcha: [null, [Validators.required]]
     });
   }
   get email() {
@@ -61,4 +66,7 @@ export class LoginFormComponent implements OnInit {
   get password() {
     return this.validateForm.get('password');
   }
+  // get captcha() {
+  //   return this.validateForm.get('captcha');
+  // }
 }

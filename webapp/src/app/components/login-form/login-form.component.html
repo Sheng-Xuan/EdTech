@@ -15,8 +15,14 @@
       </nz-input-group>
       <nz-form-explain *ngIf="password.dirty && password.errors">Please input your Password!
       </nz-form-explain>
+      <a href="/forgot-password">Forgot password?</a>
     </nz-form-control>
   </nz-form-item>
+  <!-- <nz-form-item>
+    <nz-form-control>
+      <re-captcha formControlName="captcha" (resolved)="resolved($event)" siteKey="'6Le6ZZAUAAAAAP3sD1dTQgRtnx5zoFZc8sc-wTbc'"></re-captcha>
+    </nz-form-control>
+  </nz-form-item> -->
   <nz-form-item>
     <nz-form-control>
       <label nz-checkbox formControlName="remember">
