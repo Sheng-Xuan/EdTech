@@ -1,0 +1,21 @@
+<nz-list
+  [nzDataSource]="data"
+  [nzRenderItem]="item"
+  [nzLoading]="initLoading"
+  [nzLoadMore]="loadMore"
+  [nzGrid]="{ gutter: 16, xs: 24, sm: 12, md: 8, lg: 8, xl: 6 }"
+>
+  <ng-template #item let-item>
+    <nz-list-item [nzContent]="nzContent">
+      <ng-template #nzContent>
+        <app-review-box [data]="item"></app-review-box>
+      </ng-template>
+    </nz-list-item>
+  </ng-template>
+  <ng-template #loadMore>
+    <div class="load-more">
+      <button *ngIf="!noMoreData" [nzLoading]="loadingMore" (click)="onLoadMore()" nz-button nzType="primary" nzSize="large" nzShape="round">Load More</button>
+    </div>
+  </ng-template>
+</nz-list>
+
