@@ -8,6 +8,7 @@ import { NguCarouselConfig } from '@ngu/carousel';
 import { ToolService } from '../../services/tool.service';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { ReviewService } from 'src/app/services/review.service';
 
 @Component({
   selector: 'app-home-page',
@@ -22,13 +23,26 @@ export class HomePageComponent implements OnInit {
     'background-position': 'center',
     'background-repeat': 'no-repeat'
   };
-  recommandationLoaded = false;
+  recommendationLoaded = false;
+  reviewsLoaded = false;
   searchCategory = 0;
   searchText = '';
   categories = [];
-  recommandedTools: Array<any>;
+  recommendedTools: Array<any>;
+  reviews: Array<any>;
   carouselTileConfig: NguCarouselConfig = {
     grid: { xs: 2, sm: 2, md: 4, lg: 6, all: 0 },
+    speed: 250,
+    point: {
+      visible: true
+    },
+    touch: true,
+    loop: true,
+    interval: { timing: 5000 },
+    animation: 'lazy'
+  };
+  reviewTileConfig: NguCarouselConfig = {
+    grid: { xs: 1, sm: 2, md: 2, lg: 3, all: 0 },
     speed: 250,
     point: {
       visible: true
@@ -42,18 +56,24 @@ export class HomePageComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private toolService: ToolService,
     private router: Router,
-    private titleService: Title
+    private titleService: Title,
+    private reviewService: ReviewService
   ) {}
 
   ngOnInit() {
     this.titleService.setTitle('EdTech | Home Page');
-    this.toolService.getRecommandedToolList().subscribe(res => {
-      this.recommandedTools = res;
-      this.recommandationLoaded = true;
+    this.toolService.getRecommendedToolList().subscribe(res => {
+      this.recommendedTools = res;
+      this.recommendationLoaded = true;
       this.cdr.detectChanges();
     });
     this.toolService.getCategories().subscribe(res => {
       this.categories = res;
+    });
+    this.reviewService.getNewReviews().subscribe(res => {
+      this.reviews = res;
+      this.reviewsLoaded = true;
+      this.cdr.detectChanges();
     });
   }
   getImagePath(image) {
