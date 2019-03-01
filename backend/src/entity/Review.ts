@@ -13,6 +13,12 @@ export class Review {
     @Column()
     title: string;
 
+    @Column({default: null})
+    sample: string;
+
+    @Column({ default: 0 })
+    visits: number
+
     @Column()
     fileName: string;
 
