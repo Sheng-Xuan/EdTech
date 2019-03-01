@@ -86,7 +86,6 @@ export class UserPageComponent implements OnInit {
       this.isChangingPassword = false;
       this.userService.changePassword(this.oldPassword.value, this.newPassword.value).subscribe(
         res => {
-          console.log(res);
           this.message.success('Password is updated');
           this.validateForm.reset();
         },
