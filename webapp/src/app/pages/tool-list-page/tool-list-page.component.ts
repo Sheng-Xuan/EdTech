@@ -28,12 +28,4 @@ export class ToolListPageComponent implements OnInit {
       this.data = res;
     });
   }
-
-  getImagePath(image) {
-    if (image) {
-      return '/files/' + image.localFileName;
-    } else {
-      return 'assets/img-not-available.jpg';
-    }
-  }
 }
