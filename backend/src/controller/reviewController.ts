@@ -1,5 +1,5 @@
 import { Request, Response } from 'express-serve-static-core';
-import { getRepository } from 'typeorm';
+import { getRepository, getManager } from 'typeorm';
 import { User } from '../entity/User';
 import { Image } from '../entity/Image';
 import { Tool } from '../entity/Tool';
@@ -7,6 +7,7 @@ import { UserTokenData } from '../model/userTokenData';
 import * as fs from 'fs';
 import { Review } from '../entity/Review';
 import * as uuid from 'uuid/v1';
+import { ReviewVisit } from '../entity/ReviewVisit';
 
 /**
  * @apiDefine Review
@@ -42,6 +43,7 @@ export async function publishReview(request: Request, response: Response) {
   }
   const title = request.body.title;
   const content = request.body.content;
+  const pureText = request.body.pureText;
   // Save content as html file on disk
   const fileName = 'review-' + uuid() + '.html';
   try {
@@ -73,6 +75,7 @@ export async function publishReview(request: Request, response: Response) {
   review.author = user;
   review.tool = tool;
   review.images = images;
+  review.sample = pureText;
   await reviewRepository
     .save(review)
     .then(review => {
@@ -102,7 +105,8 @@ export async function getReviewById(request: Request, response: Response) {
       'review.fileName',
       'review.title',
       'review.createTime',
-      'author.username'
+      'author.username',
+      'review.visits'
     ])
     .innerJoin('review.author', 'author')
     .where({ reviewId: reviewId })
@@ -121,7 +125,8 @@ export async function getReviewById(request: Request, response: Response) {
       title: review.title,
       html: content,
       time: review.createTime,
-      author: review.author
+      author: review.author,
+      visits: review.visits
     });
   }
 }
@@ -149,6 +154,76 @@ export async function getReviewsByUserId(request: Request, response: Response) {
         where: { author: user }
       });
       response.status(200).json(reviews);
+    }
+  }
+}
+
+/**
+ * @api {GET} /v1/reviews/new Retrieve new reviews
+ * @apiGroup Review
+ * @apiSuccess {json} list of reviews info
+ * @apiError (400) {json} error
+ */
+export async function getNewReviews(request: Request, response: Response) {
+  const reviewRepository = getRepository(Review);
+  const reviews = await reviewRepository.createQueryBuilder('review')
+  .take(10)
+  .leftJoinAndSelect('review.images', 'images')
+  .leftJoinAndSelect('review.tool', 'tool')
+  .leftJoinAndSelect('tool.images', 'toolImage')
+  .loadRelationCountAndMap('review.commentCount', 'review.comments')
+  .orderBy('review.createTime', 'DESC')
+  .getMany();
+  response.status(200).json(reviews);
+}
+
+/**
+ * @api {GET} /v1/reviews/flow/:offset Retrieve review flow
+ * @apiGroup Review
+ * @apiParam offset offset of data
+ * @apiSuccess {json} list of reviews info
+ * @apiError (400) {json} error
+ */
+export async function getReviewsFlow(request: Request, response: Response) {
+  const offset = request.params.offset;
+  const reviewRepository = getRepository(Review);
+  const reviews = await reviewRepository.createQueryBuilder('review')
+  .take(8)
+  .leftJoinAndSelect('review.images', 'images')
+  .leftJoinAndSelect('review.tool', 'tool')
+  .leftJoinAndSelect('tool.images', 'toolImage')
+  .loadRelationCountAndMap('review.commentCount', 'review.comments')
+  .orderBy('review.visits', 'DESC')
+  .skip(offset)
+  .cache(10000)
+  .getMany();
+  response.status(200).json(reviews);
+}
+
+/**
+ * @api {GET} /v1/reviews/visit/:reviewId Increment count for visit on a review
+ * @apiGroup Review
+ * @apiParam reviewId
+ * @apiSuccess {json} list of reviews info
+ * @apiError (400) {json} error
+ */
+export async function putReviewVisit(request: Request, response: Response) {
+  if (request.ip) {
+    const reviewId = request.params.reviewId;
+    const ip = request.ip.split(':').pop();
+    const visitRepository = getRepository(ReviewVisit);
+    const reviewRepository = getRepository(Review);
+    const count = await visitRepository.count({
+      where: [
+        { visitorIP: ip, reviewId: reviewId}
+      ]
+    });
+    if (count < 5) {
+      const visit = new ReviewVisit()
+      visit.visitorIP = ip;
+      visit.reviewId = reviewId;
+      await visitRepository.save(visit);
+      await reviewRepository.increment({reviewId: reviewId}, "visits", 1);
     }
   }
 }

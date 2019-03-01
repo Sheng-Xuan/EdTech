@@ -14,12 +14,14 @@ import {
   getMyRating,
   postMyRating,
   getReviewsByToolId,
-  getRecommandedTools,
+  getRecommendedTools,
   searchTool,
   deleteToolById,
   getAllTools,
   updateToolStatusById,
-  getToolsByUserId
+  getToolsByUserId,
+  updateToolRecommendedById,
+  getTopToolsByCategory
 } from './controller/toolController';
 import { getCategories } from './controller/categoryController';
 import {
@@ -28,7 +30,7 @@ import {
   getReviewComments,
   postReviewComment
 } from './controller/commentController';
-import { publishReview, getReviewById, getReviewsByUserId } from './controller/reviewController';
+import { publishReview, getReviewById, getReviewsByUserId, getNewReviews, getReviewsFlow, putReviewVisit } from './controller/reviewController';
 
 dotenv.config();
 const apiVersion = process.env.API_VERSION;
@@ -97,9 +99,9 @@ export const AppRoutes = [
     auth: false
   },
   {
-    path: apiVersion + '/tools/recommanded',
+    path: apiVersion + '/tools/recommended',
     method: 'get',
-    action: getRecommandedTools,
+    action: getRecommendedTools,
     auth: false
   },
   {
@@ -125,6 +127,12 @@ export const AppRoutes = [
     method: 'post',
     action: publishReview,
     auth: true
+  },
+  {
+    path: apiVersion + '/reviews/new',
+    method: 'get',
+    action: getNewReviews,
+    auth: false
   },
   {
     path: apiVersion + '/review/:reviewId',
@@ -220,6 +228,30 @@ export const AppRoutes = [
     path: apiVersion + '/forgotpassword/newpassword',
     method: 'post',
     action: resetPassword,
+    auth: false
+  },
+  {
+    path: apiVersion + '/tool/recommended',
+    method: 'put',
+    action: updateToolRecommendedById,
+    auth: true
+  },
+  {
+    path: apiVersion + '/tools/top/:category',
+    method: 'get',
+    action: getTopToolsByCategory,
+    auth: false
+  },
+  {
+    path: apiVersion + '/reviews/flow/:offset',
+    method: 'get',
+    action: getReviewsFlow,
+    auth: false
+  },
+  {
+    path: apiVersion + '/reviews/visit/:reviewId',
+    method: 'put',
+    action: putReviewVisit,
     auth: false
   }
 ];

@@ -142,35 +142,72 @@ export async function searchTool(request: Request, response: Response) {
     // Find tools with keyword and category
     tools = await toolRepository
       .createQueryBuilder('tool')
-      .leftJoinAndSelect('tool.categories', 'category')
       .where('tool.status = 0')
+      .leftJoin('tool.categories', 'category')
+      .leftJoinAndSelect('tool.categories', 'categorySelect')
+      .leftJoinAndSelect('tool.images', 'images')
+      .andWhere('category.categoryId = :id', { id: category })
       .andWhere('LOWER(tool.name) like :name', {
         name: `%${keyword.toLowerCase()}%`
       })
-      .andWhere('category.categoryId = :id', { id: category })
       .getMany();
-    // Join images and categories
-    tools = await toolRepository.findByIds(tools.map(_ => _.toolId), {
-      relations: ['images', 'categories']
-    });
   }
   response.status(200).json(tools);
 }
 
 /**
- * @api {GET} /v1/tools/recommanded Get recommanded tool list
+ * @api {GET} /v1/tools/top/:category/ Get top tools under a category
+ * @apiGroup Tool
+ * @apiParam {number} category tool category, 0 indicates all.
+ * @apiSuccess {json} tool object list
+ * @apiError (400) {json} error
+ */
+export async function getTopToolsByCategory(request: Request, response: Response) {
+  const toolRepository = getRepository(Tool);
+  const category = request.params.category;
+  let tools;
+  if (category == 0) {
+    tools = await toolRepository
+      .createQueryBuilder('tool')
+      .where('tool.status = 0')
+      .leftJoinAndSelect('tool.categories', 'category')
+      .leftJoinAndSelect('tool.images', 'images')
+      .orderBy('tool.averageRating', 'DESC', 'NULLS LAST')
+      .limit(20)
+      .cache(10000)
+      .getMany();
+  } else {
+    // Find tools with keyword and category
+    tools = await toolRepository
+      .createQueryBuilder('tool')
+      .where('tool.status = 0')
+      .leftJoin('tool.categories', 'category')
+      .leftJoinAndSelect('tool.categories', 'categorySelect')
+      .leftJoinAndSelect('tool.images', 'images')
+      .andWhere('category.categoryId = :id', { id: category })
+      .orderBy('tool.averageRating', 'DESC', 'NULLS LAST')
+      .limit(20)
+      .cache(10000)
+      .getMany();
+  }
+  response.status(200).json(tools);
+}
+
+/**
+ * @api {GET} /v1/tools/recommended Get recommended tool list
  * @apiGroup Tool
  * @apiSuccess {json} tool objects list
  * @apiError (400) {json} error
  */
-export async function getRecommandedTools(
+export async function getRecommendedTools(
   request: Request,
   response: Response
 ) {
   const toolRepository = getRepository(Tool);
   let tools = await toolRepository.find({
     relations: ['categories', 'images'],
-    where: { status: NORMAL }
+    where: { recommended: true, status: 0},
+    cache: 10000,
   });
   if (!tools) {
     response.status(400).json({ error: 'Tool not found' });
@@ -343,6 +380,40 @@ export async function updateToolStatusById(
     let tool = await toolRepository.findOne(toolId);
     if (tool) {
       tool.status = newStatus;
+      await toolRepository.save(tool).catch(err => {
+        console.error(err);
+        response.status(400).json({ error: 'error' });
+      });
+      response.status(200).json({ message: 'OK' });
+    } else {
+      response.status(400).json({ error: 'tool does not exist' });
+    }
+  }
+}
+
+/**
+ * @api {PUT} /v1/tool/recommended Update a tool's recommendation status (admin api)
+ * @apiGroup UserGroup
+ * @apiParam toolId
+ * @apiParam recommended
+ * @apiSuccess {json} OK
+ */
+export async function updateToolRecommendedById(
+  request: Request,
+  response: Response
+) {
+  const userInfo: UserTokenData = response.locals.userInfo;
+  const userRepository = await getRepository(User);
+  let user = await userRepository.findOne({ userId: userInfo.id });
+  if (!user || !user.isAdmin) {
+    response.status(401).json({ error: 'Unauthorized' });
+  } else {
+    const toolRepository = await getRepository(Tool);
+    const isRecommended = request.body.recommended;
+    const toolId = request.body.toolId;
+    let tool = await toolRepository.findOne(toolId);
+    if (tool) {
+      tool.recommended = isRecommended;
       await toolRepository.save(tool).catch(err => {
         console.error(err);
         response.status(400).json({ error: 'error' });
