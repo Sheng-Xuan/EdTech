@@ -12,6 +12,8 @@ import { AdminPageComponent } from './pages/admin-page/admin-page.component';
 import { UserPageComponent } from './pages/user-page/user-page.component';
 import { VerificationPageComponent } from './pages/verification-page/verification-page.component';
 import { ForgotPasswordPageComponent } from './pages/forgot-password-page/forgot-password-page.component';
+import { ToolsRankingPageComponent } from './pages/tools-ranking-page/tools-ranking-page.component';
+import { ReviewsFlowPageComponent } from './pages/reviews-flow-page/reviews-flow-page.component';
 
 const routes: Routes = [
   {
@@ -36,7 +38,8 @@ const routes: Routes = [
   },
   {
     path: '',
-    component: HomePageComponent
+    component: HomePageComponent,
+    data: {animation: 'home'}
   },
   {
     path: 'notfound',
@@ -57,6 +60,16 @@ const routes: Routes = [
   {
     path: 'forgot-password',
     component: ForgotPasswordPageComponent
+  },
+  {
+    path: 'tools-ranking',
+    component: ToolsRankingPageComponent,
+    data: {animation: 'tools'}
+  },
+  {
+    path: 'reviews',
+    component: ReviewsFlowPageComponent,
+    data: {animation: 'reviews'}
   },
   {
     path: '**',

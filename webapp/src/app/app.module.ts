@@ -17,7 +17,6 @@ import { ServiceModule } from './services/service.module';
 import { AppRoutingModule } from './routing.module';
 import { PagesModule } from './pages/pages.module';
 import { MessageService } from './services/message.service';
-import { QuillModule } from 'ngx-quill';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 
@@ -49,7 +48,8 @@ registerLocaleData(en);
     AngularFontAwesomeModule,
     PagesModule,
     RecaptchaModule,
-    RecaptchaFormsModule
+    RecaptchaFormsModule,
+    BrowserAnimationsModule
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }, MessageService],
   bootstrap: [AppComponent]

@@ -19,6 +19,12 @@ import { AdminPageComponent } from './admin-page/admin-page.component';
 import { UserPageComponent } from './user-page/user-page.component';
 import { VerificationPageComponent } from './verification-page/verification-page.component';
 import { ForgotPasswordPageComponent } from './forgot-password-page/forgot-password-page.component';
+import { ToolsRankingPageComponent } from './tools-ranking-page/tools-ranking-page.component';
+import { ReviewsFlowPageComponent } from './reviews-flow-page/reviews-flow-page.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReviewBoxComponent } from '../components/review-box/review-box.component';
+import { ToolListComponent } from '../components/tool-list/tool-list.component';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 @NgModule({
   imports: [
     CommonModule,
@@ -29,7 +35,9 @@ import { ForgotPasswordPageComponent } from './forgot-password-page/forgot-passw
     BarRatingModule,
     RouterModule,
     QuillModule,
-    NguCarouselModule
+    NguCarouselModule,
+    BrowserAnimationsModule,
+    ScrollingModule
   ],
   declarations: [
     ToolPublishPageComponent,
@@ -43,7 +51,11 @@ import { ForgotPasswordPageComponent } from './forgot-password-page/forgot-passw
     AdminPageComponent,
     UserPageComponent,
     VerificationPageComponent,
-    ForgotPasswordPageComponent
+    ForgotPasswordPageComponent,
+    ToolsRankingPageComponent,
+    ReviewsFlowPageComponent,
+    ReviewBoxComponent,
+    ToolListComponent
   ]
 })
 export class PagesModule {}
