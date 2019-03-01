@@ -5,6 +5,7 @@ import { NzMessageService } from 'ng-zorro-antd';
 import Quill from 'quill';
 import ImageResize from 'quill-image-resize-module';
 import { Title } from '@angular/platform-browser';
+import { TimeService } from 'src/app/services/time.service';
 
 // override p with div tag
 const Parchment = Quill.import('parchment');
@@ -37,6 +38,7 @@ export class ReviewPageComponent implements OnInit {
     private message: NzMessageService,
     private titleService: Title,
     private router: Router,
+    private time: TimeService,
   ) {
     this.modules = {
       toolbar: false,
@@ -53,6 +55,7 @@ export class ReviewPageComponent implements OnInit {
         this.review = res;
         this.reviewLoaded = true;
         this.titleService.setTitle('EdTech | Review | ' + this.review.title);
+        this.reviewService.putVisit(this.reviewId).subscribe();
       },
       err => {
         console.error(err);
@@ -65,6 +68,12 @@ export class ReviewPageComponent implements OnInit {
       this.message.success('Commented successfully');
     } else {
       this.message.error('Error, please try again');
+    }
+  }
+
+  getTime() {
+    if (this.review) {
+      return this.time.convertGMTToLocalTime(this.review.time);
     }
   }
 }

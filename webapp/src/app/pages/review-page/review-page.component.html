@@ -1,14 +1,25 @@
 <nz-skeleton [nzActive]="true" [nzLoading]="!reviewLoaded">
   <div *ngIf="reviewLoaded">
-    <div class="review_title">
-      {{review.title}}
+    <div nz-row>
+      <div nz-col style="font-size:200%;" nzSpan="24">{{ review.title }}</div>
+      <div nz-col style="font-size:120%;" nzSpan="24">Written by {{ review.author.username }}, on {{ getTime() }}</div>
+      <div nz-col style="font-size:120%;" nzSpan="24"><i nz-icon type="eye" theme="outline"></i>Views: {{ review.visits }}</div>
     </div>
     <div class="row" nz-row>
-      <quill-editor [modules]="modules" [readOnly]="true" [(ngModel)]="review.html">
+      <quill-editor
+        [modules]="modules"
+        [sanitize]="true"
+        [readOnly]="true"
+        [(ngModel)]="review.html"
+      >
       </quill-editor>
     </div>
   </div>
 </nz-skeleton>
 <div nz-row>
-  <app-comment-view (commented)="onCommented($event)" [id]="reviewId" [type]="'review'"></app-comment-view>
+  <app-comment-view
+    (commented)="onCommented($event)"
+    [id]="reviewId"
+    [type]="'review'"
+  ></app-comment-view>
 </div>
