@@ -9,6 +9,12 @@
     width: 100%;
 }
 
+@media only screen and (max-width: 500px) {
+    .logo img {
+        width: 100px;
+    }
+}
+
 .header {
     position: fixed;
     top: 0;
@@ -19,6 +25,7 @@
 .content {
     margin-top: 100px;
     min-height: 800px;
+    position: relative;
 }
 
 .user-panel {

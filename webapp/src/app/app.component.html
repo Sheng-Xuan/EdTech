@@ -2,10 +2,17 @@
   <nz-header style="padding: 0" class="header">
     <!-- Xs:576, Sm:769, Md:992, Lg:1200, XXl:1600-->
     <div nz-row>
-      <div nz-col [nzLg]="{span:8, offset:4}" [nzMd]="{span:12, offset:0}" [nzSm]="{span:12, offset:0}">
+      <div nz-col [nzXXl]="{span:2, offset:4}" [nzXl]="{span:3, offset:4}" [nzLg]="{span:4, offset:4}" [nzMd]="{span:4, offset:2}" [nzSm]="{span:6, offset:0}" [nzXs]="{span:6, offset:0}">
         <div class="logo" routerLink="/"><img src="assets/logo.png"></div>
       </div>
-      <div nz-col [nzLg]="{span:4, offset:4}" [nzMd]="{span:6, offset:6}" [nzSm]="{span:12, offset:0}">
+      <div nz-col [nzXXl]="{span:10, offset:0}" [nzXl]="{span:9, offset:0}" [nzLg]="{span:8, offset:0}" [nzMd]="{span:10, offset:0}" [nzSm]="{span:12, offset:0}" [nzXs]="{span:12, offset:0}">
+        <ul nz-menu [nzSelectable]="false" [nzTheme]="'dark'" [nzMode]="'horizontal'" style="line-height: 64px;">
+          <li nz-menu-item><a routerLink="/" routerLinkActive="active">Home</a></li>
+          <li nz-menu-item><a routerLink="/tools-ranking" routerLinkActive="active">Tools</a></li>
+          <li nz-menu-item><a routerLink="/reviews" routerLinkActive="active"></a>Reviews</li>
+        </ul>
+      </div>
+      <div nz-col [nzXl]="{span:4, offset:0}" [nzXl]="{span:4, offset:0}" [nzLg]="{span:4, offset:0}" [nzMd]="{span:6, offset:0}" [nzSm]="{span:6, offset:0}" [nzXs]="{span:6, offset:0}">
         <app-user-nav class="user-panel"></app-user-nav>
       </div>
     </div>
@@ -15,5 +22,5 @@
       <router-outlet></router-outlet>
     </div>
   </nz-content>
-  <nz-footer style="text-align: center;">EdTech | Version: Alpha 1.0</nz-footer>
+  <nz-footer style="text-align: center;">EdTech © 2019 | All Rights Reserved</nz-footer>
 </nz-layout>
