@@ -8,7 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class ReviewBoxComponent implements OnInit {
 
   @Input()
-  data: object;
+  data: any;
 
   constructor() { }
 
@@ -23,6 +23,13 @@ export class ReviewBoxComponent implements OnInit {
     } else {
       return 'assets/img-not-available.jpg';
     }
+  }
+
+  getId() {
+    if (this.data && this.data.reviewId) {
+      return this.data.reviewId;
+    }
+    return '';
   }
 
 }

@@ -1,7 +1,7 @@
 <nz-card
   [nzCover]="coverTemplate"
   nzHoverable
-  [routerLink]="['/review/', data.reviewId]"
+  [routerLink]="['/review/', getId()]"
 >
   <nz-card-meta [nzTitle]="title" [nzDescription]="reviewBody"></nz-card-meta>
 </nz-card>
