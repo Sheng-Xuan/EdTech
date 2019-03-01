@@ -51,8 +51,8 @@ export class ToolService {
     });
   }
 
-  getRecommandedToolList(): Observable<any> {
-    return this.apiService.get('/tools/recommanded', {
+  getRecommendedToolList(): Observable<any> {
+    return this.apiService.get('/tools/recommended', {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
@@ -157,11 +157,35 @@ export class ToolService {
     );
   }
 
+  updateToolRecommendedById(id: number, recommended: boolean): Observable<any> {
+    return this.apiService.put(
+      '/tool/recommended',
+      {
+        toolId: id,
+        recommended: recommended
+      },
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + this.jwtService.getToken()
+        })
+      }
+    );
+  }
+
   getToolsByUser(id: number): Observable<any> {
     return this.apiService.get('/tools/' + id, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + this.jwtService.getToken()
+      })
+    });
+  }
+
+  getTopToolsByCategory(catId: number): Observable<any> {
+    return this.apiService.get('/tools/top/' + catId, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
       })
     });
   }

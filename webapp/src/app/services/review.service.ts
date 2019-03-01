@@ -14,6 +14,7 @@ export class ReviewService {
     id: number,
     title: string,
     content: string,
+    pureText: string,
     images: string[]
   ): Observable<any> {
     return this.apiService.post(
@@ -21,6 +22,7 @@ export class ReviewService {
       {
         title: title,
         content: content,
+        pureText: pureText,
         images: images
       },
       {
@@ -70,5 +72,33 @@ export class ReviewService {
         Authorization: 'Bearer ' + this.jwtService.getToken()
       })
     });
+  }
+
+  getNewReviews(): Observable<any> {
+    return this.apiService.get('/reviews/new', {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    });
+  }
+
+  getReviewsFlow(offset: number): Observable<any> {
+    return this.apiService.get('/reviews/flow/' + offset, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    });
+  }
+
+  putVisit(reviewId: number): Observable<any> {
+    return (
+      this.apiService.put('/reviews/visit/' + reviewId,
+      {},
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      }
+    ));
   }
 }
