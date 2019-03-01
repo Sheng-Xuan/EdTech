@@ -215,6 +215,13 @@
             </th>
             <th
               nzShowSort
+              [(nzSort)]="sortMap.recommended"
+              (nzSortChange)="sort('recommended', $event)"
+            >
+              Recommended
+            </th>
+            <th
+              nzShowSort
               [(nzSort)]="sortMap.rateCount"
               (nzSortChange)="sort('rateCount', $event)"
             >
@@ -250,6 +257,7 @@
             <td>
               <a (click)="openToolPage(tool.toolId)">{{ tool.name }}</a>
             </td>
+            <td>{{ tool.recommended }}</td>
             <td>{{ tool.rateCount }}</td>
             <td>{{ tool.averageRating }}</td>
             <td>{{ displayToolStatus(tool.status) }}</td>
@@ -293,6 +301,32 @@
                     nzType="default"
                   >
                     To Pending
+                  </button>
+                </nz-popconfirm>
+                <nz-popconfirm
+                  [nzTitle]="'Confirm?'"
+                  (nzOnConfirm)="changeToolRecommend(tool.toolId, false)"
+                >
+                  <button
+                    nz-popconfirm
+                    *ngIf="tool.recommended == true"
+                    nz-button
+                    nzType="default"
+                  >
+                    Unrecommend
+                  </button>
+                </nz-popconfirm>
+                <nz-popconfirm
+                  [nzTitle]="'Confirm?'"
+                  (nzOnConfirm)="changeToolRecommend(tool.toolId, true)"
+                >
+                  <button
+                    nz-popconfirm
+                    *ngIf="tool.recommended == false"
+                    nz-button
+                    nzType="default"
+                  >
+                    Recommend
                   </button>
                 </nz-popconfirm>
               </nz-button-group>

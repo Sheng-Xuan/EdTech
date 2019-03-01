@@ -235,6 +235,19 @@ export class AdminPageComponent implements OnInit {
     );
   }
 
+  changeToolRecommend(id: number, recommended: boolean) {
+    this.toolService.updateToolRecommendedById(id, recommended).subscribe(
+      res => {
+        const index = this.tools.findIndex(tool => tool.toolId === id);
+        this.tools[index]['recommended'] = recommended;
+        this.searchTools(this.filterToolStatusList);
+      },
+      err => {
+        this.message.error(err.error);
+      }
+    );
+  }
+
   openToolPage(id: number) {
     // Open tool page in a new tab
     window.open('/tool/' + id, '_blank');
