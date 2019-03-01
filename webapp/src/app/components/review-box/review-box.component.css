@@ -1,0 +1,7 @@
+.review_img {
+  height: 130px;
+  pointer-events: none;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}

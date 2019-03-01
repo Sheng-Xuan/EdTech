@@ -1,0 +1,28 @@
+<nz-card
+  [nzCover]="coverTemplate"
+  nzHoverable
+  [routerLink]="['/review/', data.reviewId]"
+>
+  <nz-card-meta [nzTitle]="title" [nzDescription]="reviewBody"></nz-card-meta>
+</nz-card>
+<ng-template #title>
+  <a [routerLink]="'/tool/' + data.tool.toolId" routerLinkActive="active"
+    >[{{ data.tool.name }}]</a
+  >&nbsp;{{ data.title }}
+</ng-template>
+<ng-template #coverTemplate>
+  <img
+    class="review_img"
+    onError="this.src='assets/img-not-available.jpg';"
+    alt="loading"
+    [src]="getImagePath(data)"
+  />
+</ng-template>
+<ng-template #reviewBody>
+  <div style="height: 100px;" *ngIf="data.sample">
+    {{ data.sample }}
+  </div>
+  <span style="float: right;">
+    Views ({{ data.visits }}) &nbsp; Comments ({{ data.commentCount }})
+  </span>
+</ng-template>
