@@ -35,6 +35,9 @@ export class Tool {
   @Column({ nullable: true })
   website: string;
 
+  @Column({ default: false })
+  recommended: boolean;
+
   @Column({ default: 0 })
   /*
     0: normal,
