@@ -39,6 +39,7 @@ export class ReviewPublishPageComponent implements OnInit {
   title;
   toolId;
   content;
+  pureText;
   tool;
   toolLoaded = false;
   images = [];
@@ -116,6 +117,16 @@ export class ReviewPublishPageComponent implements OnInit {
     return this.title && this.content;
   }
 
+  setPureText(event) {
+    if (event.text) {
+      if (event.text.length > 150) {
+        this.pureText = event.text.substring(0, 150);
+      } else {
+        this.pureText = event.text;
+      }
+    }
+  }
+
   isLoggedin() {
     return this.userService.isLoggedIn();
   }
@@ -123,7 +134,7 @@ export class ReviewPublishPageComponent implements OnInit {
   publish() {
     // Check if image is deleted
     this.images = this.images.filter(imageName => this.content.search(imageName) >= 0);
-    this.reviewService.publishReview(this.toolId, this.title, this.content, this.images).subscribe(
+    this.reviewService.publishReview(this.toolId, this.title, this.content, this.pureText, this.images).subscribe(
       res => {
         this.router.navigateByUrl('/review/' + res.reviewId);
       },

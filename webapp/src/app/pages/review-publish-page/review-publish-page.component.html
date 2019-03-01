@@ -10,7 +10,7 @@
             </nz-input-group>
           </div>
           <div class="row" nz-row>
-            <quill-editor [(ngModel)]="content" [modules]="modules" [style]="{height: '700px'}">
+            <quill-editor [(ngModel)]="content" [sanitize]="true" (onContentChanged)="setPureText($event);" [modules]="modules" [style]="{height: '700px'}">
             </quill-editor>
           </div>
         </div>
