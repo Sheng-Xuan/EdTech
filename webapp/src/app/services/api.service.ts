@@ -16,12 +16,6 @@ export class ApiService {
     })
   };
 
-  httpOptionsWithAuth = {
-    headers: new HttpHeaders({
-      Authorization: 'Bearer ' + this.jwtService.getToken()
-    })
-  };
-
   private formatErrors(error: any) {
     return throwError(error.error);
   }
