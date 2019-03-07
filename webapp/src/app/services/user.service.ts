@@ -30,12 +30,13 @@ export class UserService {
     }
   }
 
-  login(email, password): Observable<any> {
+  login(email: string, password: string, remember: boolean): Observable<any> {
     return this.apiService.post(
       '/login',
       {
         email: email,
-        password: password
+        password: password,
+        remember: remember
       },
       {
         headers: new HttpHeaders({

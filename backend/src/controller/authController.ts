@@ -61,12 +61,14 @@ export async function registerUser(request: Request, response: Response) {
  * @apiGroup Authentication
  * @apiParam {String} email
  * @apiParam {String} password
+ * @apiParam {Boolean} remember
  * @apiSuccess (200) {json} jwt:"xxxxx"
  * @apiError (401) {Object} error: Email and password not matched
  */
 export async function login(request: Request, response: Response) {
   const password = request.body.password;
   const email = request.body.email;
+  const remember = request.body.remember;
   const userRepository = getRepository(User);
   let user = await userRepository.findOne({ email: email });
   if (!user) {
@@ -76,7 +78,7 @@ export async function login(request: Request, response: Response) {
   const isCorrect = await validatePassword(password, user.passwordHash);
   if (isCorrect) {
     const json = {
-      token: await generateAccessToken(user),
+      token: await generateAccessToken(user, remember),
       userId: user.userId,
       email: user.email,
       username: user.username
@@ -180,7 +182,6 @@ export async function resetPassword(request: Request, response: Response) {
   } else {
     const now = Date.now();
     const saved = new Date(code.createTime).getTime();
-    console.log(now, saved);
     // Expire time for this step is 15 minutes
     if (now - saved > 900000) {
       await codeRepository.delete(code);

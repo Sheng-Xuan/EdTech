@@ -13,11 +13,11 @@ export const validatePassword = async (
   hash: string
 ): Promise<boolean> => bcrypt.compare(password, hash);
 
-export const generateAccessToken = async (user: User): Promise<string> => {
+export const generateAccessToken = async (user: User, remember: Boolean): Promise<string> => {
   const token : UserTokenData = {
     id: user.userId,
     email: user.email,
-    expireTime: +new Date() + ms('7 days')
+    expireTime: remember? +new Date() + ms('7 days') : +new Date() + ms('2 hours')
   };
   return await jwt.sign(token, process.env.JWT_SECRET);
 };
