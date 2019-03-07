@@ -42,12 +42,22 @@ export class ToolPageComponent implements OnInit {
     this.loadTool();
     this.loadReviews();
     if (this.userService.isLoggedIn()) {
-      this.toolService.getMyRating(this.toolId).subscribe(res => {
-        if (res) {
-          this.myRating = res.score;
-          this.myOriginalRating = res.score;
+      this.toolService.getMyRating(this.toolId).subscribe(
+        res => {
+          if (res) {
+            this.myRating = res.score;
+            this.myOriginalRating = res.score;
+          }
+        },
+        err => {
+          if (err.error = 'Unauthorized') {
+            this.message.error('Session timeout, please log in again');
+            this.messageService.sendMessage('login');
+          } else {
+            this.message.error(err.error);
+          }
         }
-      });
+      );
     }
   }
 
@@ -79,7 +89,12 @@ export class ToolPageComponent implements OnInit {
             this.loadTool();
           },
           err => {
-            this.message.error('Error, please try agian');
+            if (err.error = 'Unauthorized') {
+              this.message.error('Session timeout, please log in again');
+              this.messageService.sendMessage('login');
+            } else {
+              this.message.error(err.error);
+            }
             this.rateButtonLoading = false;
           }
         );

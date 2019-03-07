@@ -303,10 +303,13 @@ export async function getReviewsByToolId(request: Request, response: Response) {
         'review.title',
         'review.createTime',
         'review.reviewId',
-        'author.username'
+        'author.username',
+        'review.visits'
       ])
+      .loadRelationCountAndMap('review.commentCount', 'review.comments')
       .innerJoin('review.author', 'author')
       .where({ tool: tool })
+      .orderBy('review.visits', "DESC")
       .getMany();
     response.status(200).json(reviews);
   } else {
