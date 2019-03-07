@@ -22,6 +22,7 @@ export class ToolsRankingPageComponent implements OnInit {
     this.toolService.getTopToolsByCategory(0).subscribe(
       res => {
         this.topTools[0] = res;
+        this.topTools = [...this.topTools];
       },
       err => {}
     );
@@ -33,6 +34,7 @@ export class ToolsRankingPageComponent implements OnInit {
       this.toolService.getTopToolsByCategory(catId).subscribe(
         res => {
           this.topTools[catId] = res;
+          this.topTools = [...this.topTools];
         },
         err => {}
       );
