@@ -26,7 +26,8 @@ describe('Registration and Login test', () => {
       .send({
         email: email,
         password: password,
-        username: username
+        username: username,
+        remember: true
       })
       .expect(200);
     const user = await getRepository(User).findOne({ email: email });
