@@ -21,7 +21,7 @@ beforeAll(async () => {
   user.userId = 1;
   user.isAdmin = false;
   user.status = 0;
-  accessToken = await generateAccessToken(user);
+  accessToken = await generateAccessToken(user, true);
 });
 afterAll(async () => {
   if (server) {

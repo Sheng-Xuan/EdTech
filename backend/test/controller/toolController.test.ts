@@ -19,7 +19,7 @@ beforeAll(async () => {
   user.username = 'Bob';
   user.userId = 1;
   user.isAdmin = false;
-  accessToken = await generateAccessToken(user);
+  accessToken = await generateAccessToken(user, true);
   await getRepository(User).save(user);
 });
 afterAll(async () => {
