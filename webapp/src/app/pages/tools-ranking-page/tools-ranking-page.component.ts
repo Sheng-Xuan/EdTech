@@ -8,7 +8,7 @@ import { ToolService } from 'src/app/services/tool.service';
 })
 export class ToolsRankingPageComponent implements OnInit {
   categories = [{ id: 0, name: 'All' }];
-  topTools = [];
+  topTools;
   nzTabPosition = 'left';
   selectedIndex = 0;
   constructor(private toolService: ToolService) {}
