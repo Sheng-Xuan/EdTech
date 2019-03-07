@@ -24,7 +24,7 @@ export class LoginFormComponent implements OnInit {
     }
     if (this.email.valid && this.password.valid) {
       this.isLogingIn = true;
-      this.userService.login(this.email.value, this.password.value).subscribe(
+      this.userService.login(this.email.value, this.password.value, this.remember.value).subscribe(
         (user: User) => {
           this.userService.setUser(user).then(res => {
             this.message.success(
@@ -65,6 +65,9 @@ export class LoginFormComponent implements OnInit {
   }
   get password() {
     return this.validateForm.get('password');
+  }
+  get remember() {
+    return this.validateForm.get('remember');
   }
   // get captcha() {
   //   return this.validateForm.get('captcha');

@@ -7,6 +7,7 @@ import { TimeService } from 'src/app/services/time.service';
 import { ToolService } from 'src/app/services/tool.service';
 import { MapType } from '@angular/compiler';
 import { ReviewService } from 'src/app/services/review.service';
+import { MessageService } from 'src/app/services/message.service';
 
 @Component({
   selector: 'app-user-page',
@@ -26,7 +27,8 @@ export class UserPageComponent implements OnInit {
     private message: NzMessageService,
     private timeService: TimeService,
     private toolService: ToolService,
-    private reviewService: ReviewService
+    private reviewService: ReviewService,
+    private messageService: MessageService
   ) {
     this.validateForm = this.formBuilder.group(
       {
@@ -90,7 +92,12 @@ export class UserPageComponent implements OnInit {
           this.validateForm.reset();
         },
         err => {
-          console.log(err);
+          if (err.error = 'Unauthorized') {
+            this.message.error('Session timeout, please log in again');
+            this.messageService.sendMessage('login');
+          } else {
+            this.message.error(err.error);
+          }
           this.isChangingPassword = false;
           this.validateForm.get('oldPassword').setErrors({ wrong: true });
         }

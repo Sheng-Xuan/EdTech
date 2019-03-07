@@ -4,6 +4,7 @@ import { TimeService } from 'src/app/services/time.service';
 import { ToolService } from 'src/app/services/tool.service';
 import { NzMessageService } from 'ng-zorro-antd';
 import { Router } from '@angular/router';
+import { MessageService } from 'src/app/services/message.service';
 
 @Component({
   selector: 'app-admin-page',
@@ -50,6 +51,8 @@ export class AdminPageComponent implements OnInit {
     private toolService: ToolService,
     private message: NzMessageService,
     private router: Router,
+    private msg: NzMessageService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit() {
@@ -67,6 +70,13 @@ export class AdminPageComponent implements OnInit {
     this.toolService.getAllTools().subscribe(res => {
       this.tools = res;
       this.displayedTools = [...this.tools];
+    }, err => {
+      if (err.error = 'Unauthorized') {
+        this.msg.error('Session timeout, please log in again');
+        this.messageService.sendMessage('login');
+      } else {
+        this.msg.error(err.error);
+      }
     });
   }
 

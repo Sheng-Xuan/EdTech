@@ -5,6 +5,7 @@ import { ImageService } from '../../services/image.service';
 import { ToolService } from '../../services/tool.service';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { MessageService } from 'src/app/services/message.service';
 
 @Component({
   selector: 'app-tool-publish-page',
@@ -21,6 +22,7 @@ export class ToolPublishPageComponent implements OnInit {
     private formGroup: FormBuilder,
     private imageService: ImageService,
     private msg: NzMessageService,
+    private messageService: MessageService,
     private toolService: ToolService,
     private router: Router,
     private titleService: Title
@@ -34,9 +36,14 @@ export class ToolPublishPageComponent implements OnInit {
         item.onSuccess(res, item.file, event);
       },
       err => {
-        this.msg.error('Upload image failed, please retry');
-        item.onError(err, item.file);
-        this.fileList = this.fileList.filter(file => file.status !== 'error');
+        if (err.error = 'Unauthorized') {
+          this.msg.error('Session timeout, please log in again');
+          this.messageService.sendMessage('login');
+        } else {
+          this.msg.error('Upload image failed, please retry');
+          item.onError(err, item.file);
+          this.fileList = this.fileList.filter(file => file.status !== 'error');
+        }
       }
     );
   }
@@ -81,7 +88,12 @@ export class ToolPublishPageComponent implements OnInit {
             this.router.navigateByUrl('/tool/' + res.toolId);
           },
           err => {
-            this.msg.error(err.error);
+            if (err.error = 'Unauthorized') {
+              this.msg.error('Session timeout, please log in again');
+              this.messageService.sendMessage('login');
+            } else {
+              this.msg.error(err.error);
+            }
           }
         );
     }

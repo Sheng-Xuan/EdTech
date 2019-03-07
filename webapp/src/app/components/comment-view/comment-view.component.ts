@@ -4,6 +4,7 @@ import { ReviewService } from '../../services/review.service';
 import { UserService } from '../../services/user.service';
 import { MessageService } from '../../services/message.service';
 import { TimeService } from '../../services/time.service';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-comment-view',
@@ -27,6 +28,7 @@ export class CommentViewComponent implements OnInit {
     private toolService: ToolService,
     private reviewService: ReviewService,
     private userService: UserService,
+    private msg: NzMessageService,
     private messageService: MessageService,
     private timeService: TimeService
   ) {}
@@ -77,8 +79,13 @@ export class CommentViewComponent implements OnInit {
             this.loadComments();
           },
           err => {
+            if (err.error = 'Unauthorized') {
+              this.msg.error('Session timeout, please log in again');
+              this.messageService.sendMessage('login');
+            } else {
+              this.msg.error(err.error);
+            }
             this.commentButtonLoading = false;
-            this.commented.emit(false);
           }
         );
       }

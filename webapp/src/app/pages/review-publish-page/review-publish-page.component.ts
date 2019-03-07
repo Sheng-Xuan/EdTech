@@ -10,6 +10,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ReviewService } from '../../services/review.service';
 import { UserService } from '../../services/user.service';
 import { Title } from '@angular/platform-browser';
+import { NzMessageService } from 'ng-zorro-antd';
+import { MessageService } from 'src/app/services/message.service';
 
 // override p with div tag
 const Parchment = Quill.import('parchment');
@@ -50,7 +52,9 @@ export class ReviewPublishPageComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService,
-    private titleService: Title
+    private titleService: Title,
+    private msg: NzMessageService,
+    private messageService: MessageService
   ) {
     this.modules = {
       toolbar: [
@@ -133,14 +137,29 @@ export class ReviewPublishPageComponent implements OnInit {
 
   publish() {
     // Check if image is deleted
-    this.images = this.images.filter(imageName => this.content.search(imageName) >= 0);
-    this.reviewService.publishReview(this.toolId, this.title, this.content, this.pureText, this.images).subscribe(
-      res => {
-        this.router.navigateByUrl('/review/' + res.reviewId);
-      },
-      err => {
-        console.log(err);
-      }
+    this.images = this.images.filter(
+      imageName => this.content.search(imageName) >= 0
     );
+    this.reviewService
+      .publishReview(
+        this.toolId,
+        this.title,
+        this.content,
+        this.pureText,
+        this.images
+      )
+      .subscribe(
+        res => {
+          this.router.navigateByUrl('/review/' + res.reviewId);
+        },
+        err => {
+          if (err.error = 'Unauthorized') {
+            this.msg.error('Session timeout, please log in again');
+            this.messageService.sendMessage('login');
+          } else {
+            this.msg.error(err.error);
+          }
+        }
+      );
   }
 }
