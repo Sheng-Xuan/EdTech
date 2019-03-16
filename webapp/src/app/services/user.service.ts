@@ -16,12 +16,14 @@ export class UserService {
     const userId = window.localStorage['userId'];
     const email = window.localStorage['email'];
     const username = window.localStorage['username'];
+    const isAdmin = window.localStorage['isAdmin'];
     const token = this.jwtService.getToken();
     const user: User = {
       userId: userId,
       email: email,
       username: username,
-      token: token
+      token: token,
+      isAdmin: isAdmin
     };
     if (userId && email && username && token) {
       return user;
@@ -50,6 +52,7 @@ export class UserService {
     window.localStorage['userId'] = user.userId;
     window.localStorage['email'] = user.email;
     window.localStorage['username'] = user.username;
+    window.localStorage['isAdmin'] = user.isAdmin;
     this.jwtService.saveToken(user.token);
   }
 
@@ -188,6 +191,21 @@ export class UserService {
         email: email,
         password: newPassword,
         key: key
+      },
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      }
+    );
+  }
+
+  reportBug(email: string, message: string): Observable<any> {
+    return this.apiService.post(
+      '/bug',
+      {
+        email: email,
+        message: message,
       },
       {
         headers: new HttpHeaders({
