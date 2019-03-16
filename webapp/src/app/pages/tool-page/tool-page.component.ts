@@ -24,6 +24,7 @@ export class ToolPageComponent implements OnInit {
   rateButtonLoading = false;
   reviewLoading = true;
   reviews = [];
+  isAdmin = false;
   constructor(
     private toolService: ToolService,
     private route: ActivatedRoute,
@@ -36,6 +37,9 @@ export class ToolPageComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    if (this.userService.isLoggedIn()) {
+      this.isAdmin = this.userService.getCurrentUser().isAdmin;
+    }
     this.route.params.subscribe(params => {
       this.toolId = params['id'];
     });
