@@ -8,7 +8,7 @@ import {
   verifyAccessToken,
   hashPassword
 } from '../util/authUtils';
-import { sendUserVerification, sendForgotPassword } from '../util/emailService';
+import { sendUserVerification, sendForgotPassword, sendReportBug } from '../util/emailService';
 import uuid = require('uuid/v1');
 import { ResetPasswordCode } from '../entity/ResetPasswordCode';
 
@@ -81,7 +81,8 @@ export async function login(request: Request, response: Response) {
       token: await generateAccessToken(user, remember),
       userId: user.userId,
       email: user.email,
-      username: user.username
+      username: user.username,
+      isAdmin: user.isAdmin
     };
     if (user.status !== 0) {
       response.status(403).json({ error: 'Your account is not activated.' });
@@ -224,4 +225,19 @@ export async function verifyEmail(request: Request, response: Response) {
   } else {
     response.status(404).json({ message: 'not found' });
   }
+}
+
+/**
+ * @api {POST} /v1/bug/ To send bug report from user to admin email
+ * @apiGroup Authentication
+ * @apiParam {String} email
+ * @apiParam {String} message
+ * @apiSuccess (200)
+ * @apiError (401) {Object} error
+ */
+export async function sendReportBugEmail(request: Request, response: Response) {
+  const email = request.body.email;
+  const message = request.body.message;
+  sendReportBug(email, message);
+  response.status(200).json({ message: 'OK' });
 }

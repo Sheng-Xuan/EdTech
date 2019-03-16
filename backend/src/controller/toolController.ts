@@ -9,6 +9,7 @@ import { Category } from '../entity/Category';
 import { Rating } from '../entity/Rating';
 import { Review } from '../entity/Review';
 import { ReviewComment } from '../entity/ReviewComment';
+import { sendNewToolNotification } from '../util/emailService';
 
 const NORMAL = 0;
 const PENDING = 1;
@@ -73,6 +74,8 @@ export async function createTool(request: Request, response: Response) {
   tool.images = images;
   tool.website = website;
   tool.categories = categories;
+  // If published by admin, no need to verify
+  tool.status = user.isAdmin ? 0 : 1;
   // Check if category exists
   for (let i in category) {
     const cat = await cateRepository.findOne(category[i]);
@@ -83,9 +86,18 @@ export async function createTool(request: Request, response: Response) {
   await toolRepository
     .save(tool)
     .then(tool => {
-      response.status(200).json({
-        toolId: tool.toolId
-      });
+      if (!user.isAdmin) {
+        if (process.env.NODE_ENV !== 'test') {
+          sendNewToolNotification(user.email, tool.toolId);
+        }
+        response.status(200).json({
+          message: 'pending'
+        });
+      } else {
+        response.status(200).json({
+          toolId: tool.toolId
+        });
+      }
     })
     .catch(err => {
       response.status(400).json({
@@ -162,7 +174,10 @@ export async function searchTool(request: Request, response: Response) {
  * @apiSuccess {json} tool object list
  * @apiError (400) {json} error
  */
-export async function getTopToolsByCategory(request: Request, response: Response) {
+export async function getTopToolsByCategory(
+  request: Request,
+  response: Response
+) {
   const toolRepository = getRepository(Tool);
   const category = request.params.category;
   let tools;
@@ -206,8 +221,8 @@ export async function getRecommendedTools(
   const toolRepository = getRepository(Tool);
   let tools = await toolRepository.find({
     relations: ['categories', 'images'],
-    where: { recommended: true, status: 0},
-    cache: 10000,
+    where: { recommended: true, status: 0 },
+    cache: 10000
   });
   if (!tools) {
     response.status(400).json({ error: 'Tool not found' });
@@ -309,7 +324,7 @@ export async function getReviewsByToolId(request: Request, response: Response) {
       .loadRelationCountAndMap('review.commentCount', 'review.comments')
       .innerJoin('review.author', 'author')
       .where({ tool: tool })
-      .orderBy('review.visits', "DESC")
+      .orderBy('review.visits', 'DESC')
       .getMany();
     response.status(200).json(reviews);
   } else {

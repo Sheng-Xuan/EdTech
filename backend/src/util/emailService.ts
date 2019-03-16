@@ -20,6 +20,20 @@ export function sendForgotPassword(userEmail: string, code: string) {
   });
 }
 
+export function sendReportBug(userEmail: string, message: string) {
+  sendEmail(process.env.SENDGRID_ADMIN_EMAIL, senderAddress, process.env.SENDGRID_REPORT_BUG, {
+    email: userEmail,
+    message: message
+  });
+}
+
+export function sendNewToolNotification(userEmail: string, toolId: number) {
+  sendEmail(process.env.SENDGRID_ADMIN_EMAIL, senderAddress, process.env.SENDGRID_NEW_TOOL, {
+    userEmail: userEmail,
+    toolId: toolId
+  });
+}
+
 function sendEmail(to: string, from: string, templateId: string, data: object) {
   const msg = {
     to: to,
