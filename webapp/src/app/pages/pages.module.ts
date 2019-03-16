@@ -25,6 +25,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReviewBoxComponent } from '../components/review-box/review-box.component';
 import { ToolListComponent } from '../components/tool-list/tool-list.component';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { PolicyPageComponent } from './policy-page/policy-page.component';
+import { AboutUsPageComponent } from './about-us-page/about-us-page.component';
+import { ReportBugPageComponent } from './report-bug-page/report-bug-page.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -55,7 +58,10 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     ToolsRankingPageComponent,
     ReviewsFlowPageComponent,
     ReviewBoxComponent,
-    ToolListComponent
+    ToolListComponent,
+    PolicyPageComponent,
+    AboutUsPageComponent,
+    ReportBugPageComponent
   ]
 })
 export class PagesModule {}
