@@ -18,7 +18,7 @@ beforeAll(async () => {
   user.passwordHash = await hashPassword('test');
   user.username = 'Bob';
   user.userId = 1;
-  user.isAdmin = false;
+  user.isAdmin = true;
   accessToken = await generateAccessToken(user, true);
   await getRepository(User).save(user);
 });
