@@ -1,0 +1,28 @@
+<div nz-col>
+  <div nz-row>
+    <h1>Report Bug</h1>
+    <h3>
+      Sorry for any inconvenience made, please describe the bug you encountered
+      below, we will check it soon.
+    </h3>
+  </div>
+</div>
+<nz-input-group style="margin-bottom: 20px" nzAddOnBefore="Email Address:">
+  <input
+    nz-input
+    placeholder="Please provide your email here"
+    [(ngModel)]="email"
+  />
+</nz-input-group>
+<textarea
+  maxlength="2000"
+  style="margin-bottom: 20px"
+  rows="4"
+  placeholder="Please describe the problem you encountered..."
+  nz-input
+  [(ngModel)]="message"
+  [nzAutosize]="{ minRows: 4, maxRows: 20}"
+></textarea>
+<button [disabled]="!email || !message" (click)="report()" style="float: right" nz-button nzType="primary">
+  Report
+</button>
