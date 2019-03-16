@@ -51,23 +51,23 @@ export async function postToolComment(request: Request, response: Response) {
  * @apiError {json} error error
  */
 export async function postReviewComment(request: Request, response: Response) {
-    const userInfo: UserTokenData = response.locals.userInfo;
-    const commentController = getRepository(ReviewComment);
-    const userController = getRepository(User);
-    const reviewController = getRepository(Review);
-    let user = await userController.findOne(userInfo.id);
-    let review = await reviewController.findOne(request.body.commentId);
-    if (user && review) {
-      const newComment = new ReviewComment();
-      newComment.author = user;
-      newComment.content = request.body.comment;
-      newComment.review = review;
-      await commentController.save(newComment);
-      response.status(200).json({ message: 'OK' });
-    } else {
-      response.status(400).json({ error: 'Invalid tool or user' });
-    }
+  const userInfo: UserTokenData = response.locals.userInfo;
+  const commentController = getRepository(ReviewComment);
+  const userController = getRepository(User);
+  const reviewController = getRepository(Review);
+  let user = await userController.findOne(userInfo.id);
+  let review = await reviewController.findOne(request.body.commentId);
+  if (user && review) {
+    const newComment = new ReviewComment();
+    newComment.author = user;
+    newComment.content = request.body.comment;
+    newComment.review = review;
+    await commentController.save(newComment);
+    response.status(200).json({ message: 'OK' });
+  } else {
+    response.status(400).json({ error: 'Invalid tool or user' });
   }
+}
 
 /**
  * @api {GET} /v1/tool/comments/:toolId GET comments to a tool
@@ -82,11 +82,16 @@ export async function getToolComments(request: Request, response: Response) {
   let tool = await toolController.findOne(request.params.toolId);
   if (tool) {
     let comments = await commentController
-    .createQueryBuilder('comment')
-    .select(['comment.content', 'comment.createTime', 'author.username'])
-    .innerJoin('comment.author', 'author')
-    .where({tool: tool})
-    .getMany();
+      .createQueryBuilder('comment')
+      .select([
+        'comment.commentId',
+        'comment.content',
+        'comment.createTime',
+        'author.username'
+      ])
+      .innerJoin('comment.author', 'author')
+      .where({ tool: tool })
+      .getMany();
     response.status(200).json(comments);
   } else {
     response.status(400).json({ error: 'Invalid tool' });
@@ -101,18 +106,77 @@ export async function getToolComments(request: Request, response: Response) {
  * @apiError {json} error error
  */
 export async function getReviewComments(request: Request, response: Response) {
-    const commentController = getRepository(ReviewComment);
-    const reviewComtroller = getRepository(Review);
-    let review = await reviewComtroller.findOne(request.params.reviewId);
-    if (review) {
-      let comments = await commentController
+  const commentController = getRepository(ReviewComment);
+  const reviewComtroller = getRepository(Review);
+  let review = await reviewComtroller.findOne(request.params.reviewId);
+  if (review) {
+    let comments = await commentController
       .createQueryBuilder('comment')
-      .select(['comment.content', 'comment.createTime', 'author.username'])
+      .select([
+        'comment.commentId',
+        'comment.content',
+        'comment.createTime',
+        'author.username'
+      ])
       .innerJoin('comment.author', 'author')
-      .where({review: review})
+      .where({ review: review })
       .getMany();
-      response.status(200).json(comments);
+    response.status(200).json(comments);
+  } else {
+    response.status(400).json({ error: 'Invalid tool' });
+  }
+}
+
+/**
+ * @api {DELETE} /v1/review/comment/:id DELETE a comment by commentId
+ * @apiGroup Comment
+ * @apiParam {number} commentId comment id
+ * @apiSuccess {json} OK
+ * @apiError {json} error error
+ */
+export async function deleteReviewComment(
+  request: Request,
+  response: Response
+) {
+  const commentController = getRepository(ReviewComment);
+  const userInfo: UserTokenData = response.locals.userInfo;
+  let user = await getRepository(User).findOne({ userId: userInfo.id });
+  if (!user || !user.isAdmin) {
+    response.status(401).json({ error: 'Unauthorized' });
+  } else {
+    let comment = await commentController.findOne(request.params.id);
+    if (comment) {
+      await commentController.delete(comment.commentId);
+      response.status(200).json({ message: 'OK' });
     } else {
-      response.status(400).json({ error: 'Invalid tool' });
+      response.status(400).json({ error: 'Comment not found' });
     }
   }
+}
+
+/**
+ * @api {DELETE} /v1/tool/comment/:id DELETE a comment by commentId
+ * @apiGroup Comment
+ * @apiParam {number} commentId comment id
+ * @apiSuccess {json} OK
+ * @apiError {json} error error
+ */
+export async function deleteToolComment(
+  request: Request,
+  response: Response
+) {
+  const commentController = getRepository(ToolComment);
+  const userInfo: UserTokenData = response.locals.userInfo;
+  let user = await getRepository(User).findOne({ userId: userInfo.id });
+  if (!user || !user.isAdmin) {
+    response.status(401).json({ error: 'Unauthorized' });
+  } else {
+    let comment = await commentController.findOne(request.params.id);
+    if (comment) {
+      await commentController.delete(comment.commentId);
+      response.status(200).json({ message: 'OK' });
+    } else {
+      response.status(400).json({ error: 'Comment not found' });
+    }
+  }
+}
