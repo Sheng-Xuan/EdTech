@@ -19,6 +19,13 @@ export class Review {
     @Column({ default: 0 })
     visits: number
 
+    @Column({ default: 0})
+    /*
+    0: normal,
+    1: deleted
+    */
+    status: number
+
     @Column()
     fileName: string;
 
