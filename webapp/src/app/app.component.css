@@ -24,10 +24,19 @@
 }
 .content {
     margin-top: 100px;
+    margin-bottom: 100px;
     min-height: 800px;
     position: relative;
+}
+.clickable:hover{
+    color: white;
 }
 
 .user-panel {
     float: right;
+}
+.footer-item {
+    margin-left: 8px;
+    margin-right: 8px;
+    color: rgba(255,255,255,0.65);
 }
