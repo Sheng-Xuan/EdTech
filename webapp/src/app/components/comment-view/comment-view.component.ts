@@ -23,6 +23,7 @@ export class CommentViewComponent implements OnInit {
   commentsLoading;
   commentButtonLoading = false;
   newComment: string;
+  isAdmin: boolean;
 
   constructor(
     private toolService: ToolService,
@@ -31,7 +32,11 @@ export class CommentViewComponent implements OnInit {
     private msg: NzMessageService,
     private messageService: MessageService,
     private timeService: TimeService
-  ) {}
+  ) {
+    if (this.userService.isLoggedIn()) {
+      this.isAdmin = this.userService.getCurrentUser().isAdmin;
+    }
+  }
 
   ngOnInit() {
     this.loadComments();
@@ -91,6 +96,32 @@ export class CommentViewComponent implements OnInit {
       }
     } else {
       this.messageService.sendMessage('login');
+    }
+  }
+
+  deleteComment(item) {
+    if (this.type === 'tool') {
+      this.toolService.deleteComment(item.commentId).subscribe(
+        res => {
+          this.comments = this.comments.filter(_ => {
+            return _.commentId !== item.commentId;
+          });
+        },
+        err => {
+          this.msg.error(err.error);
+        }
+      );
+    } else if (this.type === 'review') {
+      this.reviewService.deleteComment(item.commentId).subscribe(
+        res => {
+          this.comments = this.comments.filter(_ => {
+            return _.commentId !== item.commentId;
+          });
+        },
+        err => {
+          this.msg.error(err.error);
+        }
+      );
     }
   }
 

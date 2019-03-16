@@ -1,7 +1,8 @@
 <nz-card nzTitle='Comments'>
   <nz-list *ngIf="comments && comments.length>0" [nzLoading]="commentsLoading" [nzDataSource]="comments" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
     <ng-template #item let-item>
-      <nz-list-item>
+      <nz-list-item [nzActions]="isAdmin?[deleteAction]:[]">
+        <ng-template #deleteAction><a (click)="deleteComment(item)">Delete</a></ng-template>
         <nz-list-item-meta [nzTitle]="nzTitle" [nzDescription]="content">
           <ng-template #nzTitle>
             <nz-avatar [nzText]="item.author.username.substring(0,1).toUpperCase()" [nzSize]="'small'" style="vertical-align: middle;"></nz-avatar>
