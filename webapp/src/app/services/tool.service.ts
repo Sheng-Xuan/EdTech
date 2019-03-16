@@ -189,4 +189,13 @@ export class ToolService {
       })
     });
   }
+
+  deleteComment(id: number): Observable<any> {
+    return this.apiService.delete('/tool/comment/' + id, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.jwtService.getToken()
+      })
+    });
+  }
 }

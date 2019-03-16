@@ -101,4 +101,13 @@ export class ReviewService {
       }
     ));
   }
+
+  deleteComment(id: number): Observable<any> {
+    return this.apiService.delete('/review/comment/' + id, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.jwtService.getToken()
+      })
+    });
+  }
 }
