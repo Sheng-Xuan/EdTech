@@ -5,7 +5,7 @@ import {
   updateUserGroupById,
   updateUserStatusById
 } from './controller/userController';
-import { registerUser, login, verifyEmail, getResetPasswordCode, checkResetPasswordCode, resetPassword } from './controller/authController';
+import { registerUser, login, verifyEmail, getResetPasswordCode, checkResetPasswordCode, resetPassword, sendReportBugEmail } from './controller/authController';
 import * as dotenv from 'dotenv';
 import { uploadImage } from './controller/imageController';
 import {
@@ -28,7 +28,9 @@ import {
   getToolComments,
   postToolComment,
   getReviewComments,
-  postReviewComment
+  postReviewComment,
+  deleteReviewComment,
+  deleteToolComment
 } from './controller/commentController';
 import { publishReview, getReviewById, getReviewsByUserId, getNewReviews, getReviewsFlow, putReviewVisit } from './controller/reviewController';
 
@@ -108,6 +110,18 @@ export const AppRoutes = [
     path: apiVersion + '/tool/myrating/',
     method: 'post',
     action: postMyRating,
+    auth: true
+  },
+  {
+    path: apiVersion + '/review/comment/:id',
+    method: 'delete',
+    action: deleteReviewComment,
+    auth: true
+  },
+  {
+    path: apiVersion + '/tool/comment/:id',
+    method: 'delete',
+    action: deleteToolComment,
     auth: true
   },
   {
@@ -252,6 +266,12 @@ export const AppRoutes = [
     path: apiVersion + '/reviews/visit/:reviewId',
     method: 'put',
     action: putReviewVisit,
+    auth: false
+  },
+  {
+    path: apiVersion + '/bug',
+    method: 'post',
+    action: sendReportBugEmail,
     auth: false
   }
 ];
