@@ -3,6 +3,7 @@ import { UserService } from 'src/app/services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
 import { MessageService } from 'src/app/services/message.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-verification-page',
@@ -18,6 +19,7 @@ export class VerificationPageComponent implements OnInit {
     private router: Router,
     private nzMessageService: NzMessageService,
     private messageService: MessageService,
+    private titleService: Title
   ) {
     this.activatedRoute.queryParams.subscribe(params => {
       this.email = params['email'];
@@ -26,6 +28,7 @@ export class VerificationPageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.titleService.setTitle('EdTech | Verification');
     if (this.email && this.code) {
       this.userService.verifyEmail(this.code, this.email).subscribe(
         res => {

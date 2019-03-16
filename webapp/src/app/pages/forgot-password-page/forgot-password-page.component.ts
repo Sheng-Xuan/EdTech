@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
 import { NzMessageService } from 'ng-zorro-antd';
 import { interval, Observable } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-forgot-password-page',
@@ -29,7 +30,8 @@ export class ForgotPasswordPageComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
-    private messageService: NzMessageService
+    private messageService: NzMessageService,
+    private titleService: Title
   ) {
     this.firstStepForm = this.formBuilder.group({
       email: [null, [Validators.required, Validators.email]],
@@ -44,7 +46,9 @@ export class ForgotPasswordPageComponent implements OnInit {
     );
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.titleService.setTitle('EdTech | Forgot Password');
+  }
 
   sendCode() {
     this.isSendingEmail = true;

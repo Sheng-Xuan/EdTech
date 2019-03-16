@@ -5,6 +5,7 @@ import { ToolService } from 'src/app/services/tool.service';
 import { NzMessageService } from 'ng-zorro-antd';
 import { Router } from '@angular/router';
 import { MessageService } from 'src/app/services/message.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-admin-page',
@@ -52,10 +53,12 @@ export class AdminPageComponent implements OnInit {
     private message: NzMessageService,
     private router: Router,
     private msg: NzMessageService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private titleService: Title
   ) {}
 
   ngOnInit() {
+    this.titleService.setTitle('EdTech | Admin Dashboard');
     this.userService.getAllUsers().subscribe(
       res => {
         this.users = res;

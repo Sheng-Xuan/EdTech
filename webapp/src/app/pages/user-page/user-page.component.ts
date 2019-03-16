@@ -8,6 +8,7 @@ import { ToolService } from 'src/app/services/tool.service';
 import { MapType } from '@angular/compiler';
 import { ReviewService } from 'src/app/services/review.service';
 import { MessageService } from 'src/app/services/message.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-user-page',
@@ -28,7 +29,8 @@ export class UserPageComponent implements OnInit {
     private timeService: TimeService,
     private toolService: ToolService,
     private reviewService: ReviewService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private titleService: Title
   ) {
     this.validateForm = this.formBuilder.group(
       {
@@ -42,6 +44,7 @@ export class UserPageComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.userService.getCurrentUser();
+    this.titleService.setTitle('EdTech | User Center');
   }
   setContent(tab: string) {
     this.selectedTab = tab;
@@ -61,7 +64,12 @@ export class UserPageComponent implements OnInit {
         this.myTools = res;
       },
       err => {
-        this.message.error(err.error);
+        if (err.error = 'Unauthorized') {
+          this.message.error('Session timeout, please log in again');
+          this.messageService.sendMessage('login');
+        } else {
+          this.message.error(err.error);
+        }
       }
     );
   }
@@ -72,7 +80,12 @@ export class UserPageComponent implements OnInit {
         this.myReviews = res;
       },
       err => {
-        this.message.error(err.error);
+        if (err.error = 'Unauthorized') {
+          this.message.error('Session timeout, please log in again');
+          this.messageService.sendMessage('login');
+        } else {
+          this.message.error(err.error);
+        }
       }
     );
   }
