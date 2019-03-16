@@ -85,7 +85,12 @@ export class ToolPublishPageComponent implements OnInit {
         )
         .subscribe(
           res => {
-            this.router.navigateByUrl('/tool/' + res.toolId);
+            if (res.message === 'pending') {
+              this.msg.success('Tool publish request is submitted, please wait for admin to approve.');
+              this.router.navigateByUrl('/');
+            } else {
+              this.router.navigateByUrl('/tool/' + res.toolId);
+            }
           },
           err => {
             if (err.error = 'Unauthorized') {
