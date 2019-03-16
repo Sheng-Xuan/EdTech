@@ -1,8 +1,23 @@
 <div *ngIf="!isLoginedIn()" class="auth-container">
-  <button nz-button nzType="primary" (click)="openLoginModal()">Log in</button>
-  <button nz-button nzType="primary" (click)="openRegisterModal()">
-    Register
-  </button>
+  <div *ngIf="isMobile">
+    <nz-dropdown [nzPlacement]="'bottomRight'">
+      <a nz-dropdown>
+        <i class="login-icon" nz-icon type="bars" theme="outline"></i>
+      </a>
+      <ul style="transform: translateY(10px);" nz-menu>
+        <li (click)="(openLoginModal)" nz-menu-item>Log in</li>
+        <li (click)="openRegisterModal()" nz-menu-item>Register</li>
+      </ul>
+    </nz-dropdown>
+  </div>
+  <div *ngIf="!isMobile">
+    <button nz-button nzType="primary" (click)="openLoginModal()">
+      Log in
+    </button>
+    <button nz-button nzType="primary" (click)="openRegisterModal()">
+      Register
+    </button>
+  </div>
 </div>
 <div *ngIf="isLoginedIn()" class="auth-container">
   <nz-dropdown [nzPlacement]="'bottomRight'">

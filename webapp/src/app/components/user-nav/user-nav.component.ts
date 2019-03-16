@@ -4,7 +4,7 @@ import { AuthModalComponent } from '../auth-modal/auth-modal.component';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
 import { MessageService } from '../../services/message.service';
-import { Subscription } from 'rxjs';
+import { Subscription, fromEvent } from 'rxjs';
 
 @Component({
   selector: 'app-user-nav',
@@ -14,6 +14,8 @@ import { Subscription } from 'rxjs';
 export class UserNavComponent implements OnInit, OnDestroy {
   private currentUser: User;
   private subscription: Subscription;
+  private sizeSubscribe: Subscription;
+  isMobile = window.innerWidth <= 800;
   constructor(
     private modalService: NzModalService,
     private userService: UserService,
@@ -31,6 +33,13 @@ export class UserNavComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.currentUser = this.userService.getCurrentUser();
+    this.sizeSubscribe = fromEvent(window, 'resize').subscribe(event => {
+      if (window.innerWidth <= 800) {
+        this.isMobile = true;
+      } else if (window.innerWidth > 800) {
+        this.isMobile = false;
+      }
+    });
   }
   isLoginedIn(): boolean {
     return this.userService.isLoggedIn();
@@ -40,7 +49,11 @@ export class UserNavComponent implements OnInit, OnDestroy {
     this.noticification.success('You are logged out.');
   }
   get username() {
-    return this.currentUser.username ? this.currentUser.username : 'unknown';
+    if (window.innerWidth <= 700) {
+      return '';
+    } else {
+      return this.currentUser.username ? this.currentUser.username : '';
+    }
   }
 
   openRegisterModal() {
@@ -68,5 +81,6 @@ export class UserNavComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+    this.sizeSubscribe.unsubscribe();
   }
 }

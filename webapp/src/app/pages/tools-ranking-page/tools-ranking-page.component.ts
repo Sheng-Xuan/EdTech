@@ -1,5 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ToolService } from 'src/app/services/tool.service';
+import { fromEvent  } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-tools-ranking-page',
@@ -8,11 +10,22 @@ import { ToolService } from 'src/app/services/tool.service';
 })
 export class ToolsRankingPageComponent implements OnInit {
   categories = [{ id: 0, name: 'All' }];
-  topTools;
+  topTools = [];
   nzTabPosition = 'left';
   selectedIndex = 0;
-  constructor(private toolService: ToolService) {}
+  constructor(private toolService: ToolService, private titleService: Title) {}
   ngOnInit(): void {
+    this.titleService.setTitle('EdTech | Top Tools');
+    if (window.innerWidth <= 800) {
+      this.nzTabPosition = 'top';
+    }
+    fromEvent(window, 'resize').subscribe(event => {
+      if (window.innerWidth <= 800) {
+        this.nzTabPosition = 'top';
+      } else if (window.innerWidth > 800) {
+        this.nzTabPosition = 'left';
+      }
+    });
     this.toolService.getCategories().subscribe(res => {
       this.categories = [...this.categories, ...res];
       this.topTools = this.categories.map(x => {

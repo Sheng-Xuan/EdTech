@@ -1,7 +1,13 @@
 [nz-button] {
-    margin-right: 5px;
+  margin-right: 5px;
+}
+.login-icon {
+  transform: translateY(5px);
+  font-size: 250%;
+  margin-right: 20px;
+  color: rgba(255, 255, 255, 0.65);
 }
 .username {
-    display: inline;
-    padding-left: 10px;
+  display: inline;
+  padding-left: 10px;
 }
