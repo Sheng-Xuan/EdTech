@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ToolService } from 'src/app/services/tool.service';
-import { fromEvent  } from 'rxjs';
+import { fromEvent } from 'rxjs';
 import { Title } from '@angular/platform-browser';
 
 @Component({
@@ -10,7 +10,7 @@ import { Title } from '@angular/platform-browser';
 })
 export class ToolsRankingPageComponent implements OnInit {
   categories = [{ id: 0, name: 'All' }];
-  topTools = [];
+  topTools = [[], [], [], [], [], [], []];
   nzTabPosition = 'left';
   selectedIndex = 0;
   constructor(private toolService: ToolService, private titleService: Title) {}
@@ -26,12 +26,6 @@ export class ToolsRankingPageComponent implements OnInit {
         this.nzTabPosition = 'left';
       }
     });
-    this.toolService.getCategories().subscribe(res => {
-      this.categories = [...this.categories, ...res];
-      this.topTools = this.categories.map(x => {
-        return [];
-      });
-    });
     this.toolService.getTopToolsByCategory(0).subscribe(
       res => {
         this.topTools[0] = res;
@@ -39,6 +33,9 @@ export class ToolsRankingPageComponent implements OnInit {
       },
       err => {}
     );
+    this.toolService.getCategories().subscribe(res => {
+      this.categories = [...this.categories, ...res];
+    });
   }
 
   getTools(catId) {
