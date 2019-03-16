@@ -14,6 +14,9 @@ import { VerificationPageComponent } from './pages/verification-page/verificatio
 import { ForgotPasswordPageComponent } from './pages/forgot-password-page/forgot-password-page.component';
 import { ToolsRankingPageComponent } from './pages/tools-ranking-page/tools-ranking-page.component';
 import { ReviewsFlowPageComponent } from './pages/reviews-flow-page/reviews-flow-page.component';
+import { PolicyPageComponent } from './pages/policy-page/policy-page.component';
+import { AboutUsPageComponent } from './pages/about-us-page/about-us-page.component';
+import { ReportBugPageComponent } from './pages/report-bug-page/report-bug-page.component';
 
 const routes: Routes = [
   {
@@ -72,6 +75,18 @@ const routes: Routes = [
     data: {animation: 'reviews'}
   },
   {
+    path: 'policy',
+    component: PolicyPageComponent
+  },
+  {
+    path: 'about',
+    component: AboutUsPageComponent
+  },
+  {
+    path: 'bug',
+    component: ReportBugPageComponent
+  },
+  {
     path: '**',
     redirectTo: ''
   }
@@ -80,7 +95,8 @@ const routes: Routes = [
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, {
-      preloadingStrategy: PreloadAllModules
+      preloadingStrategy: PreloadAllModules,
+      scrollPositionRestoration: 'enabled'
     })
   ],
   exports: [RouterModule]
