@@ -21,6 +21,11 @@
 ul {
     list-style: none;
 }
+@media only screen and (max-width: 575px) {
+    ul {
+        padding: 5px;
+    }
+}
 .desc_row {
     padding-bottom: 10px;
 }

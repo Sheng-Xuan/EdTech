@@ -7,6 +7,7 @@ import { TimeService } from '../../services/time.service';
 import { NzMessageService } from 'ng-zorro-antd';
 import { ReviewService } from '../../services/review.service';
 import { Title } from '@angular/platform-browser';
+import { fromEvent } from 'rxjs';
 
 @Component({
   selector: 'app-tool-page',
@@ -25,6 +26,9 @@ export class ToolPageComponent implements OnInit {
   reviewLoading = true;
   reviews = [];
   isAdmin = false;
+  cardStyle = {
+    padding: '24px'
+  };
   constructor(
     private toolService: ToolService,
     private route: ActivatedRoute,
@@ -37,6 +41,18 @@ export class ToolPageComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    // set mobile UI
+    if (window.innerWidth <= 575) {
+      this.cardStyle.padding = '0';
+    }
+    fromEvent(window, 'resize').subscribe(event => {
+      if (window.innerWidth <= 575) {
+        this.cardStyle.padding = '0';
+      } else if (window.innerWidth > 575) {
+        this.cardStyle.padding = '24px';
+      }
+    });
+
     if (this.userService.isLoggedIn()) {
       this.isAdmin = this.userService.getCurrentUser().isAdmin;
     }
