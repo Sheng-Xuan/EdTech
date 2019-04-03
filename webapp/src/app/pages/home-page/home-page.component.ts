@@ -31,7 +31,7 @@ export class HomePageComponent implements OnInit {
   recommendedTools: Array<any>;
   reviews: Array<any>;
   carouselTileConfig: NguCarouselConfig = {
-    grid: { xs: 2, sm: 2, md: 4, lg: 6, all: 0 },
+    grid: { xs: 2, sm: 2, md: 4, lg: 5, all: 0 },
     speed: 250,
     point: {
       visible: true
