@@ -6,9 +6,8 @@
   <nz-card-meta [nzTitle]="title" [nzDescription]="reviewBody"></nz-card-meta>
 </nz-card>
 <ng-template #title>
-  <a [routerLink]="'/tool/' + data.tool.toolId" routerLinkActive="active"
-    >[{{ data.tool.name }}]</a
-  >&nbsp;{{ data.title }}
+  <a [routerLink]="'/tool/' + data.tool.toolId" routerLinkActive="active">[{{ data.tool.name }}]</a>
+  <div>{{ data.title }}</div>
 </ng-template>
 <ng-template #coverTemplate>
   <img
