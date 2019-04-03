@@ -188,7 +188,7 @@ export async function getTopToolsByCategory(
       .leftJoinAndSelect('tool.categories', 'category')
       .leftJoinAndSelect('tool.images', 'images')
       .orderBy('tool.averageRating', 'DESC', 'NULLS LAST')
-      .limit(20)
+      .take(20)
       .cache(10000)
       .getMany();
   } else {
@@ -201,7 +201,7 @@ export async function getTopToolsByCategory(
       .leftJoinAndSelect('tool.images', 'images')
       .andWhere('category.categoryId = :id', { id: category })
       .orderBy('tool.averageRating', 'DESC', 'NULLS LAST')
-      .limit(20)
+      .take(20)
       .cache(10000)
       .getMany();
   }
