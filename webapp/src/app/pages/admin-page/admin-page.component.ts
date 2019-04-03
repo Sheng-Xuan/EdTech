@@ -6,6 +6,7 @@ import { NzMessageService } from 'ng-zorro-antd';
 import { Router } from '@angular/router';
 import { MessageService } from 'src/app/services/message.service';
 import { Title } from '@angular/platform-browser';
+import { fromEvent } from 'rxjs';
 
 @Component({
   selector: 'app-admin-page',
@@ -46,6 +47,7 @@ export class AdminPageComponent implements OnInit {
     { text: 'Pending', value: 1 },
     { text: 'Deleted', value: 2 }
   ];
+  isRightPanelCollapsed = false;
   constructor(
     private userService: UserService,
     private timeService: TimeService,
@@ -79,6 +81,16 @@ export class AdminPageComponent implements OnInit {
         this.messageService.sendMessage('login');
       } else {
         this.msg.error(err.error);
+      }
+    });
+    if (window.innerWidth <= 800) {
+      this.isRightPanelCollapsed = true;
+    }
+    fromEvent(window, 'resize').subscribe(event => {
+      if (window.innerWidth <= 800) {
+        this.isRightPanelCollapsed = true;
+      } else if (window.innerWidth > 800) {
+        this.isRightPanelCollapsed = false;
       }
     });
   }

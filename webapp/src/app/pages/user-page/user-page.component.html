@@ -1,19 +1,19 @@
 <nz-layout>
-  <nz-sider [nzWidth]="200" style="background:#fff">
-    <ul nz-menu [nzMode]="'inline'" style="height:100%">
+  <nz-sider [(nzCollapsed)]="isRightPanelCollapsed" style="background:#fff">
+    <ul nz-menu [nzInlineCollapsed]="isRightPanelCollapsed" [nzMode]="'inline'" style="height:100%">
       <li nz-menu-item [nzSelected]="true" (click)="setContent('account')">
-        <span title><i nz-icon type="user"></i>My Account</span>
+        <span title><i nz-icon type="user"></i><span class="nav-text">My Account</span></span>
       </li>
       <li nz-menu-item (click)="setContent('password')">
         <span title
-          ><i nz-icon type="key" theme="outline"></i>Change Password</span
+          ><i nz-icon type="key" theme="outline"></i><span class="nav-text">Change Password</span></span
         >
       </li>
       <li nz-menu-item (click)="setContent('tools')">
-        <span title><i nz-icon type="laptop"></i>My tools</span>
+        <span title><i nz-icon type="laptop"></i><span class="nav-text">My Tools</span></span>
       </li>
       <li nz-menu-item (click)="setContent('reviews')">
-        <span title><i nz-icon type="read" theme="outline"></i>My reviews</span>
+        <span title><i nz-icon type="read" theme="outline"></i><span class="nav-text">My Reviews</span></span>
       </li>
     </ul>
   </nz-sider>
@@ -111,15 +111,15 @@
         </form>
       </nz-content>
       <nz-content *ngSwitchCase="'tools'">
-          <nz-table #toolTable [nzData]="myTools">
+          <nz-table #toolTable [nzData]="myTools" [nzScroll]="{ x: '1000px', y: '800px' }">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Categories</th>
-                  <th>Average Rating</th>
-                  <th>No. of Rating</th>
-                  <th>Status</th>
-                  <th>Publish Time</th>
+                  <th nzWidth="150px">Name</th>
+                  <th nzWidth="300px">Categories</th>
+                  <th nzWidth="100px">Average Rating</th>
+                  <th nzWidth="100px">No. of Rating</th>
+                  <th nzWidth="100px">Status</th>
+                  <th nzWidth="200px">Publish Time</th>
                 </tr>
               </thead>
               <tbody>
@@ -138,12 +138,12 @@
             </nz-table>
       </nz-content>
       <nz-content *ngSwitchCase="'reviews'">
-          <nz-table #reviewTable [nzData]="myReviews">
+          <nz-table #reviewTable [nzData]="myReviews" [nzScroll]="{ x: '600px', y: '800px' }">
               <thead>
                 <tr>
-                  <th>Title</th>
-                  <th>Tool</th>
-                  <th>Publish Time</th>
+                  <th nzWidth="150px">Title</th>
+                  <th nzWidth="150px">Tool</th>
+                  <th nzWidth="200px">Publish Time</th>
                 </tr>
               </thead>
               <tbody>

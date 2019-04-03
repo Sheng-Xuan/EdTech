@@ -9,6 +9,7 @@ import { MapType } from '@angular/compiler';
 import { ReviewService } from 'src/app/services/review.service';
 import { MessageService } from 'src/app/services/message.service';
 import { Title } from '@angular/platform-browser';
+import { fromEvent } from 'rxjs';
 
 @Component({
   selector: 'app-user-page',
@@ -22,6 +23,7 @@ export class UserPageComponent implements OnInit {
   user: User;
   myTools = [];
   myReviews = [];
+  isRightPanelCollapsed = false;
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
@@ -45,6 +47,16 @@ export class UserPageComponent implements OnInit {
   ngOnInit() {
     this.user = this.userService.getCurrentUser();
     this.titleService.setTitle('EdTech | User Center');
+    if (window.innerWidth <= 800) {
+      this.isRightPanelCollapsed = true;
+    }
+    fromEvent(window, 'resize').subscribe(event => {
+      if (window.innerWidth <= 800) {
+        this.isRightPanelCollapsed = true;
+      } else if (window.innerWidth > 800) {
+        this.isRightPanelCollapsed = false;
+      }
+    });
   }
   setContent(tab: string) {
     this.selectedTab = tab;

@@ -1,22 +1,23 @@
-<h2>EdTech Admin Dashboard</h2>
+<h2 style="text-align: center">EdTech Admin Dashboard</h2>
 <nz-layout>
-  <nz-sider [nzWidth]="200" style="background:#fff">
-    <ul nz-menu [nzMode]="'inline'" style="height:100%">
+  <nz-sider [(nzCollapsed)]="isRightPanelCollapsed" style="background:#fff">
+    <ul nz-menu [nzInlineCollapsed]="isRightPanelCollapsed" [nzMode]="'inline'" style="height:100%">
       <li nz-menu-item [nzSelected]="true" (click)="setTable('users')">
-        <span title><i nz-icon type="user"></i>Users</span>
+        <span title><i nz-icon type="user"></i><span class="nav-text">Users</span></span>
       </li>
       <li nz-menu-item (click)="setTable('tools')">
-        <span title><i nz-icon type="laptop"></i>Tools</span>
+        <span title><i nz-icon type="laptop"></i><span class="nav-text">Tools</span></span>
       </li>
     </ul>
   </nz-sider>
-  <nz-layout style="margin-left: 200">
+  <nz-layout style="margin-left: 5px">
     <nz-content style="overflow: initial; background:#fff">
       <!-- User table -->
       <nz-table
         *ngIf="currentTable === 'users'"
         #userTable
         [nzData]="displayedUsers"
+        [nzScroll]="{ x: '1250px', y: '800px' }"
       >
         <thead>
           <tr>
@@ -24,10 +25,11 @@
               nzShowSort
               [(nzSort)]="sortMap.userId"
               (nzSortChange)="sort('userId', $event)"
+              nzWidth="100px"
             >
               UserId
             </th>
-            <th nzCustomFilter>
+            <th nzCustomFilter nzWidth="150px">
               Username
               <nz-dropdown
                 nzTrigger="click"
@@ -61,8 +63,9 @@
                 </div>
               </nz-dropdown>
             </th>
-            <th>Email</th>
+            <th nzWidth='200px'>Email</th>
             <th
+              nzWidth='100px'
               nzShowFilter
               [nzFilters]="userGroupList"
               (nzFilterChange)="searchUsers($event, filterUserStatusList)"
@@ -70,6 +73,7 @@
               Group
             </th>
             <th
+              nzWidth='100px'
               nzShowFilter
               [nzFilters]="userStatusList"
               (nzFilterChange)="searchUsers(filterUserGroupList, $event)"
@@ -77,13 +81,14 @@
               Status
             </th>
             <th
+              nzWidth='200px'
               nzShowSort
               [(nzSort)]="sortMap.registerTime"
               (nzSortChange)="sort('registerTime', $event)"
             >
               Register Time
             </th>
-            <th>Actions</th>
+            <th nzWidth='350px'>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -166,11 +171,13 @@
           </tr>
         </tbody>
       </nz-table>
-      <!-- User table -->
+
+      <!-- Tools table -->
       <nz-table
         *ngIf="currentTable === 'tools'"
         #toolTable
         [nzData]="displayedTools"
+        [nzScroll]="{ x: '1350px', y: '800px' }"
       >
         <thead>
           <tr>
@@ -178,10 +185,11 @@
               nzShowSort
               [(nzSort)]="sortMap.userId"
               (nzSortChange)="sort('userId', $event)"
+              nzWidth="100px"
             >
               ToolId
             </th>
-            <th nzCustomFilter>
+            <th nzCustomFilter nzWidth="150px">
               Name
               <nz-dropdown
                 nzTrigger="click"
@@ -217,6 +225,7 @@
               nzShowSort
               [(nzSort)]="sortMap.recommended"
               (nzSortChange)="sort('recommended', $event)"
+              nzWidth="150px"
             >
               Recommended
             </th>
@@ -224,6 +233,7 @@
               nzShowSort
               [(nzSort)]="sortMap.rateCount"
               (nzSortChange)="sort('rateCount', $event)"
+              nzWidth="100px"
             >
               Rate Count
             </th>
@@ -231,6 +241,7 @@
               nzShowSort
               [(nzSort)]="sortMap.avgRating"
               (nzSortChange)="sort('avgRating', $event)"
+              nzWidth="100px"
             >
               Average Rating
             </th>
@@ -238,6 +249,7 @@
               nzShowFilter
               [nzFilters]="toolStatusList"
               (nzFilterChange)="searchTools($event)"
+              nzWidth="100px"
             >
               Status
             </th>
@@ -245,10 +257,11 @@
               nzShowSort
               [(nzSort)]="sortMap.registerTime"
               (nzSortChange)="sort('registerTime', $event)"
+              nzWidth="200px"
             >
               Create Time
             </th>
-            <th>Actions</th>
+            <th nzWidth="350px">Actions</th>
           </tr>
         </thead>
         <tbody>
