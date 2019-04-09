@@ -18,7 +18,7 @@
   />
 </ng-template>
 <ng-template #reviewBody>
-  <div style="height: 100px;" *ngIf="data.sample">
+  <div style="height: 100px; overflow-y: hidden; margin-bottom: 10px" *ngIf="data.sample">
     {{ data.sample }}
   </div>
   <span style="float: right;">
