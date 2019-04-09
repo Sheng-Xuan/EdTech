@@ -218,6 +218,7 @@ export async function putReviewVisit(request: Request, response: Response) {
         { visitorIP: ip, reviewId: reviewId}
       ]
     });
+    // Each ip can increment view up to 5 times
     if (count < 5) {
       const visit = new ReviewVisit()
       visit.visitorIP = ip;

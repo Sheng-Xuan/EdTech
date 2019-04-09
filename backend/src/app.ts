@@ -35,6 +35,7 @@ app.use(
     extended: false
   })
 );
+app.set('trust proxy', 'loopback');
 // Add routes
 const fileUpload = multer({ storage: storage }).single('image');
 AppRoutes.forEach(route => {
