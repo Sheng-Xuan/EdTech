@@ -208,7 +208,8 @@ export async function getReviewsFlow(request: Request, response: Response) {
  * @apiError (400) {json} error
  */
 export async function putReviewVisit(request: Request, response: Response) {
-  if (request.ip) {
+  const ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
+  if (ip) {
     const reviewId = request.params.reviewId;
     const ip = request.ip.split(':').pop();
     const visitRepository = getRepository(ReviewVisit);
