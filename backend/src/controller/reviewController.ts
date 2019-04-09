@@ -208,8 +208,7 @@ export async function getReviewsFlow(request: Request, response: Response) {
  * @apiError (400) {json} error
  */
 export async function putReviewVisit(request: Request, response: Response) {
-  const ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
-  console.debug(ip);
+  const ip = (<string>request.headers['x-forwarded-for'] || request.connection.remoteAddress || '').split(',')[0].trim();
   if (ip) {
     const reviewId = request.params.reviewId;
     const visitRepository = getRepository(ReviewVisit);
@@ -222,7 +221,7 @@ export async function putReviewVisit(request: Request, response: Response) {
     // Each ip can increment view up to 5 times
     if (count < 5) {
       const visit = new ReviewVisit()
-      visit.visitorIP = ip[0];
+      visit.visitorIP = ip;
       visit.reviewId = reviewId;
       await visitRepository.save(visit);
       await reviewRepository.increment({reviewId: reviewId}, "visits", 1);
