@@ -211,7 +211,6 @@ export async function putReviewVisit(request: Request, response: Response) {
   const ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
   if (ip) {
     const reviewId = request.params.reviewId;
-    const ip = request.ip.split(':').pop();
     const visitRepository = getRepository(ReviewVisit);
     const reviewRepository = getRepository(Review);
     const count = await visitRepository.count({
@@ -222,7 +221,7 @@ export async function putReviewVisit(request: Request, response: Response) {
     // Each ip can increment view up to 5 times
     if (count < 5) {
       const visit = new ReviewVisit()
-      visit.visitorIP = ip;
+      visit.visitorIP = ip[0].split(':').pop();
       visit.reviewId = reviewId;
       await visitRepository.save(visit);
       await reviewRepository.increment({reviewId: reviewId}, "visits", 1);
