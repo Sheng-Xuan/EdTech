@@ -98,7 +98,7 @@ export async function login(request: Request, response: Response) {
  * @api {POST} /v1/forgotpassword/code Request server to send reset password code to email
  * @apiGroup Authentication
  * @apiParam {String} email
- * @apiSuccess (200)
+ * @apiSuccess (200) {json} message
  * @apiError (401) {Object} error
  */
 export async function getResetPasswordCode(request: Request, response: Response) {
@@ -162,7 +162,7 @@ export async function checkResetPasswordCode(request: Request, response: Respons
  * @apiParam {String} password
  * @apiParam {String} key
  * @apiParam {String} email
- * @apiSuccess (200)
+ * @apiSuccess (200) {json} message
  * @apiError (401) {Object} error
  */
 export async function resetPassword(request: Request, response: Response) {
@@ -232,7 +232,7 @@ export async function verifyEmail(request: Request, response: Response) {
  * @apiGroup Authentication
  * @apiParam {String} email
  * @apiParam {String} message
- * @apiSuccess (200)
+ * @apiSuccess (200) {json} message
  * @apiError (401) {Object} error
  */
 export async function sendReportBugEmail(request: Request, response: Response) {
