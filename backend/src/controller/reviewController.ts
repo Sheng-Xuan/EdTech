@@ -209,6 +209,7 @@ export async function getReviewsFlow(request: Request, response: Response) {
  */
 export async function putReviewVisit(request: Request, response: Response) {
   const ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
+  console.debug(ip);
   if (ip) {
     const reviewId = request.params.reviewId;
     const visitRepository = getRepository(ReviewVisit);
