@@ -68,7 +68,8 @@ AppRoutes.forEach(route => {
 });
 export const startServer = async () => {
   await getConnection();
-  await initCategories();
+  // Run this when the db is empty
+  //await initCategories();
   const listener = app.listen(3000, () => {
     console.log(
       'App is running on http://localhost:%d in %s mode',
