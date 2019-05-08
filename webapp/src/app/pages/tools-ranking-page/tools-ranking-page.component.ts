@@ -10,7 +10,7 @@ import { Title } from '@angular/platform-browser';
 })
 export class ToolsRankingPageComponent implements OnInit {
   categories = [{ id: 0, name: 'All' }];
-  topTools = [[], [], [], [], [], [], []];
+  topTools = {};
   nzTabPosition = 'left';
   selectedIndex = 0;
   constructor(private toolService: ToolService, private titleService: Title) {}
@@ -26,25 +26,23 @@ export class ToolsRankingPageComponent implements OnInit {
         this.nzTabPosition = 'left';
       }
     });
-    this.toolService.getTopToolsByCategory(0).subscribe(
-      res => {
-        this.topTools[0] = res;
-        this.topTools = [...this.topTools];
-      },
-      err => {}
-    );
     this.toolService.getCategories().subscribe(res => {
       this.categories = [...this.categories, ...res];
     });
+    this.toolService.getTopToolsByCategory(0).subscribe(
+      res => {
+        this.topTools[0] = res;
+        this.topTools[0] = [...res];
+      },
+      err => {}
+    );
   }
 
-  getTools(catId) {
-    if (this.topTools[catId].length > 0) {
-    } else {
-      this.toolService.getTopToolsByCategory(catId).subscribe(
+  getTools(id) {
+    if (!this.topTools[id]) {
+      this.toolService.getTopToolsByCategory(id).subscribe(
         res => {
-          this.topTools[catId] = res;
-          this.topTools = [...this.topTools];
+          this.topTools[id] = [...res];
         },
         err => {}
       );

@@ -5,7 +5,7 @@
     [nzTitle]="cat.name"
     (nzSelect)="getTools(cat.id)"
   >
-  <div *ngIf="topTools.length > 0 && topTools[cat.id].length > 0">
+  <div *ngIf="topTools && topTools[cat.id]">
     <app-tool-list [data]="topTools[cat.id]"></app-tool-list>
   </div>
   </nz-tab>
