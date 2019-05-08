@@ -9,3 +9,6 @@
   width: 130px;
   margin-right: 8px;
 }
+[nz-input].new-cat {
+  width: 300px;
+}

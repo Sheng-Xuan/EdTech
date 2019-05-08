@@ -43,6 +43,42 @@ export class ToolService {
     });
   }
 
+  getCategoriesWithCount(): Observable<any> {
+    return this.apiService.get('/categories-with-count', {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.jwtService.getToken()
+      })
+    });
+  }
+
+  addCategory(name): Observable<any> {
+    return this.apiService.post(
+      '/category',
+      {
+        name: name
+      },
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + this.jwtService.getToken()
+        })
+      }
+    );
+  }
+
+  deleteCategory(id): Observable<any> {
+    return this.apiService.delete(
+      '/category/' + id,
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + this.jwtService.getToken()
+        })
+      }
+    );
+  }
+
   getToolList(): Observable<any> {
     return this.apiService.get('/tools/list', {
       headers: new HttpHeaders({
@@ -185,7 +221,7 @@ export class ToolService {
   getTopToolsByCategory(catId: number): Observable<any> {
     return this.apiService.get('/tools/top/' + catId, {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       })
     });
   }

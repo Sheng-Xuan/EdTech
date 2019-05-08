@@ -23,7 +23,7 @@ import {
   updateToolRecommendedById,
   getTopToolsByCategory
 } from './controller/toolController';
-import { getCategories } from './controller/categoryController';
+import { getCategories, getCategoriesWithCount, deleteCategory, addCategory } from './controller/categoryController';
 import {
   getToolComments,
   postToolComment,
@@ -81,6 +81,24 @@ export const AppRoutes = [
     method: 'get',
     action: getCategories,
     auth: false
+  },
+  {
+    path: apiVersion + '/categories-with-count',
+    method: 'get',
+    action: getCategoriesWithCount,
+    auth: true
+  },
+  {
+    path: apiVersion + '/category/:id',
+    method: 'delete',
+    action: deleteCategory,
+    auth: true
+  },
+  {
+    path: apiVersion + '/category',
+    method: 'post',
+    action: addCategory,
+    auth: true
   },
   {
     path: apiVersion + '/tool/:id',

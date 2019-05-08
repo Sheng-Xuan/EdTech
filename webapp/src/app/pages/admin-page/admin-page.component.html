@@ -1,12 +1,28 @@
 <h2 style="text-align: center">EdTech Admin Dashboard</h2>
 <nz-layout>
   <nz-sider [(nzCollapsed)]="isRightPanelCollapsed" style="background:#fff">
-    <ul nz-menu [nzInlineCollapsed]="isRightPanelCollapsed" [nzMode]="'inline'" style="height:100%">
+    <ul
+      nz-menu
+      [nzInlineCollapsed]="isRightPanelCollapsed"
+      [nzMode]="'inline'"
+      style="height:100%"
+    >
       <li nz-menu-item [nzSelected]="true" (click)="setTable('users')">
-        <span title><i nz-icon type="user"></i><span class="nav-text">Users</span></span>
+        <span title
+          ><i nz-icon type="user"></i><span class="nav-text">Users</span></span
+        >
       </li>
       <li nz-menu-item (click)="setTable('tools')">
-        <span title><i nz-icon type="laptop"></i><span class="nav-text">Tools</span></span>
+        <span title
+          ><i nz-icon type="laptop"></i
+          ><span class="nav-text">Tools</span></span
+        >
+      </li>
+      <li nz-menu-item (click)="setTable('categories')">
+        <span title
+          ><i nz-icon nzType="ordered-list"></i
+          ><span class="nav-text">Categories</span></span
+        >
       </li>
     </ul>
   </nz-sider>
@@ -63,9 +79,9 @@
                 </div>
               </nz-dropdown>
             </th>
-            <th nzWidth='200px'>Email</th>
+            <th nzWidth="200px">Email</th>
             <th
-              nzWidth='100px'
+              nzWidth="100px"
               nzShowFilter
               [nzFilters]="userGroupList"
               (nzFilterChange)="searchUsers($event, filterUserStatusList)"
@@ -73,7 +89,7 @@
               Group
             </th>
             <th
-              nzWidth='100px'
+              nzWidth="100px"
               nzShowFilter
               [nzFilters]="userStatusList"
               (nzFilterChange)="searchUsers(filterUserGroupList, $event)"
@@ -81,14 +97,14 @@
               Status
             </th>
             <th
-              nzWidth='200px'
+              nzWidth="200px"
               nzShowSort
               [(nzSort)]="sortMap.registerTime"
               (nzSortChange)="sort('registerTime', $event)"
             >
               Register Time
             </th>
-            <th nzWidth='350px'>Actions</th>
+            <th nzWidth="350px">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -343,6 +359,51 @@
                   </button>
                 </nz-popconfirm>
               </nz-button-group>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <!-- Categories Table -->
+      <input type="text" nz-input class="new-cat" placeholder="new category name" [(ngModel)]="newCatName"/>
+      <button nz-button nzType="primary" nzSize="small" [disabled]="!newCatName" (click)="addCategory()">Add New Category</button>
+      
+      <nz-table
+        *ngIf="currentTable === 'categories'"
+        #catTable
+        [nzData]="displayedCategories"
+        [nzScroll]="{ x: '800px', y: '800px' }"
+      >
+        <thead>
+          <tr>
+            <th nzWidth="50px">
+              Id
+            </th>
+            <th nzCustomFilter nzWidth="150px">
+              Category Name
+            </th>
+            <th nzWidth="100px">No.of Tools</th>
+            <th nzWidth="100px">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cat of catTable.data">
+            <td>{{ cat.id }}</td>
+            <td>{{ cat.name }}</td>
+            <td>{{ cat.count }}</td>
+            <td>
+              <nz-popconfirm
+                [nzTitle]="'Confirm?'"
+                (nzOnConfirm)="deleteCategory(cat.id)"
+              >
+                <button
+                  nz-popconfirm
+                  [disabled]="cat.count > 0"
+                  nz-button
+                  nzType="default"
+                >
+                  Delete
+                </button>
+              </nz-popconfirm>
             </td>
           </tr>
         </tbody>

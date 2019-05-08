@@ -17,12 +17,16 @@ export class AdminPageComponent implements OnInit {
   currentTable = 'users';
   users;
   tools;
+  categories;
+  newCatName = '';
   displayedUsers;
   displayedTools;
+  displayedCategories;
   sortName = null;
   sortValue = null;
   searchUsername = '';
   searchToolName = '';
+  searchCategoryName = '';
   sortMap = {
     userId: null,
     registerTime: null,
@@ -83,6 +87,7 @@ export class AdminPageComponent implements OnInit {
         this.msg.error(err.error);
       }
     });
+    this.loadCategories();
     if (window.innerWidth <= 800) {
       this.isRightPanelCollapsed = true;
     }
@@ -129,6 +134,19 @@ export class AdminPageComponent implements OnInit {
     }
   }
 
+  loadCategories() {
+    this.toolService.getCategoriesWithCount().subscribe(res => {
+      this.categories = res;
+      this.displayedCategories = [...this.categories];
+    }, err => {
+      if (err.error = 'Unauthorized') {
+        this.msg.error('Session timeout, please log in again');
+        this.messageService.sendMessage('login');
+      } else {
+        this.msg.error(err.error);
+      }
+    });
+  }
   displayTime(time) {
     return this.timeService.convertGMTToLocalTime(time);
   }
@@ -276,5 +294,41 @@ export class AdminPageComponent implements OnInit {
   openToolPage(id: number) {
     // Open tool page in a new tab
     window.open('/tool/' + id, '_blank');
+  }
+
+  addCategory() {
+    if (this.newCatName) {
+      this.toolService.addCategory(this.newCatName).subscribe(
+        res => {
+          this.msg.success('New category added');
+          this.loadCategories();
+        },
+        err => {
+          if (err.error = 'Unauthorized') {
+            this.msg.error('Session timeout, please log in again');
+            this.messageService.sendMessage('login');
+          } else {
+            this.msg.error(err.error);
+          }
+        }
+      );
+    }
+  }
+
+  deleteCategory(id) {
+    this.toolService.deleteCategory(id).subscribe(
+      res => {
+        this.msg.success('Category deleted');
+        this.loadCategories();
+      },
+      err => {
+        if (err.error = 'Unauthorized') {
+          this.msg.error('Session timeout, please log in again');
+          this.messageService.sendMessage('login');
+        } else {
+          this.msg.error(err.error);
+        }
+      }
+    );
   }
 }
