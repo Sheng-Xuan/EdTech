@@ -364,8 +364,8 @@
         </tbody>
       </nz-table>
       <!-- Categories Table -->
-      <input type="text" nz-input class="new-cat" placeholder="new category name" [(ngModel)]="newCatName"/>
-      <button nz-button nzType="primary" nzSize="small" [disabled]="!newCatName" (click)="addCategory()">Add New Category</button>
+      <input *ngIf="currentTable === 'categories'" type="text" nz-input class="new-cat" placeholder="new category name" [(ngModel)]="newCatName"/>
+      <button *ngIf="currentTable === 'categories'" nz-button nzType="primary" nzSize="small" [disabled]="!newCatName" (click)="addCategory()">Add New Category</button>
       
       <nz-table
         *ngIf="currentTable === 'categories'"
